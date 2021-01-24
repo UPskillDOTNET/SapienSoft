@@ -72,20 +72,6 @@ namespace iPark.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var firstName = user.FirstName;
-            if (Input.FirstName != firstName)
-            {
-                user.FirstName = Input.FirstName;
-                await _userManager.UpdateAsync(user);
-            }
-
-            var lastName = user.LastName;
-            if (Input.LastName != lastName)
-            {
-                user.LastName = Input.LastName;
-                await _userManager.UpdateAsync(user);
-            }
-
             await LoadAsync(user);
             return Page();
         }
@@ -102,6 +88,20 @@ namespace iPark.Areas.Identity.Pages.Account.Manage
             {
                 await LoadAsync(user);
                 return Page();
+            }
+
+            var firstName = user.FirstName;
+            if (Input.FirstName != firstName)
+            {
+                user.FirstName = Input.FirstName;
+                await _userManager.UpdateAsync(user);
+            }
+
+            var lastName = user.LastName;
+            if (Input.LastName != lastName)
+            {
+                user.LastName = Input.LastName;
+                await _userManager.UpdateAsync(user);
             }
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);

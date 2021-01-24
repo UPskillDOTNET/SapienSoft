@@ -15,7 +15,6 @@ namespace iPark.Data
         {
         }
 
-        // Modify the default ugly names of the Identity Tables
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -49,6 +48,5 @@ namespace iPark.Data
                 entity.ToTable("UserTokens");
             });
         }
-
     }
 }

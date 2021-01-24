@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Park1API", "Park1API\Park1API.csproj", "{10955F06-370A-41B3-B261-9FCA61EAB55E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iPark", "iPark\iPark.csproj", "{87F7ECBD-975B-4CBF-A62A-C681C7A90EDD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iPark", "iPark\iPark.csproj", "{AD7D9A2B-3981-4E76-A5DC-BF4BBB0D7CE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{10955F06-370A-41B3-B261-9FCA61EAB55E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10955F06-370A-41B3-B261-9FCA61EAB55E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10955F06-370A-41B3-B261-9FCA61EAB55E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{87F7ECBD-975B-4CBF-A62A-C681C7A90EDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{87F7ECBD-975B-4CBF-A62A-C681C7A90EDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{87F7ECBD-975B-4CBF-A62A-C681C7A90EDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{87F7ECBD-975B-4CBF-A62A-C681C7A90EDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD7D9A2B-3981-4E76-A5DC-BF4BBB0D7CE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD7D9A2B-3981-4E76-A5DC-BF4BBB0D7CE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD7D9A2B-3981-4E76-A5DC-BF4BBB0D7CE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD7D9A2B-3981-4E76-A5DC-BF4BBB0D7CE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -33,7 +33,6 @@ namespace iPark
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultUI().AddDefaultTokenProviders();
 
             services.AddControllersWithViews();
-
             services.AddRazorPages();
         }
 
