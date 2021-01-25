@@ -29,6 +29,8 @@ namespace ParkingLotAPI.Controllers
             {
                 context.Slot.Add(s);
             }
+
+            context.SaveChanges();
         }
     }
 }
