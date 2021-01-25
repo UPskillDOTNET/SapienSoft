@@ -9,6 +9,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Park1API.Data;
+using Park1API.Helpers;
+using Park1API.Services;
+using PARK1API.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +36,12 @@ namespace Park1API
 
             services.AddDbContext<SlotDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            // configure strongly typed settings object
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+            // configure DI for application services
+            services.AddScoped<IUserService, UserService>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Park1API", Version = "v1" });
@@ -52,6 +61,9 @@ namespace Park1API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            // custom jwt auth middleware
+            app.UseMiddleware<JwtMiddleware>();
 
             app.UseAuthorization();
 

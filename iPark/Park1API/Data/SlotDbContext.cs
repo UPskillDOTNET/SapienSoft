@@ -21,5 +21,7 @@ namespace Park1API.Data
         {
             modelBuilder.Entity<Slot>().HasMany(r => r.Reservations).WithOne(s => s.Slot).IsRequired();
         }
+
+        public DbSet<Park1API.Models.User> User { get; set; }
     }
 }
