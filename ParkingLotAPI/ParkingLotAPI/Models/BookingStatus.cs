@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace ParkingLotAPI.Models
 {
-    public enum SlotType
+    public enum BookingStatus
     {
-        LightVehicle,
-        HeavyVehicle,
-        Motorcycle,
-        Bicycle
+        Cancelled,
+        InProcess,
+        Booked,
+        CheckedOut
     }
 }
