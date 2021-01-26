@@ -12,6 +12,7 @@ namespace Park1API.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Username { get; set; }
+        public ICollection<Reservation> Reservations { get; set; }
 
         [JsonIgnore]
         public string Password { get; set; }
