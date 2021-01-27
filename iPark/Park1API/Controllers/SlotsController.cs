@@ -28,6 +28,30 @@ namespace Park1API.Controllers
             return await _context.Slots.ToListAsync();
         }
 
+        // GET: api/Slots/{start}/{end}
+        [HttpGet]
+        [Route("~/api/slots/availability/{start}/{end}")]
+        //public async Task<ActionResult<IEnumerable<Slot>>> GetSlots(DateTime start, DateTime end)
+        public async Task<ActionResult<IEnumerable<Slot>>> GetAvailableSlots(DateTime start, DateTime end)
+        {
+            var reservations = _context.Reservations.Include(s => s.Slot);
+            List<Slot> freeslots = new List<Slot>();
+
+            freeslots = _context.Slots.Where(x => x.Status == "Available").ToList();
+            foreach (var item in reservations)
+            {
+                if ((item.TimeStart < start & item.TimeEnd > start) ||
+                    (item.TimeStart < end & item.TimeEnd > end) ||
+                    (item.TimeStart < start & item.TimeEnd > end) ||
+                    ((item.TimeStart > start & item.TimeEnd < end)))
+                {
+                    var slotToRemove = item.Slot;
+                    freeslots.Remove(slotToRemove);
+                }
+            }
+            return freeslots;
+        }
+
         // GET: api/Slots/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Slot>> GetSlot(int id)
@@ -41,6 +65,8 @@ namespace Park1API.Controllers
 
             return slot;
         }
+
+        
 
         // PUT: api/Slots/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iPark", "iPark\iPark.csproj", "{AD7D9A2B-3981-4E76-A5DC-BF4BBB0D7CE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Park1API", "Park1API\Park1API.csproj", "{31DB3E68-11D1-400B-AFEF-F41C4858439C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Park1API", "Park1API\Park1API.csproj", "{31DB3E68-11D1-400B-AFEF-F41C4858439C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
