@@ -42,6 +42,30 @@ namespace Park2API.Controllers
             return slot;
         }
 
+        // GET: api/Slots/availability/{start}/{end}
+        [HttpGet]
+        [Route("~/api/slots/availability/{start}/{end}")]
+        //public async Task<ActionResult<IEnumerable<Slot>>> GetSlots(DateTime start, DateTime end)
+        public async Task<ActionResult<IEnumerable<Slot>>> GetAvailableSlots(DateTime start, DateTime end)
+        {
+            var reservations = _context.Reservations.Include(s => s.Slot);
+            List<Slot> freeslots = new List<Slot>();
+
+            freeslots = _context.Slots.Where(x => x.Status == "Available").ToList();
+            foreach (var item in reservations)
+            {
+                if ((item.TimeStart < start & item.TimeEnd > start) ||
+                    (item.TimeStart < end & item.TimeEnd > end) ||
+                    (item.TimeStart < start & item.TimeEnd > end) ||
+                    ((item.TimeStart > start & item.TimeEnd < end)))
+                {
+                    var slotToRemove = item.Slot;
+                    freeslots.Remove(slotToRemove);
+                }
+            }
+            return freeslots;
+        }
+
         // PUT: api/Slots/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
