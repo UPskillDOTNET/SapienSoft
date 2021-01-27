@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Park2API.Models;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Park2API.Entities
@@ -14,6 +15,10 @@ namespace Park2API.Entities
         [Column(TypeName = "decimal(16,4)")]
         public decimal Value { get; set; }
 
+        public string UserId { get; set; }
+
+        [ForeignKey("UserId")]
+        public ApplicationUser ApplicationUser { get; set; }
         public int SlotId { get; set; }
 
         [ForeignKey("SlotId")]
