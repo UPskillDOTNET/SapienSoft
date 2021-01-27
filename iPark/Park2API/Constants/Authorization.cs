@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Park2API.Constants
+﻿namespace Park2API.Constants
 {
     public class Authorization
     {
@@ -15,7 +10,7 @@ namespace Park2API.Constants
         }
         public const string default_username = "user";
         public const string default_email = "user@secureapi.com";
-        public const string default_password = "Admin123!";
+        public const string default_password = "User123!";
         public const Roles default_role = Roles.User;
     }
 }
