@@ -42,6 +42,55 @@ namespace Park2API.Controllers
             return reservation;
         }
 
+
+
+        
+
+        // GET: api/Reservations/available/{start}/{end}
+        [HttpGet]
+        [Route("~/api/reservations/available/{start}/{end}")]
+        public async Task<ActionResult<IEnumerable<ReservationDTO>>> GetAvailableReservations(DateTime start, DateTime end)
+        {
+
+            List<ReservationDTO> listReservations = new List<ReservationDTO>();
+
+            var activeReservations = _context.Reservations.Include(s => s.Slot);
+
+            var freeslots = _context.Slots.Where(x => x.Status == "Available").ToList();
+
+            foreach (var item in activeReservations)
+            {
+                if ((item.TimeStart <= start & item.TimeEnd > start) ||
+                    (item.TimeStart < end & item.TimeEnd >= end) ||
+                    (item.TimeStart <= start & item.TimeEnd >= end) ||
+                    ((item.TimeStart >= start & item.TimeEnd <= end)))
+                {
+                    var slotToRemove = item.Slot;
+                    freeslots.Remove(slotToRemove);
+                }
+            }
+
+            foreach (var item in freeslots)
+            {
+                decimal value = 0;
+                for (DateTime dt = start; dt <= end; dt = dt.AddHours(1))
+                {
+                    int weekDay = (int)dt.DayOfWeek;
+                    var x = _context.DailyDiscounts.FirstOrDefault(d => d.TimeDivision == "Monday");
+                    var discount = x.Rate;
+                    value += item.PricePerHour * discount;
+                }
+                var reservationToAdd = new ReservationDTO() {SlotId = item.Id, TimeStart =start, TimeEnd=end, DateCreated=DateTime.Now, Value=value};
+                listReservations.Add(reservationToAdd);
+            }
+
+            return listReservations;
+        }
+
+        
+
+
+
         // PUT: api/Reservations/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
