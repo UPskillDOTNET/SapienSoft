@@ -54,10 +54,10 @@ namespace Park2API.Controllers
             freeslots = _context.Slots.Where(x => x.Status == "Available").ToList();
             foreach (var item in reservations)
             {
-                if ((item.TimeStart < start & item.TimeEnd > start) ||
-                    (item.TimeStart < end & item.TimeEnd > end) ||
-                    (item.TimeStart < start & item.TimeEnd > end) ||
-                    ((item.TimeStart > start & item.TimeEnd < end)))
+                if ((item.TimeStart <= start & item.TimeEnd > start) ||
+                    (item.TimeStart < end & item.TimeEnd >= end) ||
+                    (item.TimeStart <= start & item.TimeEnd >= end) ||
+                    ((item.TimeStart >= start & item.TimeEnd <= end)))
                 {
                     var slotToRemove = item.Slot;
                     freeslots.Remove(slotToRemove);

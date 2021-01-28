@@ -84,6 +84,40 @@ namespace Park2API.Controllers
             return CreatedAtAction("GetReservation", new { id = reservation.Id }, reservation);
         }
 
+        // POST: api/Reservations/booking
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Route("~/api/reservations/booking")]
+        [HttpPost]
+        public async Task<ActionResult<Reservation>> PostReservationBooking(Reservation reservation)
+        {
+            // Confirmar que a reserva é válida e que ainda se encontra disponível
+            var slot = _context.Slots.Where(x => x.Id == reservation.SlotId);
+            var dbReservations = _context.Reservations.Where(s => s.SlotId == reservation.SlotId).Include(s => s.Slot);
+            foreach (var item in dbReservations)
+            {
+                if ((item.TimeStart <= reservation.TimeStart & item.TimeEnd > reservation.TimeStart) ||
+                    (item.TimeStart < reservation.TimeEnd & item.TimeEnd >= reservation.TimeEnd) ||
+                    (item.TimeStart <= reservation.TimeStart & item.TimeEnd >= reservation.TimeEnd) ||
+                    (item.TimeStart >= reservation.TimeStart & item.TimeEnd <= reservation.TimeEnd))
+                {
+                    return Ok($"The Slot id {reservation.SlotId } has a conflict reservation id {item.Id}.");
+                }
+            }
+
+            // Calcular o valor da reserva
+            var hours = (reservation.TimeEnd - reservation.TimeStart).Hours;
+            var value = hours * reservation.Slot.PricePerHour;
+            reservation.Value = value;
+
+            // Gravar 
+            _context.Reservations.Add(reservation);
+            await _context.SaveChangesAsync();
+
+            // Devolver Reserva com Valor
+
+            return CreatedAtAction("GetReservation", new { id = reservation.Id }, reservation);
+        }
+
         // DELETE: api/Reservations/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReservation(int id)
