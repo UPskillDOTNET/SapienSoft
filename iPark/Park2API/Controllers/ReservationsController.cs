@@ -104,16 +104,13 @@ namespace Park2API.Controllers
                 }
             }
 
-            // Calcular o valor da reserva
             var hours = (reservation.TimeEnd - reservation.TimeStart).Hours;
             var value = hours * reservation.Slot.PricePerHour;
             reservation.Value = value;
+            reservation.DateCreated = DateTime.Now;
 
-            // Gravar 
             _context.Reservations.Add(reservation);
             await _context.SaveChangesAsync();
-
-            // Devolver Reserva com Valor
 
             return CreatedAtAction("GetReservation", new { id = reservation.Id }, reservation);
         }
