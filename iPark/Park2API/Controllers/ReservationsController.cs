@@ -95,10 +95,10 @@ namespace Park2API.Controllers
             var dbReservations = _context.Reservations.Where(s => s.SlotId == reservation.SlotId).Include(s => s.Slot);
             foreach (var item in dbReservations)
             {
-                if ((item.TimeStart <= reservation.TimeStart & item.TimeEnd > reservation.TimeStart) ||
-                    (item.TimeStart < reservation.TimeEnd & item.TimeEnd >= reservation.TimeEnd) ||
-                    (item.TimeStart <= reservation.TimeStart & item.TimeEnd >= reservation.TimeEnd) ||
-                    (item.TimeStart >= reservation.TimeStart & item.TimeEnd <= reservation.TimeEnd))
+                if ((item.TimeStart <= reservation.TimeStart && item.TimeEnd > reservation.TimeStart) ||
+                    (item.TimeStart < reservation.TimeEnd && item.TimeEnd >= reservation.TimeEnd) ||
+                    (item.TimeStart <= reservation.TimeStart && item.TimeEnd >= reservation.TimeEnd) ||
+                    (item.TimeStart >= reservation.TimeStart && item.TimeEnd <= reservation.TimeEnd))
                 {
                     return Ok($"The Slot id {reservation.SlotId } has a conflict reservation id {item.Id}.");
                 }
