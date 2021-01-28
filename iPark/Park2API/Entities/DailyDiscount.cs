@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 namespace Park2API.Entities
 {
 
-    public class DailyPrice
+    public class DailyDiscount
     {
         [Key]
-        public string DayOfTheWeek { get; set; }
+        public DayOfWeek DayOfTheWeek { get; set; }
 
         [Column(TypeName = "decimal(16,4)")]
-        public decimal PriceOfTheDay { get; set; }
+        public decimal Discount { get; set; }
 
     }
 }

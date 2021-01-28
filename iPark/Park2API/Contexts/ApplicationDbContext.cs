@@ -13,6 +13,6 @@ namespace Park2API.Contexts
 
         public DbSet<Slot> Slots { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
-        public DbSet<DailyPrice> DailyPrices { get; set; }
+        public DbSet<DailyDiscount> DailyDiscounts { get; set; }
     }
 }
