@@ -84,6 +84,35 @@ namespace Park2API.Controllers
             return CreatedAtAction("GetReservation", new { id = reservation.Id }, reservation);
         }
 
+        // ESTAMOS AQUI
+
+        // POST: api/Reservations/booking
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Route("~/api/reservations/booking")]
+        [HttpPost]
+        public async Task<ActionResult<Reservation>> PostReservationBooking(Reservation reservation)
+        {
+            // Confirmar que a reserva é válida e que ainda se encontra disponível
+
+            // Calcular o valor da reserva e introduzir no objecto
+
+            var hours = (reservation.TimeEnd - reservation.TimeStart).Hours;
+            var value = hours * reservation.Slot.PricePerHour;
+            reservation.Value = value;
+
+
+            // Gravar na base de dados
+
+            _context.Reservations.Add(reservation);
+            await _context.SaveChangesAsync();
+
+            // Devolver Reserva com Valor
+
+            return CreatedAtAction("GetReservation", new { id = reservation.Id }, reservation);
+        }
+
+        // ESTAMOS AQUI
+
         // DELETE: api/Reservations/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReservation(int id)
