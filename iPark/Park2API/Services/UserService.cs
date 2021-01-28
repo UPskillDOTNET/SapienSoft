@@ -43,7 +43,7 @@ namespace Park2API.Services
                 {
                     await _userManager.AddToRoleAsync(user, Authorization.default_role.ToString());
                 }
-                return $"User Registered with username {user.UserName}";
+                return $"User Registered with username {user.UserName} and Id {user.Id}. Save this Id in order to make future reservations.";
             }
             else
             {

@@ -42,14 +42,10 @@ namespace Park2API.Controllers
             return reservation;
         }
 
-
-
-        
-
         // GET: api/Reservations/available/{start}/{end}
         [HttpGet]
         [Route("~/api/reservations/available/{start}/{end}")]
-        public async Task<ActionResult<IEnumerable<ReservationDTO>>> GetAvailableReservations(DateTime start, DateTime end)
+        public IEnumerable<ReservationDTO> GetAvailableReservations(DateTime start, DateTime end)
         {
 
             List<ReservationDTO> listReservations = new List<ReservationDTO>();
@@ -86,10 +82,6 @@ namespace Park2API.Controllers
 
             return listReservations;
         }
-
-        
-
-
 
         // PUT: api/Reservations/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -149,7 +141,7 @@ namespace Park2API.Controllers
                     (item.TimeStart <= reservation.TimeStart && item.TimeEnd >= reservation.TimeEnd) ||
                     (item.TimeStart >= reservation.TimeStart && item.TimeEnd <= reservation.TimeEnd))
                 {
-                    return Ok($"The Slot id {reservation.SlotId } has a conflict reservation id {item.Id}.");
+                    return Ok($"The Slot id {reservation.SlotId } has a conflict. Reservation not valid.");
                 }
             }
 

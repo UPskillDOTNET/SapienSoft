@@ -3,14 +3,20 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using Park2API.Entities;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Park2API.Entities
 {
     public class Reservation
     {
         public int Id { get; set; }
+
+        [Required]
         public DateTime TimeStart { get; set; }
+
+        [Required]
         public DateTime TimeEnd { get; set; }
+
         public DateTime DateCreated { get; set; }
 
         [Column(TypeName = "decimal(16,4)")]
@@ -20,6 +26,7 @@ namespace Park2API.Entities
 
         [ForeignKey("UserId")]
         public ApplicationUser ApplicationUser { get; set; }
+
         public int SlotId { get; set; }
 
         [ForeignKey("SlotId")]
