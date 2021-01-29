@@ -1,0 +1,957 @@
+{
+	"info": {
+		"_postman_id": "d1a4828c-ace8-405f-a4aa-7a9460f181bd",
+		"name": "Park2API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Slots",
+			"item": [
+				{
+					"name": "/api/slots",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44384/api/slots",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"slots"
+							]
+						},
+						"description": "Get all slots"
+					},
+					"response": []
+				},
+				{
+					"name": "/api/slots/{id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44384/api/slots/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"slots",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/slots/availability/{start}/{end}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44384/api/slots/availability/{start}/{end}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"slots",
+								"availability",
+								"{start}",
+								"{end}"
+							]
+						},
+						"description": "Get all slots"
+					},
+					"response": []
+				},
+				{
+					"name": "/api/slots",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 0,\r\n  \"locator\": \"string\",\r\n  \"pricePerHour\": 0,\r\n  \"status\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/slots",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"slots"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reservations",
+			"item": [
+				{
+					"name": "/api/reservations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44384/api/reservations",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"reservations"
+							]
+						},
+						"description": "Get all reservations"
+					},
+					"response": []
+				},
+				{
+					"name": "/api/reservations/{id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44384/api/reservations/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"reservations",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/reservations",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 0,\r\n  \"client\": \"string\",\r\n  \"timeStart\": \"2021-01-27T22:56:02.946Z\",\r\n  \"timeEnd\": \"2021-01-27T22:56:02.946Z\",\r\n  \"dateCreated\": \"2021-01-27T22:56:02.946Z\",\r\n  \"value\": 0,\r\n  \"userId\": \"string\",\r\n  \"applicationUser\": {\r\n    \"id\": \"string\",\r\n    \"userName\": \"string\",\r\n    \"normalizedUserName\": \"string\",\r\n    \"email\": \"string\",\r\n    \"normalizedEmail\": \"string\",\r\n    \"emailConfirmed\": true,\r\n    \"passwordHash\": \"string\",\r\n    \"securityStamp\": \"string\",\r\n    \"concurrencyStamp\": \"string\",\r\n    \"phoneNumber\": \"string\",\r\n    \"phoneNumberConfirmed\": true,\r\n    \"twoFactorEnabled\": true,\r\n    \"lockoutEnd\": \"2021-01-27T22:56:02.946Z\",\r\n    \"lockoutEnabled\": true,\r\n    \"accessFailedCount\": 0,\r\n    \"firstName\": \"string\",\r\n    \"lastName\": \"string\"\r\n  },\r\n  \"slotId\": 0,\r\n  \"slot\": {\r\n    \"id\": 0,\r\n    \"locator\": \"string\",\r\n    \"pricePerHour\": 0,\r\n    \"status\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/reservations",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"reservations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "/api/user/register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"string\",\r\n  \"lastName\": \"string\",\r\n  \"username\": \"string\",\r\n  \"email\": \"string\",\r\n  \"password\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/user/register",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"user",
+								"register"
+							]
+						},
+						"description": "Create a user with role default \"User\"."
+					},
+					"response": []
+				},
+				{
+					"name": "/api/user/token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"string\",\r\n  \"password\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/user/token",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"user",
+								"token"
+							]
+						},
+						"description": "Posting a valid email and password to receive a AuthenticationModel object containing user details and our precious JWT Token"
+					},
+					"response": []
+				},
+				{
+					"name": "/api/user/addrole",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"string\",\r\n  \"password\": \"string\",\r\n  \"role\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/user/addrole",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"user",
+								"addrole"
+							]
+						},
+						"description": "Add Roles to a specified user"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Startup",
+			"item": [
+				{
+					"name": "User 1 Alexandre",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"Alexandre\",\r\n  \"lastName\": \"Alves\",\r\n  \"username\": \"alexandre\",\r\n  \"email\": \"afelixalves4@upskill.pt\",\r\n  \"password\": \"AAlves0!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/user/register",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"user",
+								"register"
+							]
+						},
+						"description": "Create a user with role default \"User\"."
+					},
+					"response": []
+				},
+				{
+					"name": "User 2 João",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"João\",\r\n  \"lastName\": \"Oliveira\",\r\n  \"username\": \"joao\",\r\n  \"email\": \"joaoamoliveira8@upskill.pt\",\r\n  \"password\": \"JOliveira0!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/user/register",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"user",
+								"register"
+							]
+						},
+						"description": "Create a user with role default \"User\"."
+					},
+					"response": []
+				},
+				{
+					"name": "User 3 Jorge",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"Jorge\",\r\n  \"lastName\": \"Henriques\",\r\n  \"username\": \"jorge\",\r\n  \"email\": \"jorge.mrh@upskill.pt\",\r\n  \"password\": \"JHenriques0!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/user/register",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"user",
+								"register"
+							]
+						},
+						"description": "Create a user with role default \"User\"."
+					},
+					"response": []
+				},
+				{
+					"name": "User 4 SapienSoft",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"SapienSoft\",\r\n  \"lastName\": \"Lda.\",\r\n  \"username\": \"sapiensoft\",\r\n  \"email\": \"geral@sapiensoft.com\",\r\n  \"password\": \"Sapiensoft0!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/user/register",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"user",
+								"register"
+							]
+						},
+						"description": "Create a user with role default \"User\"."
+					},
+					"response": []
+				},
+				{
+					"name": "Slot A01",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"locator\": \"A01\",\r\n  \"pricePerHour\": 0,\r\n  \"status\": \"Reserved\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/slots",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"slots"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Slot A02",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"locator\": \"A02\",\r\n  \"pricePerHour\": 0,\r\n  \"status\": \"Reserved\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/slots",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"slots"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Slot A03",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"locator\": \"A03\",\r\n  \"pricePerHour\": 1.15,\r\n  \"status\": \"Available\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/slots",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"slots"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Slot A04",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"locator\": \"A04\",\r\n  \"pricePerHour\": 1.15,\r\n  \"status\": \"Available\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/slots",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"slots"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Slot A05",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"locator\": \"A05\",\r\n  \"pricePerHour\": 1.15,\r\n  \"status\": \"Available\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/slots",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"slots"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Slot B01",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"locator\": \"B01\",\r\n  \"pricePerHour\": 0.5,\r\n  \"status\": \"Hotel\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/slots",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"slots"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Slot B02",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"locator\": \"B02\",\r\n  \"pricePerHour\": 0.5,\r\n  \"status\": \"Hotel\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/slots",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"slots"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Slot B03",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"locator\": \"B03\",\r\n  \"pricePerHour\": 0.90,\r\n  \"status\": \"Available\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/slots",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"slots"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Slot B04",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"locator\": \"B04\",\r\n  \"pricePerHour\": 0.90,\r\n  \"status\": \"Available\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/slots",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"slots"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Slot B05",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"locator\": \"B05\",\r\n  \"pricePerHour\": 0.90,\r\n  \"status\": \"Available\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/slots",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"slots"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TimeDivision Monday",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"TimeDivision\": \"Monday\",\r\n  \"Rate\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/discounts",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"discounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TimeDivision Tuesday",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"TimeDivision\": \"Tuesday\",\r\n  \"Rate\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/discounts",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"discounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TimeDivision Wednesday",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"TimeDivision\": \"Wednesday\",\r\n  \"Rate\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/discounts",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"discounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TimeDivision Thursday",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"TimeDivision\": \"Thursday\",\r\n  \"Rate\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/discounts",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"discounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TimeDivision Friday",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"TimeDivision\": \"Friday\",\r\n  \"Rate\": 1.5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/discounts",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"discounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TimeDivision Saturday",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"TimeDivision\": \"Saturday\",\r\n  \"Rate\": 1.5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/discounts",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"discounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TimeDivision Sunday",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"TimeDivision\": \"Sunday\",\r\n  \"Rate\": 0.5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/discounts",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"discounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reservation 1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"timeStart\": \"2021-01-31T12:00:00\",\r\n  \"timeEnd\": \"2021-01-01T12:00:00\",\r\n  \"dateCreated\": \"2021-01-27T12:00:00\",\r\n  \"value\": 1.5,\r\n  \"userId\": \"454c2927-08f5-4749-bf2f-bdd9abeea2da\",\r\n  \"slotId\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44384/api/reservations",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"reservations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/reservations/available/{start}/{end}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44384/api/reservations/available/2021-02-05T12:00:00/2021-02-06T12:00:00",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"reservations",
+								"available",
+								"2021-02-05T12:00:00",
+								"2021-02-06T12:00:00"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
