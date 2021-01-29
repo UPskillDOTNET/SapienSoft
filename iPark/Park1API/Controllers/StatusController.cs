@@ -12,47 +12,47 @@ namespace Park1API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SlotsController : ControllerBase
+    public class StatusController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public SlotsController(ApplicationDbContext context)
+        public StatusController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Slots
+        // GET: api/Status
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Slot>>> GetSlots()
+        public async Task<ActionResult<IEnumerable<Status>>> GetStatus()
         {
-            return await _context.Slots.ToListAsync();
+            return await _context.Status.ToListAsync();
         }
 
-        // GET: api/Slots/5
+        // GET: api/Status/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Slot>> GetSlot(int id)
+        public async Task<ActionResult<Status>> GetStatus(int id)
         {
-            var slot = await _context.Slots.FindAsync(id);
+            var status = await _context.Status.FindAsync(id);
 
-            if (slot == null)
+            if (status == null)
             {
                 return NotFound();
             }
 
-            return slot;
+            return status;
         }
 
-        // PUT: api/Slots/5
+        // PUT: api/Status/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSlot(int id, Slot slot)
+        public async Task<IActionResult> PutStatus(int id, Status status)
         {
-            if (id != slot.Id)
+            if (id != status.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(slot).State = EntityState.Modified;
+            _context.Entry(status).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace Park1API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!SlotExists(id))
+                if (!StatusExists(id))
                 {
                     return NotFound();
                 }
@@ -73,36 +73,36 @@ namespace Park1API.Controllers
             return NoContent();
         }
 
-        // POST: api/Slots
+        // POST: api/Status
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Slot>> PostSlot(Slot slot)
+        public async Task<ActionResult<Status>> PostStatus(Status status)
         {
-            _context.Slots.Add(slot);
+            _context.Status.Add(status);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSlot", new { id = slot.Id }, slot);
+            return CreatedAtAction("GetStatus", new { id = status.Id }, status);
         }
 
-        // DELETE: api/Slots/5
+        // DELETE: api/Status/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSlot(int id)
+        public async Task<IActionResult> DeleteStatus(int id)
         {
-            var slot = await _context.Slots.FindAsync(id);
-            if (slot == null)
+            var status = await _context.Status.FindAsync(id);
+            if (status == null)
             {
                 return NotFound();
             }
 
-            _context.Slots.Remove(slot);
+            _context.Status.Remove(status);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool SlotExists(int id)
+        private bool StatusExists(int id)
         {
-            return _context.Slots.Any(e => e.Id == id);
+            return _context.Status.Any(e => e.Id == id);
         }
     }
 }

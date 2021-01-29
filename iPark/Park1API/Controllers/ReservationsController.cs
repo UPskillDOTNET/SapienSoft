@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Park1API.Data;
-using Park1API.Models;
+using Park1API.Contexts;
+using Park1API.Entities;
 
 namespace Park1API.Controllers
 {
@@ -14,9 +14,9 @@ namespace Park1API.Controllers
     [ApiController]
     public class ReservationsController : ControllerBase
     {
-        private readonly SlotDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public ReservationsController(SlotDbContext context)
+        public ReservationsController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -41,6 +41,47 @@ namespace Park1API.Controllers
 
             return reservation;
         }
+
+        // GET: api/Reservations/available/{start}/{end}
+        /*[HttpGet]
+        [Route("~/api/reservations/available/{start}/{end}")]
+        public IEnumerable<ReservationDTO> GetAvailableReservations(DateTime start, DateTime end)
+        {
+
+            List<ReservationDTO> listReservations = new List<ReservationDTO>();
+
+            var activeReservations = _context.Reservations.Include(s => s.Slot);
+
+            var freeslots = _context.Slots.Where(x => x.Status == "Available").ToList();
+
+            foreach (var item in activeReservations)
+            {
+                if ((item.TimeStart <= start & item.TimeEnd > start) ||
+                    (item.TimeStart < end & item.TimeEnd >= end) ||
+                    (item.TimeStart <= start & item.TimeEnd >= end) ||
+                    ((item.TimeStart >= start & item.TimeEnd <= end)))
+                {
+                    var slotToRemove = item.Slot;
+                    freeslots.Remove(slotToRemove);
+                }
+            }
+
+            foreach (var item in freeslots)
+            {
+                decimal value = 0;
+                for (DateTime dt = start; dt <= end; dt = dt.AddHours(1))
+                {
+                    int weekDay = (int)dt.DayOfWeek;
+                    var x = _context.DailyDiscounts.FirstOrDefault(d => (int)d.TimeDivision == weekDay);
+                    var discount = x.Rate;
+                    value += item.PricePerHour * discount;
+                }
+                var reservationToAdd = new ReservationDTO() { SlotId = item.Id, TimeStart = start, TimeEnd = end, DateCreated = DateTime.Now, Value = value };
+                listReservations.Add(reservationToAdd);
+            }
+
+            return listReservations;
+        }*/
 
         // PUT: api/Reservations/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -78,6 +119,37 @@ namespace Park1API.Controllers
         [HttpPost]
         public async Task<ActionResult<Reservation>> PostReservation(Reservation reservation)
         {
+            _context.Reservations.Add(reservation);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetReservation", new { id = reservation.Id }, reservation);
+        }
+
+        // POST: api/Reservations/booking
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Route("~/api/reservations/booking")]
+        [HttpPost]
+        public async Task<ActionResult<Reservation>> PostReservationBooking(Reservation reservation)
+        {
+            // Confirmar que a reserva é válida e que ainda se encontra disponível
+            var slot = _context.Slots.Where(x => x.Id == reservation.SlotId);
+            var dbReservations = _context.Reservations.Where(s => s.SlotId == reservation.SlotId).Include(s => s.Slot);
+            foreach (var item in dbReservations)
+            {
+                if ((item.TimeStart <= reservation.TimeStart && item.TimeEnd > reservation.TimeStart) ||
+                    (item.TimeStart < reservation.TimeEnd && item.TimeEnd >= reservation.TimeEnd) ||
+                    (item.TimeStart <= reservation.TimeStart && item.TimeEnd >= reservation.TimeEnd) ||
+                    (item.TimeStart >= reservation.TimeStart && item.TimeEnd <= reservation.TimeEnd))
+                {
+                    return Ok($"The Slot id {reservation.SlotId } has a conflict. Reservation not valid.");
+                }
+            }
+
+            var hours = (reservation.TimeEnd - reservation.TimeStart).Hours;
+            var value = hours * reservation.Slot.PricePerHour;
+            reservation.Value = value;
+            reservation.DateCreated = DateTime.Now;
+
             _context.Reservations.Add(reservation);
             await _context.SaveChangesAsync();
 
