@@ -42,7 +42,7 @@ namespace Park1API.Controllers
             return reservation;
         }
 
-        // GET: api/Reservations/available/{start}/{end}
+        // GET: api/Reservations/available/{start}/{end} (todos os lugares de estacionamento livre dentro dos parâmetros inseridos)
         [HttpGet]
         [Route("~/api/reservations/available/{start}/{end}")]
         public IEnumerable<ReservationDTO> GetAvailableReservations(DateTime start, DateTime end)
@@ -52,7 +52,50 @@ namespace Park1API.Controllers
 
             var activeReservations = _context.Reservations.Include(s => s.Slot);
 
-            var freeslots = _context.Slots.Include(s => s.Status).Where(x => x.Status.Name == "Available").ToList();
+            var freeslots = _context.Slots.Include(s => s.Status).Where( x => x.Status.Name == "Available").ToList();
+
+            foreach (var item in activeReservations)
+            {
+                if ((item.TimeStart <= start & item.TimeEnd > start) ||
+                    (item.TimeStart < end & item.TimeEnd >= end) ||
+                    (item.TimeStart <= start & item.TimeEnd >= end) ||
+                    ((item.TimeStart >= start & item.TimeEnd <= end)))
+                {
+                    var slotToRemove = item.Slot;
+                    freeslots.Remove(slotToRemove);
+                }
+            }
+
+            foreach (var item in freeslots)
+            {
+                decimal value = 0;
+                for (DateTime dt = start; dt <= end; dt = dt.AddHours(1))
+                {
+                    int weekDay = (int)dt.DayOfWeek;
+                    var x = _context.DailyDiscounts.FirstOrDefault(d => (int)d.TimeDivision == weekDay);
+                    var discount = x.Rate;
+                    value += item.PricePerHour * discount;
+                }
+                var reservationToAdd = new ReservationDTO() { SlotId = item.Id, TimeStart = start, TimeEnd = end, DateCreated = DateTime.Now, Value = value };
+                listReservations.Add(reservationToAdd);
+            }
+
+            return listReservations;
+        }
+
+        // GET: api/Reservations/available/{start}/{end}
+        [HttpGet]
+        [Route("~/api/reservations/e-available/{start}/{end}")]
+        public IEnumerable<ReservationDTO> GetAvailableCharginSpots(DateTime start, DateTime end)
+        {
+
+            List<ReservationDTO> listReservations = new List<ReservationDTO>();
+
+
+
+            var activeReservations = _context.Reservations.Include(s => s.Slot);
+
+            var freeslots = _context.Slots.Include(s => s.Status).Where(x => x.Status.Name == "Available").Where(e => e.IsChargingAvailable == true).ToList();
 
             foreach (var item in activeReservations)
             {
