@@ -43,7 +43,7 @@ namespace Park1API.Controllers
         }
 
         // GET: api/Reservations/available/{start}/{end}
-        /*[HttpGet]
+        [HttpGet]
         [Route("~/api/reservations/available/{start}/{end}")]
         public IEnumerable<ReservationDTO> GetAvailableReservations(DateTime start, DateTime end)
         {
@@ -52,7 +52,7 @@ namespace Park1API.Controllers
 
             var activeReservations = _context.Reservations.Include(s => s.Slot);
 
-            var freeslots = _context.Slots.Where(x => x.Status == "Available").ToList();
+            var freeslots = _context.Slots.Include(s => s.Status).Where(x => x.Status.Name == "Available").ToList();
 
             foreach (var item in activeReservations)
             {
@@ -81,7 +81,7 @@ namespace Park1API.Controllers
             }
 
             return listReservations;
-        }*/
+        }
 
         // PUT: api/Reservations/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

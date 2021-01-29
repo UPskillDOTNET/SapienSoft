@@ -10,6 +10,8 @@ namespace Park1API.Entities
 
         [Column(TypeName = "decimal(16,4)")]
         public decimal PricePerHour { get; set; }
+        public int StatusId { get; set; }
+        [ForeignKey("StatusId")]
         public Status Status { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
