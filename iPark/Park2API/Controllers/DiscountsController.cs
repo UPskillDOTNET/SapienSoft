@@ -30,7 +30,7 @@ namespace Park2API.Controllers
 
         // GET: api/Discounts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Discount>> GetDiscount(string id)
+        public async Task<ActionResult<Discount>> GetDiscount(DayOfWeek id)
         {
             var discount = await _context.DailyDiscounts.FindAsync(id);
 
@@ -45,7 +45,7 @@ namespace Park2API.Controllers
         // PUT: api/Discounts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDiscount(string id, Discount discount)
+        public async Task<IActionResult> PutDiscount(DayOfWeek id, Discount discount)
         {
             if (id != discount.TimeDivision)
             {
@@ -100,7 +100,7 @@ namespace Park2API.Controllers
 
         // DELETE: api/Discounts/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDiscount(string id)
+        public async Task<IActionResult> DeleteDiscount(DayOfWeek id)
         {
             var discount = await _context.DailyDiscounts.FindAsync(id);
             if (discount == null)
@@ -114,7 +114,7 @@ namespace Park2API.Controllers
             return NoContent();
         }
 
-        private bool DiscountExists(string id)
+        private bool DiscountExists(DayOfWeek id)
         {
             return _context.DailyDiscounts.Any(e => e.TimeDivision == id);
         }

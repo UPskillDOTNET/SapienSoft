@@ -72,11 +72,11 @@ namespace Park2API.Controllers
                 for (DateTime dt = start; dt <= end; dt = dt.AddHours(1))
                 {
                     int weekDay = (int)dt.DayOfWeek;
-                    var x = _context.DailyDiscounts.FirstOrDefault(d => d.TimeDivision == "Monday");
+                    var x = _context.DailyDiscounts.FirstOrDefault(d => (int)d.TimeDivision == weekDay);
                     var discount = x.Rate;
                     value += item.PricePerHour * discount;
                 }
-                var reservationToAdd = new ReservationDTO() {SlotId = item.Id, TimeStart =start, TimeEnd=end, DateCreated=DateTime.Now, Value=value};
+                var reservationToAdd = new ReservationDTO() { SlotId = item.Id, TimeStart = start, TimeEnd = end, DateCreated = DateTime.Now, Value = value };
                 listReservations.Add(reservationToAdd);
             }
 

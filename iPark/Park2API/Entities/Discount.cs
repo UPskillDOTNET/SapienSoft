@@ -12,7 +12,7 @@ namespace Park2API.Entities
     public class Discount
     {
         [Key]
-        public string TimeDivision { get; set; }
+        public DayOfWeek TimeDivision { get; set; }
 
         [Column(TypeName = "decimal(16,4)")]
         public decimal Rate { get; set; }
