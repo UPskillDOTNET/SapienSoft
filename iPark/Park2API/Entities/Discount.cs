@@ -1,21 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Park2API.Entities
 {
-
     public class Discount
     {
-        [Key]
-        public DayOfWeek TimeDivision { get; set; }
+        public int Id { get; set; }
+
+        public DayOfWeek WeekDay { get; set; }
+
+        public int Hour { get; set; }
 
         [Column(TypeName = "decimal(16,4)")]
         public decimal Rate { get; set; }
-
     }
 }

@@ -1,32 +1,34 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Park2API.Contexts;
-using Park2API.Entities;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Park2API.Contexts;
+using Park2API.Entities;
 
 namespace Park2API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Slots1Controller : ControllerBase
+    public class SlotsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public Slots1Controller(ApplicationDbContext context)
+        public SlotsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Slots1
+        // GET: api/Slots
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Slot>>> GetSlots()
         {
             return await _context.Slots.ToListAsync();
         }
 
-        // GET: api/Slots1/5
+        // GET: api/Slots/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Slot>> GetSlot(string id)
         {
@@ -40,7 +42,7 @@ namespace Park2API.Controllers
             return slot;
         }
 
-        // PUT: api/Slots1/5
+        // PUT: api/Slots/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSlot(string id, Slot slot)
@@ -71,7 +73,7 @@ namespace Park2API.Controllers
             return NoContent();
         }
 
-        // POST: api/Slots1
+        // POST: api/Slots
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Slot>> PostSlot(Slot slot)
@@ -96,7 +98,7 @@ namespace Park2API.Controllers
             return CreatedAtAction("GetSlot", new { id = slot.Id }, slot);
         }
 
-        // DELETE: api/Slots1/5
+        // DELETE: api/Slots/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSlot(string id)
         {

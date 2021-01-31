@@ -20,6 +20,8 @@ namespace Park2API.Entities
 
         [Column(TypeName = "decimal(16,4)")]
         public decimal Value { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
 
         public string UserId { get; set; }
 

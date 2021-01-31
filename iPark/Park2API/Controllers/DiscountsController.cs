@@ -23,16 +23,16 @@ namespace Park2API.Controllers
 
         // GET: api/Discounts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Discount>>> GetDailyDiscounts()
+        public async Task<ActionResult<IEnumerable<Discount>>> GetDiscounts()
         {
-            return await _context.DailyDiscounts.ToListAsync();
+            return await _context.Discounts.ToListAsync();
         }
 
         // GET: api/Discounts/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Discount>> GetDiscount(DayOfWeek id)
         {
-            var discount = await _context.DailyDiscounts.FindAsync(id);
+            var discount = await _context.Discounts.FindAsync(id);
 
             if (discount == null)
             {
@@ -47,7 +47,7 @@ namespace Park2API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDiscount(DayOfWeek id, Discount discount)
         {
-            if (id != discount.TimeDivision)
+            if (id != discount.WeekDay)
             {
                 return BadRequest();
             }
@@ -78,14 +78,14 @@ namespace Park2API.Controllers
         [HttpPost]
         public async Task<ActionResult<Discount>> PostDiscount(Discount discount)
         {
-            _context.DailyDiscounts.Add(discount);
+            _context.Discounts.Add(discount);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (DiscountExists(discount.TimeDivision))
+                if (DiscountExists(discount.WeekDay))
                 {
                     return Conflict();
                 }
@@ -95,20 +95,20 @@ namespace Park2API.Controllers
                 }
             }
 
-            return CreatedAtAction("GetDiscount", new { id = discount.TimeDivision }, discount);
+            return CreatedAtAction("GetDiscount", new { id = discount.WeekDay }, discount);
         }
 
         // DELETE: api/Discounts/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDiscount(DayOfWeek id)
         {
-            var discount = await _context.DailyDiscounts.FindAsync(id);
+            var discount = await _context.Discounts.FindAsync(id);
             if (discount == null)
             {
                 return NotFound();
             }
 
-            _context.DailyDiscounts.Remove(discount);
+            _context.Discounts.Remove(discount);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -116,7 +116,7 @@ namespace Park2API.Controllers
 
         private bool DiscountExists(DayOfWeek id)
         {
-            return _context.DailyDiscounts.Any(e => e.TimeDivision == id);
+            return _context.Discounts.Any(e => e.WeekDay == id);
         }
     }
 }
