@@ -1,9 +1,7 @@
 ﻿using Park2API.Models;
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
-using Park2API.Entities;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Park2API.Entities
 {
@@ -17,6 +15,7 @@ namespace Park2API.Entities
         [Required]
         public DateTime TimeEnd { get; set; }
 
+        [Required]
         public DateTime DateCreated { get; set; }
 
         [Column(TypeName = "decimal(16,4)")]
@@ -27,7 +26,7 @@ namespace Park2API.Entities
         [ForeignKey("UserId")]
         public ApplicationUser ApplicationUser { get; set; }
 
-        public int SlotId { get; set; }
+        public string SlotId { get; set; }
 
         [ForeignKey("SlotId")]
         public Slot Slot { get; set; }

@@ -48,6 +48,23 @@ namespace Park2API.Contexts
             {
                 entity.ToTable("UserTokens");
             });
+
+            builder.Entity<Status>().HasData(
+                new Status { Id = "Reserved", Description = "Slot reserved for internal use." },
+                new Status { Id = "Available", Description = "Slot available for external booking." },
+                new Status { Id = "Hotel", Description = "Slot reserved for Hotel use only." });
+
+            builder.Entity<Slot>().HasData(
+                new Slot { Id = "A01", PricePerHour = 0, Status = "Reserved" },
+                new Slot { Id = "A02", PricePerHour = 0, Status = "Reserved" },
+                new Slot { Id = "A03", PricePerHour = 0, Status = "Reserved" },
+                new Slot { Id = "A04", PricePerHour = 0, Status = "Reserved" },
+                new Slot { Id = "A05", PricePerHour = 0, Status = "Reserved" },
+                new Slot { Id = "B01", PricePerHour = 0, Status = "Reserved" },
+                new Slot { Id = "B02", PricePerHour = 0, Status = "Reserved" },
+                new Slot { Id = "B03", PricePerHour = 0, Status = "Reserved" },
+                new Slot { Id = "B04", PricePerHour = 0, Status = "Reserved" },
+                new Slot { Id = "B05", PricePerHour = 0, Status = "Reserved" });
         }
     }
 }
