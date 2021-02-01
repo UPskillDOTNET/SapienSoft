@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iPark", "iPark\iPark.csproj", "{AD7D9A2B-3981-4E76-A5DC-BF4BBB0D7CE7}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Park1API", "Park1API\Park1API.csproj", "{31DB3E68-11D1-400B-AFEF-F41C4858439C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Park2API", "Park2API\Park2API.csproj", "{5A4CD120-AC54-44AF-967B-BABA7F784ECF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iParkCentralAPI", "iParkCentralAPI\iParkCentralAPI.csproj", "{9C744333-EA6B-4C7C-9EAC-E79C23F9C7DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iParkCentralAPI", "iParkCentralAPI\iParkCentralAPI.csproj", "{9C744333-EA6B-4C7C-9EAC-E79C23F9C7DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AD7D9A2B-3981-4E76-A5DC-BF4BBB0D7CE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AD7D9A2B-3981-4E76-A5DC-BF4BBB0D7CE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AD7D9A2B-3981-4E76-A5DC-BF4BBB0D7CE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AD7D9A2B-3981-4E76-A5DC-BF4BBB0D7CE7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{31DB3E68-11D1-400B-AFEF-F41C4858439C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{31DB3E68-11D1-400B-AFEF-F41C4858439C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31DB3E68-11D1-400B-AFEF-F41C4858439C}.Release|Any CPU.ActiveCfg = Release|Any CPU
