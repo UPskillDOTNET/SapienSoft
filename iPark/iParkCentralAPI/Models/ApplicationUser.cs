@@ -10,5 +10,6 @@ namespace iParkCentralAPI.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string PaymentMethod { get; set; } 
     }
 }
