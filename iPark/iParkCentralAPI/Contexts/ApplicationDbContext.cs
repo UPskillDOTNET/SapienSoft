@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using iParkCentralAPI.Entities;
 
 namespace iParkCentralAPI.Contexts
 {
@@ -14,5 +15,7 @@ namespace iParkCentralAPI.Contexts
             {
 
             }
+        public DbSet<Park> Park { get; set; }
+        public DbSet<Reservation> Reservation { get; set; }
     }
 }

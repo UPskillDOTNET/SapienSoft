@@ -18,9 +18,6 @@ namespace iParkCentralAPI.Entities
         public DateTime DateCreated { get; set; }
         [Column(TypeName = "decimal(16,4)")]
         public decimal Value { get; set; }
-        public string UserId { get; set; }
-        [ForeignKey("UserId")]
-        public ApplicationUser ApplicationUser { get; set; }
         [Required]
         public int Locator { get; set; }
         public double Latitude { get; set; }
@@ -28,6 +25,14 @@ namespace iParkCentralAPI.Entities
         public bool IsChargingAvailable { get; set; }
         public string QRcode { get; set; }
         public string PaymentMethod { get; set; }
+
+        public string UserId { get; set; }
+        [ForeignKey("UserId")]
+        public ApplicationUser ApplicationUser { get; set; }
+
+        public int ParkId { get; set; }
+        [ForeignKey("ParkId")]
+        public Park Park { get; set; }
     }
 
 }
