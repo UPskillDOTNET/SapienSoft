@@ -14,7 +14,7 @@ namespace iParkCentralAPI.Entities
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         [Required]
-        public string OwnerContact { get; set; }
+        public string Email { get; set; }
         public string BaseUrl { get; set; }
         public bool IsCovered { get; set; }
         public bool IsChargingAvailable { get; set; }
