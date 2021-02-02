@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,7 @@ namespace Park1API.Controllers
             _context = context;
         }
 
-        // GET: api/Reservations
+        // GET: api/Reservations     
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Reservation>>> GetReservations()
         {
@@ -172,8 +173,19 @@ namespace Park1API.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Route("~/api/reservations/booking")]
         [HttpPost]
-        public async Task<ActionResult<Reservation>> PostReservationBooking(Reservation reservation)
+        public async Task<ActionResult<Reservation>> PostReservationBooking(ReservationDTO reservationDTO)
         {
+            var reservation = new Reservation()
+            {
+                TimeStart = reservationDTO.TimeStart,
+                TimeEnd = reservationDTO.TimeEnd,
+                DateCreated = reservationDTO.DateCreated,
+                Value = reservationDTO.Value,
+                UserId  = reservationDTO.UserId,
+                SlotId = reservationDTO.SlotId,
+                Slot = _context.Slots.FirstOrDefault(s => s.Id == reservationDTO.SlotId)
+            };
+
             // Confirmar que a reserva é válida e que ainda se encontra disponível
             var slot = _context.Slots.Where(x => x.Id == reservation.SlotId);
             var dbReservations = _context.Reservations.Where(s => s.SlotId == reservation.SlotId).Include(s => s.Slot);
@@ -193,10 +205,11 @@ namespace Park1API.Controllers
             reservation.Value = value;
             reservation.DateCreated = DateTime.Now;
 
+
             _context.Reservations.Add(reservation);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetReservation", new { id = reservation.Id }, reservation);
+            return CreatedAtAction("GetReservation", new { id = reservation.Slot }, reservation);
         }
 
         // DELETE: api/Reservations/5

@@ -10,6 +10,8 @@ using iParkCentralAPI.Entities;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
+using System.Net.Http.Json;
+using iParkCentralAPI.DTO;
 
 namespace iParkCentralAPI.Controllers
 {
@@ -40,6 +42,7 @@ namespace iParkCentralAPI.Controllers
             var parks = _context.Park;
             foreach (var item in parks)
             {
+
                 var reservationsTemp = new List<Reservation>();
                 using (var client = new HttpClient())
                 {
@@ -54,24 +57,35 @@ namespace iParkCentralAPI.Controllers
 
                     var parkUrl = item.ParkUrl(start, end);
 
-                    //Sending request to find web api REST service resource Continents using HttpClient  
-                    HttpResponseMessage Res = await client.GetAsync(parkUrl);
-
-                    //Checking the response is successful or not which is sent using HttpClient  
-                    if (Res.IsSuccessStatusCode)
+                    try
                     {
-                        //Storing the response details recieved from web api   
-                        var EmpResponse = Res.Content.ReadAsStringAsync().Result;
+                        //Sending request to find web api REST service resource Continents using HttpClient  
+                        HttpResponseMessage Res = await client.GetAsync(parkUrl);
 
-                        //Deserializing the response recieved from web api and storing into the Employee list  
-                        reservationsTemp = JsonConvert.DeserializeObject<List<Reservation>>(EmpResponse);
+                        //Checking the response is successful or not which is sent using HttpClient  
+                        if (Res.IsSuccessStatusCode)
+                        {
+                            //Storing the response details recieved from web api   
+                            var EmpResponse = Res.Content.ReadAsStringAsync().Result;
+
+                            //Deserializing the response recieved from web api and storing into the Employee list  
+                            reservationsTemp = JsonConvert.DeserializeObject<List<Reservation>>(EmpResponse);
+                        }
+
+                        reservations.AddRange(reservationsTemp);
+
                     }
 
-                    reservations.AddRange(reservationsTemp);
-                }               
+                    catch (Exception)
+                    {
+                    }
+
+                }
             }
+
             return reservations;
         }
+
 
         // GET: api/Reservations/5
         [HttpGet("{id}")]
@@ -118,15 +132,60 @@ namespace iParkCentralAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Reservations
+        /* POST: api/Reservations
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Reservation>> PostReservation(Reservation reservation)
+        public async Task<ActionResult<Reservation>> PostReservation1(Reservation reservation)
         {
             _context.Reservation.Add(reservation);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetReservation", new { id = reservation.Id }, reservation);
+        }
+        */
+
+        // POST: api/Reservations
+        [HttpPost]
+        [Route("~/api/reservations")]
+        public async Task<ActionResult<Reservation>> PostReservation(Reservation reservation)
+        {
+
+
+            var reservationDTO = new ReservationDTO()
+            {
+                SlotId = reservation.SlotId,
+                TimeStart = reservation.TimeStart,
+                TimeEnd = reservation.TimeEnd,
+                DateCreated = reservation.DateCreated,
+                Value = reservation.Value,
+                UserId = reservation.UserId,
+                Latitude = reservation.Latitude,
+                Longitude = reservation.Longitude
+            }; 
+            
+
+            var parkId = reservation.ParkId;
+            var slotId = reservation.SlotId;
+            var parks = _context.Park;
+
+            using (var client = new HttpClient())
+            {
+                var parkTemp = parks.FirstOrDefault(x => x.Id == parkId);
+
+                client.BaseAddress = new Uri(parkTemp.BaseUrl);
+
+                var postJob = client.PostAsJsonAsync<Reservation>("api/reservations", reservation);
+
+                postJob.Wait();
+
+                var postResult = postJob.Result;
+
+                if (postResult.IsSuccessStatusCode)
+                    return reservation;
+            }
+
+            ModelState.AddModelError(string.Empty, "Server error. Please check with your Admin");
+            return Conflict("OOOOoooh MAMA! DEU ERRO");
         }
 
         // DELETE: api/Reservations/5

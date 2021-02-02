@@ -20,7 +20,8 @@ namespace iParkCentralAPI.Entities
         public bool IsChargingAvailable { get; set; }
         public string ParkUrl(DateTime start, DateTime end)
         {
-            var parkUrl = "api/Reservations/Available/"+start.ToString()+"/"+end.ToString();
+            var parkUrl = "api/Reservations/Available/" + start.ToString("yyyy-MM-ddThh:mm:ss") + "/" + end.ToString("yyyy-MM-ddThh:mm:ss");
+
 
             return parkUrl;
         }

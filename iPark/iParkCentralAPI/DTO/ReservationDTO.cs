@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Park1API.Entities
+namespace iParkCentralAPI.DTO
 {
     public class ReservationDTO
     {
-        public int SlotId { get; set; }
+        public string SlotId { get; set; }
         public DateTime TimeStart { get; set; }
         public DateTime TimeEnd { get; set; }
         public DateTime DateCreated { get; set; }

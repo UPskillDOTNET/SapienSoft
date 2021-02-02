@@ -33,6 +33,8 @@ namespace iParkCentralAPI.Entities
         public int ParkId { get; set; }
         [ForeignKey("ParkId")]
         public Park Park { get; set; }
+
+        public string SlotId { get; set; }
     }
 
 }
