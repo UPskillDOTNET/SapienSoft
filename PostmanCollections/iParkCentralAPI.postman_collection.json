@@ -1,0 +1,123 @@
+{
+	"info": {
+		"_postman_id": "36c8070f-e97e-48ef-8a95-4269236adf35",
+		"name": "iParkCentralAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Parks",
+			"item": [
+				{
+					"name": "Park 1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Park 1\",\r\n    \"latitude\": 0,\r\n    \"longitude\": 0,\r\n    \"email\": \"cmp@cm-porto.pt\",\r\n    \"baseUrl\": \"http://localhost:49161/\",\r\n    \"isCovered\": true,\r\n    \"isChargingAvailable\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:44306/api/parks",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "44306",
+							"path": [
+								"api",
+								"parks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Park 2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Park 2\",\r\n    \"latitude\":41.17652121446711,\r\n    \"longitude\":-8.60566234613385,\r\n    \"email\": \"portic@ipp.pt\",\r\n    \"baseUrl\": \"http://localhost:49162/\",\r\n    \"isCovered\": false,\r\n    \"isChargingAvailable\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:44306/api/parks/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "44306",
+							"path": [
+								"api",
+								"parks",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Parks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44306/api/parks",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44306",
+							"path": [
+								"api",
+								"parks"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reservations",
+			"item": [
+				{
+					"name": "Reservations between 2 days",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44384/api/reservations",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44384",
+							"path": [
+								"api",
+								"reservations"
+							]
+						},
+						"description": "Get all reservations"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": []
+		}
+	]
+}

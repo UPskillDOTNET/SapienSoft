@@ -18,5 +18,11 @@ namespace iParkCentralAPI.Entities
         public string BaseUrl { get; set; }
         public bool IsCovered { get; set; }
         public bool IsChargingAvailable { get; set; }
+        public string ParkUrl(DateTime start, DateTime end)
+        {
+            var parkUrl = "api/Reservations/Available/"+start.ToString()+"/"+end.ToString();
+
+            return parkUrl;
+        }
     }
 }

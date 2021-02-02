@@ -10,7 +10,7 @@ using Park1API.Contexts;
 namespace Park1API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210201100916_one")]
+    [Migration("20210202112027_one")]
     partial class one
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
