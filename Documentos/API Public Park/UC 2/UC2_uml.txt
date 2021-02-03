@@ -1,0 +1,6 @@
+@startuml
+actor User
+User -> Sistema: faz um pedido dos lugares disponiveis
+User -> Sistema: indica um periodo de tempo(dataInicio, dataFim)
+Sistema--> User: Sistema apresenta os dados solicitados.
+@enduml
