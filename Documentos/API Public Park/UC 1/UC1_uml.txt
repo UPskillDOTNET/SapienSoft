@@ -1,0 +1,9 @@
+@startuml
+actor ParkManager
+ParkManager -> Sistema: ParkManager inicia o processo de registo
+Sistema--> ParkManager: Sistema solicita dados necessários para o registo
+ParkManager-> Sistema: ParkManager preenche e envia os dados solicitados.
+Sistema--> ParkManager: Apresenta os dados e solicita confirmação.
+ParkManager-> Sistema: ParkManager confirma.
+Sistema--> ParkManager: Sistema confirma e valida o registo.
+@enduml
