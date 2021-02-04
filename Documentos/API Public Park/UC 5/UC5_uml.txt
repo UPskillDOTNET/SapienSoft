@@ -1,0 +1,22 @@
+@startuml
+skinparam sequence {
+ArrowColor Blue
+ActorBorderColor Blue
+LifeLineBorderColor blue
+LifeLineBackgroundColor #ECECEC
+
+ParticipantBorderColor Blue
+ParticipantBackgroundColor #ECECEC
+ParticipantFontName Impact
+ParticipantFontSize 15
+ParticipantFontColor black
+
+ActorBackgroundColor #ECECEC
+ActorFontColor Blue
+ActorFontSize 17
+ActorFontName Aapex
+}
+Actor User 
+User -> Sistema: inicia o cancelamento de uma reserva
+Sistema--> User : Se o user foi quem a criou e se ainda não deu início, o sistema confirma o cancelamento
+@enduml
