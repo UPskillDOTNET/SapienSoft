@@ -10,6 +10,7 @@ namespace iParkPro.Entities
     public class Reservation
     {
         public int Id { get; set; }
+        public string ExternalId { get; set; }
 
         public int ParkId { get; set; }
         [ForeignKey("ParkId")]
