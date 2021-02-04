@@ -1,6 +1,6 @@
-﻿using Park1API.Constants;
-using Park1API.Models;
-using Park1API.Settings;
+﻿using PublicParkAPI.Constants;
+using PublicParkAPI.Models;
+using PublicParkAPI.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -11,9 +11,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Park1API.Contexts;
+using PublicParkAPI.Contexts;
 
-namespace Park1API.Services
+namespace PublicParkAPI.Services
 {
     public class UserService : IUserService
     {

@@ -1,5 +1,5 @@
-using Park1API.Contexts;
-using Park1API.Models;
+using PublicParkAPI.Contexts;
+using PublicParkAPI.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Park1API
+namespace PublicParkAPI
 {
     public class Program
     {

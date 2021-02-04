@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Park1API.Contexts;
-using Park1API.Entities;
+using PublicParkAPI.Contexts;
+using PublicParkAPI.Entities;
 
-namespace Park1API.Controllers
+namespace PublicParkAPI.Controllers
 {
     [Authorize("Administrator")]
     [Route("api/[controller]")]

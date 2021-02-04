@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Park1API.Entities
+namespace PublicParkAPI.Entities
 {
     public class SlotStatus
     {

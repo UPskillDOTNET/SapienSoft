@@ -1,11 +1,11 @@
-﻿using Park1API.Models;
+﻿using PublicParkAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Park1API.Entities
+namespace PublicParkAPI.Entities
 {
     public class Reservation
     {

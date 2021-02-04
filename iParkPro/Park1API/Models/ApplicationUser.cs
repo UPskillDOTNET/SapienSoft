@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Park1API.Entities;
+using PublicParkAPI.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Park1API.Models
+namespace PublicParkAPI.Models
 {
     public class ApplicationUser : IdentityUser
     {
