@@ -1,0 +1,45 @@
+@startuml
+actor "Park Manager"
+activate "Park Manager"
+activate ":[Object.Name]Controller"
+database "DBPark1API"
+activate "DBPark1API"
+skinparam sequence {
+ArrowColor Blue
+ActorBorderColor Blue
+LifeLineBorderColor blue
+LifeLineBackgroundColor #ECECEC
+ParticipantBorderColor Blue
+ParticipantBackgroundColor #ECECEC
+ParticipantFontName Impact
+ParticipantFontSize 15
+ParticipantFontColor black
+ActorBackgroundColor #ECECEC
+torFontSize 17
+ActorFontName Aapex
+}
+
+
+"Park Manager" -> ":[Object.Name]Controller" : 1 Envia um pedido Http criar [Object.Name]
+":[Object.Name]Controller" -> "DBPark1API" : 2 Post[Object.Name](Atributes)
+":[Object.Name]Controller" --> "Park Manager" : 3 Informa do sucesso da criação de [Object.Name]
+
+"Park Manager" -> ":[Object.Name]Controller" : 4 Envia um pedido Http ler [Object.Name]
+":[Object.Name]Controller" -> "DBPark1API" : 5 Get[Object.Name]()
+":[Object.Name]Controller" --> "Park Manager" : 6 Retorna uma lista de [Object.Name]
+
+
+"Park Manager" -> ":[Object.Name]Controller" : 7 Envia um pedido Http atualizar [Object.Name]
+":[Object.Name]Controller" -> "DBPark1API" : 8 Put[Object.Name](Atributes)
+":[Object.Name]Controller" --> "Park Manager" : 9 Informa do sucesso da atualização de [Object.Name]
+
+
+"Park Manager" -> ":[Object.Name]Controller" : 10 Envia um pedido Http apagar [Object.Name]
+":[Object.Name]Controller" -> "DBPark1API" : 11 Delete[Object.Name](ID)
+":[Object.Name]Controller" --> "Park Manager" : 12 Informa do sucesso ao apagar [Object.Name]
+
+
+deactivate ":[Object.Name]Controller"
+deactivate "DBPark1API"
+deactivate "Park Manager"
+@enduml
