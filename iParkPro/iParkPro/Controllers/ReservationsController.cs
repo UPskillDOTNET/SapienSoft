@@ -49,15 +49,7 @@ namespace iParkPro.Controllers
         [Route("~/api/reservations/available")]
         public async Task<ActionResult<IEnumerable<Reservation>>> GetAvailableReservations([FromQuery] DateTime start, [FromQuery] DateTime end, [FromQuery] bool eCharging)
         {
-            // Dates validation (DateTime default value "0001-01-01 00:00:00")
-            if (start > end)
-            {
-                return BadRequest($"DateTime 'end' ({end}) must be greater than DateTime 'start' ({start}).");
-            }
-            else if (start < DateTime.Now)
-            {
-                return BadRequest($"DateTime 'start' ({end}) must happen in the future.");
-            }
+            return Ok();
         }
 
 
