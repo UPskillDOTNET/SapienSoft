@@ -29,6 +29,7 @@ namespace Park1API.Controllers
         }
 
         // GET: api/Reservations
+        [Authorize(Roles = "Administrator, Moderator")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Reservation>>> GetReservations()
         {
@@ -36,26 +37,46 @@ namespace Park1API.Controllers
         }
 
         // GET: api/Reservations/5
+        [Authorize(Roles = "Administrator, Moderator, User")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Reservation>> GetReservation(int id)
         {
             var reservation = await _context.Reservations.FindAsync(id);
 
-            if (reservation == null)
+            if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
             {
-                return NotFound();
+                if (reservation == null)
+                {
+                    return NotFound();
+                }
+                return reservation;
             }
 
-            return reservation;
+            if (User.IsInRole("User"))
+            {
+                var userName = _userManager.GetUserId(HttpContext.User);
+                ApplicationUser user = _context.Users.FirstOrDefault(u => u.UserName == userName);
+                var userId = user.Id;
+
+                if (reservation.UserId == userId)
+                {
+                    if (reservation == null)
+                    {
+                        return NotFound();
+                    }
+                    return reservation;
+                }
+            }
+            return Unauthorized();
         }
 
-        // GET: api/Reservations/available/{start}/{end}?eCharging=false (todos os lugares de estacionamento livre dentro dos parâmetros inseridos)
-        [Authorize(Roles = "Administrator, Moderator")]
+        // GET: api/Reservations/available?start=2021-01-01T12:00:00&end=2021-01-02T12:00:00&eCharging=false
+        [Authorize(Roles = "Administrator, Moderator, User")]
         [HttpGet]
         [Route("~/api/reservations/available")]
         public async Task<ActionResult<IEnumerable<ReservationDTO>>> GetAvailableReservations([FromQuery] DateTime start, [FromQuery] DateTime end, [FromQuery] bool eCharging)
         {
-            // Dates validation
+            // Dates validation (DateTime default value "0001-01-01 00:00:00")
             if (start > end)
             {
                 return BadRequest($"DateTime 'end' ({end}) must be greater than DateTime 'start' ({start}).");
@@ -126,6 +147,7 @@ namespace Park1API.Controllers
 
         // PUT: api/Reservations/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "Administrator")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutReservation(int id, Reservation reservation)
         {
@@ -157,6 +179,7 @@ namespace Park1API.Controllers
 
         // POST: api/Reservations
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "Administrator, Moderator")]
         [HttpPost]
         public async Task<ActionResult<Reservation>> PostReservation(Reservation reservation)
         {
@@ -167,7 +190,7 @@ namespace Park1API.Controllers
         }
 
         // POST: api/Reservations/booking
-        [Authorize(Roles = "Administrator, Moderator")]
+        [Authorize(Roles = "Administrator, Moderator, User")]
         [Route("~/api/reservations/booking")]
         [HttpPost]
         public async Task<ActionResult<Reservation>> PostReservationBooking(ReservationDTO ReservationDTO)
@@ -220,7 +243,7 @@ namespace Park1API.Controllers
         }
 
         // DELETE: api/Reservations/5
-        [Authorize(Roles = "Administrator, Moderator")]
+        [Authorize(Roles = "Administrator")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReservation(int id)
         {
