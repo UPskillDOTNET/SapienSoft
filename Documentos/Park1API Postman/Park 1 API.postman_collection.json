@@ -722,204 +722,205 @@
 		},
 		{
 			"name": "Startup",
-			"item": []
-		},
-		{
-			"name": "https://localhost:44366/api/reservations/available/2022-01-01T12:00:00/2023-01-01T12:00:00",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhYWx2ZXMiLCJqdGkiOiJmYjE0MjViZC05ZDg0LTQyNzMtYTczMy01MTMxZWZiYWYxYTgiLCJlbWFpbCI6ImFhbHZlc0BnbWFpbC5jb20iLCJ1aWQiOiJhMmE1MDRkZC05ODNkLTQ4NWMtYTQ4MC02M2NlNTA4NWRkOTQiLCJyb2xlcyI6WyJBZG1pbmlzdHJhdG9yIiwiTW9kZXJhdG9yIl0sImV4cCI6MTYxMjM3NDYzNCwiaXNzIjoiU2VjdXJlQXBpIiwiYXVkIjoiU2VjdXJlQXBpVXNlciJ9.7wkZmcguN2MRWCQsOLjHaKrGkTZYdHlOcZWJts83CIc",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{url}}api/reservations/available?start=2021-09-01T12:00:00&end=2021-10-01T12:00:00&echarging=false",
-					"host": [
-						"{{url}}api"
-					],
-					"path": [
-						"reservations",
-						"available"
-					],
-					"query": [
-						{
-							"key": "start",
-							"value": "2021-09-01T12:00:00"
+			"item": [
+				{
+					"name": "https://localhost:44366/api/reservations/available/2022-01-01T12:00:00/2023-01-01T12:00:00",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhYWx2ZXMiLCJqdGkiOiJmYjE0MjViZC05ZDg0LTQyNzMtYTczMy01MTMxZWZiYWYxYTgiLCJlbWFpbCI6ImFhbHZlc0BnbWFpbC5jb20iLCJ1aWQiOiJhMmE1MDRkZC05ODNkLTQ4NWMtYTQ4MC02M2NlNTA4NWRkOTQiLCJyb2xlcyI6WyJBZG1pbmlzdHJhdG9yIiwiTW9kZXJhdG9yIl0sImV4cCI6MTYxMjM3NDYzNCwiaXNzIjoiU2VjdXJlQXBpIiwiYXVkIjoiU2VjdXJlQXBpVXNlciJ9.7wkZmcguN2MRWCQsOLjHaKrGkTZYdHlOcZWJts83CIc",
+									"type": "string"
+								}
+							]
 						},
-						{
-							"key": "end",
-							"value": "2021-10-01T12:00:00"
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}api/reservations/available?start=2021-09-01T12:00:00&end=2021-10-01T12:00:00&echarging=false",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"reservations",
+								"available"
+							],
+							"query": [
+								{
+									"key": "start",
+									"value": "2021-09-01T12:00:00"
+								},
+								{
+									"key": "end",
+									"value": "2021-10-01T12:00:00"
+								},
+								{
+									"key": "echarging",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"FirstName\": \"Alexandre\",\r\n    \"LastName\": \"Alves\",\r\n    \"UserName\": \"aalves2\",\r\n    \"Email\": \"aalves@gmail.com\",\r\n    \"Password\": \"Alex123!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
-						{
-							"key": "echarging",
-							"value": "false"
+						"url": {
+							"raw": "{{url}}api/user/register",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"user",
+								"register"
+							]
 						}
-					]
+					},
+					"response": []
+				},
+				{
+					"name": "/api/user/token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\": \"aalves@gmail.com\",\r\n    \"Password\": \"Alex123!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}api/user/token",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"user",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/user/token (Admin)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\": \"user@secureapi.com\",\r\n    \"Password\": \"Pa$$w0rd.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}api/user/token",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"user",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/reservations/booking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhYWx2ZXMiLCJqdGkiOiJmYjE0MjViZC05ZDg0LTQyNzMtYTczMy01MTMxZWZiYWYxYTgiLCJlbWFpbCI6ImFhbHZlc0BnbWFpbC5jb20iLCJ1aWQiOiJhMmE1MDRkZC05ODNkLTQ4NWMtYTQ4MC02M2NlNTA4NWRkOTQiLCJyb2xlcyI6WyJBZG1pbmlzdHJhdG9yIiwiTW9kZXJhdG9yIl0sImV4cCI6MTYxMjM3NDYzNCwiaXNzIjoiU2VjdXJlQXBpIiwiYXVkIjoiU2VjdXJlQXBpVXNlciJ9.7wkZmcguN2MRWCQsOLjHaKrGkTZYdHlOcZWJts83CIc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"SlotId\":1,\r\n    \"Start\":\"2021-04-01T12:00:00\",\r\n    \"End\":\"2021-05-01T12:00:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}api/reservations/booking",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"reservations",
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/user/addrole",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyIiwianRpIjoiMTRiOWYxMTQtY2QxMC00ZmUwLTgwYTYtMDkzOTJjMzc4NDE3IiwiZW1haWwiOiJ1c2VyQHNlY3VyZWFwaS5jb20iLCJ1aWQiOiIxOTNkMjI0OS05MzcyLTQxOTUtOTFmZi0wMjgwODk5Nzc3NzciLCJyb2xlcyI6IkFkbWluaXN0cmF0b3IiLCJleHAiOjE2MTIzNzQ2MDcsImlzcyI6IlNlY3VyZUFwaSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.u0NmhbRE3RfKCLUlOuIA0AfS4onnVRf135p4i6ug7bU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\" : \"aalves@gmail.com\",\r\n    \"Role\":\"Moderator\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}api/user/addrole",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"user",
+								"addrole"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "/api/register",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"FirstName\": \"Alexandre\",\r\n    \"LastName\": \"Alves\",\r\n    \"UserName\": \"aalves2\",\r\n    \"Email\": \"aalves@gmail.com\",\r\n    \"Password\": \"Alex123!\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{url}}api/user/register",
-					"host": [
-						"{{url}}api"
-					],
-					"path": [
-						"user",
-						"register"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/api/user/token",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"Email\": \"aalves@gmail.com\",\r\n    \"Password\": \"Alex123!\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{url}}api/user/token",
-					"host": [
-						"{{url}}api"
-					],
-					"path": [
-						"user",
-						"token"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/api/user/token (Admin)",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"Email\": \"user@secureapi.com\",\r\n    \"Password\": \"Pa$$w0rd.\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{url}}api/user/token",
-					"host": [
-						"{{url}}api"
-					],
-					"path": [
-						"user",
-						"token"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/api/reservations/booking",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhYWx2ZXMiLCJqdGkiOiJmYjE0MjViZC05ZDg0LTQyNzMtYTczMy01MTMxZWZiYWYxYTgiLCJlbWFpbCI6ImFhbHZlc0BnbWFpbC5jb20iLCJ1aWQiOiJhMmE1MDRkZC05ODNkLTQ4NWMtYTQ4MC02M2NlNTA4NWRkOTQiLCJyb2xlcyI6WyJBZG1pbmlzdHJhdG9yIiwiTW9kZXJhdG9yIl0sImV4cCI6MTYxMjM3NDYzNCwiaXNzIjoiU2VjdXJlQXBpIiwiYXVkIjoiU2VjdXJlQXBpVXNlciJ9.7wkZmcguN2MRWCQsOLjHaKrGkTZYdHlOcZWJts83CIc",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"SlotId\":1,\r\n    \"Start\":\"2021-04-01T12:00:00\",\r\n    \"End\":\"2021-05-01T12:00:00\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{url}}api/reservations/booking",
-					"host": [
-						"{{url}}api"
-					],
-					"path": [
-						"reservations",
-						"booking"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/api/user/addrole",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyIiwianRpIjoiMTRiOWYxMTQtY2QxMC00ZmUwLTgwYTYtMDkzOTJjMzc4NDE3IiwiZW1haWwiOiJ1c2VyQHNlY3VyZWFwaS5jb20iLCJ1aWQiOiIxOTNkMjI0OS05MzcyLTQxOTUtOTFmZi0wMjgwODk5Nzc3NzciLCJyb2xlcyI6IkFkbWluaXN0cmF0b3IiLCJleHAiOjE2MTIzNzQ2MDcsImlzcyI6IlNlY3VyZUFwaSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.u0NmhbRE3RfKCLUlOuIA0AfS4onnVRf135p4i6ug7bU",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"Email\" : \"aalves@gmail.com\",\r\n    \"Role\":\"Moderator\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{url}}api/user/addrole",
-					"host": [
-						"{{url}}api"
-					],
-					"path": [
-						"user",
-						"addrole"
-					]
-				}
-			},
-			"response": []
+			]
 		}
 	],
 	"event": [
