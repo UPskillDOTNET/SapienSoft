@@ -15,9 +15,9 @@ namespace iParkPro.Contexts
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
-        public DbSet<Reservation> Reservation { get; set; }
-        public DbSet<Park> Park { get; set; }
-        public DbSet<Category> Type { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<Park> Parks { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
