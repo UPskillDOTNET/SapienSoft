@@ -2,8 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <AssemblyName>Park1API</AssemblyName>
-    <UserSecretsId>eb4c6c4b-eafb-4410-ab84-50f1980f43bb</UserSecretsId>
+    <AssemblyName>Park2API</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

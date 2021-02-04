@@ -12,12 +12,12 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/slots",
+      "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Park1API": {
+    "Park2API": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

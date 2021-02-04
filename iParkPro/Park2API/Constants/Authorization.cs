@@ -1,4 +1,9 @@
-﻿namespace Park1API.Constants
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Park2API.Constants
 {
     public class Authorization
     {
