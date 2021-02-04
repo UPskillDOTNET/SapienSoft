@@ -135,32 +135,38 @@ namespace Park1API.Services
                 return $"Added {model.Role} to user {model.Email}.";
             }
             return $"Role {model.Role} not found.";
-
-            /* replaced
-            if (await _userManager.CheckPasswordAsync(user, model.Password))
-            {
-                var roleExists = Enum.GetNames(typeof(Authorization.Roles)).Any(x => x.ToLower() == model.Role.ToLower());
-                if (roleExists)
-                {
-                    var validRole = Enum.GetValues(typeof(Authorization.Roles)).Cast<Authorization.Roles>().Where(x => x.ToString().ToLower() == model.Role.ToLower()).FirstOrDefault();
-                    await _userManager.AddToRoleAsync(user, validRole.ToString());
-                    return $"Added {model.Role} to user {model.Email}.";
-                }
-                return $"Role {model.Role} not found.";
-            }
-            return $"Incorrect Credentials for user {user.Email}.";
-            */
         }
 
 
-        public async Task<string> ChangePasswordAsync(ChangePasswordModel model)
+        // Additional methods for Users
+        public async Task<AuthenticationModel> ChangePasswordAsync(ChangePasswordModel model)
         {
-            
+            var authenticationModel = new AuthenticationModel();
             var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
             
-            await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+            if (user == null)
+            {
+                authenticationModel.IsAuthenticated = false;
+                authenticationModel.Message = $"No Accounts Registered with {model.Email}.";
+                return authenticationModel;
+            }
 
-            return $"Passsword updated.";
+            if (await _userManager.CheckPasswordAsync(user, model.CurrentPassword))
+            {
+                authenticationModel.IsAuthenticated = true;
+                JwtSecurityToken jwtSecurityToken = await CreateJwtToken(user);
+                authenticationModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+                authenticationModel.Email = user.Email;
+                authenticationModel.UserName = user.UserName;
+                var rolesList = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
+                authenticationModel.Roles = rolesList.ToList();
+                await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+                authenticationModel.Message = $"Password changed with success for account {model.Email}.";
+                return authenticationModel;
+            }
+            authenticationModel.IsAuthenticated = false;
+            authenticationModel.Message = $"Incorrect credentials for user {user.Email}.";
+            return authenticationModel;
         }
     }
 }

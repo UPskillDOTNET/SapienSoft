@@ -21,6 +21,7 @@ namespace Park1API.Controllers
             _userService = userService;
         }
 
+        [Authorize(Roles ="Administrator")]
         [HttpPost("register")]
         public async Task<ActionResult> RegisterAsync(RegisterModel model)
         {
@@ -44,7 +45,7 @@ namespace Park1API.Controllers
         }
 
         // Allows for Password Changes
-        [Authorize(Roles = "Administrator, Moderator")]
+        [Authorize(Roles = "Administrator")]
         [HttpPatch("password")]
         public async Task<IActionResult> ChangePasswordAsync(ChangePasswordModel model)
         {
