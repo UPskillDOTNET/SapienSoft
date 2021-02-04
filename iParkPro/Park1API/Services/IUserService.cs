@@ -1,5 +1,5 @@
-﻿using PublicParkAPI.Models;
-using PublicParkAPI.Settings;
+﻿using Park1API.Models;
+using Park1API.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PublicParkAPI.Services
+namespace Park1API.Services
 {
     public interface IUserService
     {

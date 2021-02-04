@@ -1,7 +1,7 @@
-using PublicParkAPI.Contexts;
-using PublicParkAPI.Models;
-using PublicParkAPI.Services;
-using PublicParkAPI.Settings;
+using Park1API.Contexts;
+using Park1API.Models;
+using Park1API.Services;
+using Park1API.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,7 +21,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PublicParkAPI
+namespace Park1API
 {
     public class Startup
     {

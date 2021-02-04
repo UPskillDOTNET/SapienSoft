@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PublicParkAPI.Contexts;
-using PublicParkAPI.Entities;
+using Park1API.Contexts;
+using Park1API.Entities;
 
-namespace PublicParkAPI.Controllers
+namespace Park1API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

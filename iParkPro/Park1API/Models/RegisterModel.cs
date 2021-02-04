@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PublicParkAPI.Models
+namespace Park1API.Models
 {
     public class RegisterModel
     {

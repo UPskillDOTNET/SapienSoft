@@ -8,11 +8,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PublicParkAPI.Contexts;
-using PublicParkAPI.Entities;
-using PublicParkAPI.Models;
+using Park1API.Contexts;
+using Park1API.Entities;
+using Park1API.Models;
 
-namespace PublicParkAPI.Controllers
+namespace Park1API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

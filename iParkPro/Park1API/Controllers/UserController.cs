@@ -1,5 +1,5 @@
-﻿using PublicParkAPI.Models;
-using PublicParkAPI.Services;
+﻿using Park1API.Models;
+using Park1API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 
-namespace PublicParkAPI.Controllers
+namespace Park1API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
