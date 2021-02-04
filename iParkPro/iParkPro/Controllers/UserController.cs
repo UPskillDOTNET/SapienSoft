@@ -20,7 +20,7 @@ namespace iParkPro.Controllers
             _userService = userService;
         }
 
-        [HttpPost("register")]
+        [HttpPost("register")] // validações de dados do registo aqui?
         public async Task<ActionResult> RegisterAsync(RegisterModel model)
         {
             var result = await _userService.RegisterAsync(model);
