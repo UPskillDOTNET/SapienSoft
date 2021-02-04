@@ -42,5 +42,14 @@ namespace Park1API.Controllers
             var result = await _userService.AddRoleAsync(model);
             return Ok(result);
         }
+
+        // Allows for Password Changes
+        [Authorize(Roles = "Administrator, Moderator")]
+        [HttpPatch("password")]
+        public async Task<IActionResult> ChangePasswordAsync(ChangePasswordModel model)
+        {
+            var result = await _userService.ChangePasswordAsync(model);
+            return Ok(result);
+        }
     }
 }

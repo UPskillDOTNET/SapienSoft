@@ -11,6 +11,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Park1API.Contexts;
 
 namespace Park1API.Services
 {
@@ -20,11 +21,15 @@ namespace Park1API.Services
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly JWT _jwt;
 
-        public UserService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IOptions<JWT> jwt)
+        private readonly ApplicationDbContext _context;
+
+        public UserService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IOptions<JWT> jwt, ApplicationDbContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _jwt = jwt.Value;
+
+            _context = context;
         }
 
         public async Task<string> RegisterAsync(RegisterModel model)
@@ -145,6 +150,17 @@ namespace Park1API.Services
             }
             return $"Incorrect Credentials for user {user.Email}.";
             */
+        }
+
+
+        public async Task<string> ChangePasswordAsync(ChangePasswordModel model)
+        {
+            
+            var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
+            
+            await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+
+            return $"Passsword updated.";
         }
     }
 }

@@ -14,5 +14,6 @@ namespace Park1API.Services
         Task<string> RegisterAsync(RegisterModel model);
         Task<AuthenticationModel> GetTokenAsync(TokenRequestModel model);
         Task<string> AddRoleAsync(AddRoleModel model);
+        Task<string> ChangePasswordAsync(ChangePasswordModel model);
     }
 }
