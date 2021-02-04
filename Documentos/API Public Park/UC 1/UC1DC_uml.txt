@@ -1,0 +1,25 @@
+@startuml
+skinparam class {
+BackgroundColor #ECECEC
+ArrowColor Blue
+BorderColor Blue
+}
+
+class ParkAPI{
+- Id
+}
+
+class User {
+- FirstName
+- LastName
+- UserName
+- Email
+- Password
+RegisterAsync(registerModel)
+GetTokenAsync(registerModel)
+AddRoleAsync(registerModel)
+ChangePasswordAsync(changePasswordModel)
+}
+
+ParkAPI"1" -- "*" User : > tem
+@enduml
