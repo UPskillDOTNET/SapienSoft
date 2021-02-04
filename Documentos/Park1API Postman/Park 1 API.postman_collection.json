@@ -1,0 +1,959 @@
+{
+	"info": {
+		"_postman_id": "5deb2ea6-d10d-4b0f-a53b-b7a437255156",
+		"name": "Park 1 API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Tests",
+			"item": [
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "User register (valid)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"User Registered\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"FirstName\": \"Alexandre\",\r\n    \"LastName\": \"Alves\",\r\n    \"UserName\": \"aalves\",\r\n    \"Email\": \"aalves@gmail.com\",\r\n    \"Password\": \"Alex123!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}api/user/register",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"user",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User register (existing e-mail)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"is already registered\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"FirstName\": \"Alexandre\",\r\n    \"LastName\": \"Alves\",\r\n    \"UserName\": \"aalves2\",\r\n    \"Email\": \"aalves@gmail.com\",\r\n    \"Password\": \"Alex123!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}api/user/register",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"user",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User register (existing username)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"chose another Username\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"FirstName\": \"Alexandre\",\r\n    \"LastName\": \"Alves\",\r\n    \"UserName\": \"aalves\",\r\n    \"Email\": \"aalves2@gmail.com\",\r\n    \"Password\": \"Alex123!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}api/user/register",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"user",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Administrator Token (valid credentials)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var responseData = JSON.parse(responseBody);\r",
+											"    pm.collectionVariables.set(\"adminToken\", responseData.token);    \r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Email\": \"user@secureapi.com\",\r\n    \"Password\": \"Pa$$w0rd.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}api/user/token",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"user",
+										"token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Administrator Token (invalid password)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Email\": \"user@secureapi.com\",\r\n    \"Password\": \"Pa$$w0rd.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}api/user/token",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"user",
+										"token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add \"Moderator\" Role (valid token)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"Added Moderator to user\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Email\" : \"aalves@gmail.com\",\r\n    \"Role\":\"Moderator\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}api/user/addrole",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"user",
+										"addrole"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add \"Moderator\" Role (invalid token)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "WrongTokenToFailTest",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Email\" : \"aalves@gmail.com\",\r\n    \"Role\":\"Moderator\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}api/user/addrole",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"user",
+										"addrole"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get User Token (valid)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var responseData = JSON.parse(responseBody);\r",
+											"    pm.collectionVariables.set(\"userToken\", responseData.token);    \r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Email\": \"aalves@gmail.com\",\r\n    \"Password\": \"Alex123!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}api/user/token",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"user",
+										"token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get User Token (invalid password)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"Incorrect Credentials\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Email\": \"aalves@gmail.com\",\r\n    \"Password\": \"WrongPassword\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}api/user/token",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"user",
+										"token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get User Token (invalid email)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"No Accounts Registered\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Email\": \"aalves2@gmail.com\",\r\n    \"Password\": \"Alex123!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}api/user/token",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"user",
+										"token"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Slots",
+					"item": [
+						{
+							"name": "Get Slots",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}api/slots",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"slots"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Slot Id = 1 (valid)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}api/slots/1",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"slots",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Slot Id = 99 (invalid)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}api/slots/99",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"slots",
+										"99"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Post a new Slot",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"    var responseData = JSON.parse(responseBody);\r",
+											"    pm.collectionVariables.set(\"slotId\", responseData.token);  \r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Locator\": \"B01\",\r\n    \"Latitude\": 30,\r\n    \"Longitude\": -8,\r\n    \"ECharging\": true,\r\n    \"PricePerHour\": 1,\r\n    \"StatusId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}api/slots",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"slots"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Confirm that the new Slot exists",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}api/slots/1",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"slots",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Slot Id = 1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}api/slots/1",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"slots",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Slot Id = 1 (was deleted)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}api/slots/1",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"slots",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Slot Id = 99 (invalid)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}api/slots/99",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"slots",
+										"99"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Startup",
+			"item": []
+		},
+		{
+			"name": "https://localhost:44366/api/reservations/available/2022-01-01T12:00:00/2023-01-01T12:00:00",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhYWx2ZXMiLCJqdGkiOiJmYjE0MjViZC05ZDg0LTQyNzMtYTczMy01MTMxZWZiYWYxYTgiLCJlbWFpbCI6ImFhbHZlc0BnbWFpbC5jb20iLCJ1aWQiOiJhMmE1MDRkZC05ODNkLTQ4NWMtYTQ4MC02M2NlNTA4NWRkOTQiLCJyb2xlcyI6WyJBZG1pbmlzdHJhdG9yIiwiTW9kZXJhdG9yIl0sImV4cCI6MTYxMjM3NDYzNCwiaXNzIjoiU2VjdXJlQXBpIiwiYXVkIjoiU2VjdXJlQXBpVXNlciJ9.7wkZmcguN2MRWCQsOLjHaKrGkTZYdHlOcZWJts83CIc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}api/reservations/available?start=2021-09-01T12:00:00&end=2021-10-01T12:00:00&echarging=false",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"reservations",
+						"available"
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "2021-09-01T12:00:00"
+						},
+						{
+							"key": "end",
+							"value": "2021-10-01T12:00:00"
+						},
+						{
+							"key": "echarging",
+							"value": "false"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"FirstName\": \"Alexandre\",\r\n    \"LastName\": \"Alves\",\r\n    \"UserName\": \"aalves2\",\r\n    \"Email\": \"aalves@gmail.com\",\r\n    \"Password\": \"Alex123!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}api/user/register",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/user/token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Email\": \"aalves@gmail.com\",\r\n    \"Password\": \"Alex123!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}api/user/token",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"user",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/user/token (Admin)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Email\": \"user@secureapi.com\",\r\n    \"Password\": \"Pa$$w0rd.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}api/user/token",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"user",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/reservations/booking",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhYWx2ZXMiLCJqdGkiOiJmYjE0MjViZC05ZDg0LTQyNzMtYTczMy01MTMxZWZiYWYxYTgiLCJlbWFpbCI6ImFhbHZlc0BnbWFpbC5jb20iLCJ1aWQiOiJhMmE1MDRkZC05ODNkLTQ4NWMtYTQ4MC02M2NlNTA4NWRkOTQiLCJyb2xlcyI6WyJBZG1pbmlzdHJhdG9yIiwiTW9kZXJhdG9yIl0sImV4cCI6MTYxMjM3NDYzNCwiaXNzIjoiU2VjdXJlQXBpIiwiYXVkIjoiU2VjdXJlQXBpVXNlciJ9.7wkZmcguN2MRWCQsOLjHaKrGkTZYdHlOcZWJts83CIc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"SlotId\":1,\r\n    \"Start\":\"2021-04-01T12:00:00\",\r\n    \"End\":\"2021-05-01T12:00:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}api/reservations/booking",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"reservations",
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/user/addrole",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyIiwianRpIjoiMTRiOWYxMTQtY2QxMC00ZmUwLTgwYTYtMDkzOTJjMzc4NDE3IiwiZW1haWwiOiJ1c2VyQHNlY3VyZWFwaS5jb20iLCJ1aWQiOiIxOTNkMjI0OS05MzcyLTQxOTUtOTFmZi0wMjgwODk5Nzc3NzciLCJyb2xlcyI6IkFkbWluaXN0cmF0b3IiLCJleHAiOjE2MTIzNzQ2MDcsImlzcyI6IlNlY3VyZUFwaSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.u0NmhbRE3RfKCLUlOuIA0AfS4onnVRf135p4i6ug7bU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Email\" : \"aalves@gmail.com\",\r\n    \"Role\":\"Moderator\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}api/user/addrole",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"user",
+						"addrole"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "https://localhost:44366/"
+		},
+		{
+			"key": "adminToken",
+			"value": ""
+		},
+		{
+			"key": "userToken",
+			"value": ""
+		}
+	]
+}
