@@ -13,6 +13,6 @@ namespace iParkPro.Entities
 
         public int TypeId { get; set; }
         [ForeignKey("TypeId")]
-        public Type Type { get; set; }
+        public Category Type { get; set; }
     }
 }

@@ -44,7 +44,7 @@ namespace Park1API.Controllers
             return Ok(result);
         }
 
-        // Allows for Password Changes
+        // Added to allow for Password Changes
         [Authorize(Roles = "Administrator")]
         [HttpPatch("password")]
         public async Task<IActionResult> ChangePasswordAsync(ChangePasswordModel model)

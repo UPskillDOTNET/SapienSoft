@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace iParkPro.Entities
 {
-    public class Type
+    public class Category
     {
         public int Id { get; set; }
         public string Name { get; set; }

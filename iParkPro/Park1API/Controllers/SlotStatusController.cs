@@ -10,6 +10,7 @@ using Park1API.Entities;
 
 namespace Park1API.Controllers
 {
+    [Authorize("Administrator")]
     [Route("api/[controller]")]
     [ApiController]
     public class SlotStatusController : ControllerBase
