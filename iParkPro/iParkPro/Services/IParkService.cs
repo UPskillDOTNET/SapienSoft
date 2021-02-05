@@ -8,7 +8,7 @@ namespace iParkPro.Services
 {
     public interface IParkService
     {
-        Task<List<Reservation>> GetAvailable(DateTime start, DateTime end);
+        Task<List<Reservation>> GetAvailable(DateTime start, DateTime end, string userId);
 
         Task<Reservation> PostReservation(DateTime start, DateTime end);
 

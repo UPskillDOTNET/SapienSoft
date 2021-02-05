@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using iParkPro.Contexts;
 using iParkPro.Entities;
 using iParkPro.Services;
+using Microsoft.AspNetCore.Identity;
+using iParkPro.Models;
 
 namespace iParkPro.Controllers
 {
@@ -17,11 +19,13 @@ namespace iParkPro.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IParkService _parkService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ReservationsController(ApplicationDbContext context, IParkService parkService)
+        public ReservationsController(ApplicationDbContext context, IParkService parkService, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _parkService = parkService;
+            _userManager = userManager;
         }
 
 
@@ -47,19 +51,26 @@ namespace iParkPro.Controllers
         }
 
 
-        // GET: api/Reservations/Available
+        // GET: api/Reservations/Available?start=...&end=...
         [HttpGet]
         public async Task<ActionResult<List<Reservation>>> GetAvailableReservations([FromQuery] DateTime start, [FromQuery] DateTime end)
         {
             List<Reservation> listReservations = new List<Reservation>();
 
+            var userName = _userManager.GetUserId(HttpContext.User);
+            
+            ApplicationUser user = _context.Users.FirstOrDefault(u => u.UserName == userName);
+            var userId = user.Id;
+
             Park1APIService x = new Park1APIService();
-            var list1 = await x.GetAvailable(start, end);
+            var list1 = await x.GetAvailable(start, end, userId);
             listReservations.AddRange(list1);
 
+            /*
             Park2APIService y = new Park2APIService();
             var list2 = await y.GetAvailable(start, end);
             listReservations.AddRange(list2);
+            */
 
             return Ok(listReservations);
 
