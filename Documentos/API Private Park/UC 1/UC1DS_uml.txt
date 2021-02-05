@@ -1,0 +1,34 @@
+@startuml
+actor ParkManager
+activate ParkManager
+
+skinparam sequence {
+ArrowColor Blue
+ActorBorderColor Blue
+LifeLineBorderColor blue
+LifeLineBackgroundColor #ECECEC
+ParticipantBorderColor Blue
+ParticipantBackgroundColor #ECECEC
+ParticipantFontName Impact
+ParticipantFontSize 15
+ParticipantFontColor black
+ActorBackgroundColor #ECECEC
+torFontSize 17
+ActorFontName Aapex
+}
+
+ParkManager -> ":UserController" : **1** Envia um pedido Http para registar um User
+activate ":UserController"
+":UserController" -> ":RegisterModel" : **2** model = new RegisterModel()
+activate ":RegisterModel"
+":RegisterModel" -> "model:RegisterModel" ** : **3** create model
+deactivate ":RegisterModel"
+":UserController" -> ":IUserService" : **4** RegisterAsync(model)
+activate ":IUserService"
+":IUserService" --> ParkManager : **5** User registered with username example
+
+
+deactivate ":IUserService"
+deactivate ":UserController"
+deactivate ParkManager
+@enduml
