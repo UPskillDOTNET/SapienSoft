@@ -1,0 +1,93 @@
+@startuml
+skinparam class {
+BackgroundColor #ECECEC
+ArrowColor Blue
+BorderColor Blue
+}
+
+class ParkAPI{
+- Id
+}
+
+class Reservation{
+- Id
+- TimeStart
+- TimeEnd
+- DateCreated
+- Value
+- QRcode
+- PaymentMethod
+- UserId
+- ParkId
+- SlotId
+- ChargingRequired
+- IsCancelled
+GetReservations()
+GetReservation(id)
+GetAvailableReservations(start, end, eCharging)
+PutReservation(id, reservation)
+PostReservation(reservation) // manager
+PostReservationBooking(reservationDTO) // user
+DeleteReservation(id)
+ReservationExists(id)
+}
+
+class Discount{
+- TimeDivision
+- Rate
+GetDiscounts()
+GetDiscount(id)
+PutDiscount(id, discount)
+PostDiscount(discount)
+DeleteDiscount(id)
+DiscountExists(id)
+}
+
+class Slot{
+- Id
+- Locator
+- PricePerHour
+- StatusId
+- Latitude
+- Longitude
+- IsChargingAvailable
+GetSlots()
+GetSlot(id)
+PutSlot(id,slot)
+PostSlot(slot)
+DeleteSlot(id)
+SlotExists(id)
+}
+
+class SlotStatus {
+- Id
+- Name
+GetStatus()
+GetSlotStatus(id)
+PutSlotStatus(id, slotStatus)
+PostSlotStatus(slotStatus)
+DeleteSlotStatus(id)
+SlotStatusExists(id)
+}
+
+class User {
+- FirstName
+- LastName
+- UserName
+- Email
+- Password
+RegisterAsync(registerModel)
+GetTokenAsync(registerModel)
+AddRoleAsync(registerModel)
+ChangePasswordAsync(changePasswordModel)
+}
+
+ParkAPI"1" -- "*" Reservation : > regista
+ParkAPI"1" -- "*" Slot : > possui
+ParkAPI"1" -- "*" User : > tem
+ParkAPI"1" -- "*" Discount : > tem
+Reservation"*" -- "1" Slot : > tem
+Reservation"*" -- "1" User : > tem
+
+Slot"*" -- "1" SlotStatus : > tem
+@enduml
