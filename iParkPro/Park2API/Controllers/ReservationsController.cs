@@ -133,8 +133,8 @@ namespace Park2API.Controllers
                     Value = value,
                     SlotId = item.Id,
                     Locator = item.Locator,
-                    Latitude = item.Latitude,
-                    Longitude = item.Longitude,
+                    Latitude = Globals.Latitute,
+                    Longitude = Globals.Longitude,
                     ECharging = item.ECharging,
                     UserId = userId
                 };

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Park1API.Controllers
 {
-    [Authorize("Administrator")]
+    [Authorize(Roles ="Administrator")]
     [Route("api/[controller]")]
     [ApiController]
     public class SlotsController : ControllerBase

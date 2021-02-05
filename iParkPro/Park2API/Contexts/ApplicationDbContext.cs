@@ -60,11 +60,11 @@ namespace Park2API.Contexts
                 new SlotStatus { Id = 3, Name = "Hotel", Description = "Slot reserved for Hotel use only." });
             
             builder.Entity<Slot>().HasData(
-                new Slot { Id = 1, Locator = "A01", Latitude = 30, Longitude = -8, ECharging = false, PricePerHour = 1.0m, StatusId = 1 },
-                new Slot { Id = 2, Locator = "A02", Latitude = 30, Longitude = -8, ECharging = false, PricePerHour = 1.0m, StatusId = 2 },
-                new Slot { Id = 3, Locator = "A03", Latitude = 30, Longitude = -8, ECharging = false, PricePerHour = 1.0m, StatusId = 2 },
-                new Slot { Id = 4, Locator = "A04", Latitude = 30, Longitude = -8, ECharging = false, PricePerHour = 1.0m, StatusId = 3 },
-                new Slot { Id = 5, Locator = "A05", Latitude = 30, Longitude = -8, ECharging = true, PricePerHour = 1.0m, StatusId = 1 });
+                new Slot { Id = 1, Locator = "A01", ECharging = false, PricePerHour = 1.0m, StatusId = 1 },
+                new Slot { Id = 2, Locator = "A02", ECharging = false, PricePerHour = 1.0m, StatusId = 2 },
+                new Slot { Id = 3, Locator = "A03", ECharging = false, PricePerHour = 1.0m, StatusId = 2 },
+                new Slot { Id = 4, Locator = "A04", ECharging = false, PricePerHour = 1.0m, StatusId = 3 },
+                new Slot { Id = 5, Locator = "A05", ECharging = true, PricePerHour = 1.0m, StatusId = 1 });
 
             builder.Entity<Discount>().HasData(
                 new Discount { Id = 1, WeekDay = (DayOfWeek)0, Rate = 1.0m },
