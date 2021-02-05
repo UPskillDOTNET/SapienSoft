@@ -46,11 +46,6 @@ namespace iParkPro.Controllers
             return reservation;
         }
 
-        public async Task<ActionResult> RegisterAsync(RegisterModel model)
-        {
-            var result = await _userService.RegisterAsync(model);
-            return Ok(result);
-        }
 
         // GET: api/Reservations/Available
         [HttpGet]
