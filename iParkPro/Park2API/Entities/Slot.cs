@@ -10,8 +10,6 @@ namespace Park2API.Entities
     {
         public int Id { get; set; }
         public string Locator { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
         public bool ECharging { get; set; }
 
         [Column(TypeName = "decimal(16,4)")]
