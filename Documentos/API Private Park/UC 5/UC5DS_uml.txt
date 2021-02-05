@@ -1,0 +1,46 @@
+@startuml
+actor User
+activate User
+
+skinparam sequence {
+ArrowColor Blue
+ActorBorderColor Blue
+LifeLineBorderColor blue
+LifeLineBackgroundColor #ECECEC
+ParticipantBorderColor Blue
+ParticipantBackgroundColor #ECECEC
+ParticipantFontName Impact
+ParticipantFontSize 15
+ParticipantFontColor black
+ActorBackgroundColor #ECECEC
+torFontSize 17
+ActorFontName Aapex
+}
+
+
+activate ":ReservationController"
+User -> ":ReservationController" : **1** Envia um pedido Http para cancelar uma reserva(int id)
+activate ":ReservationDTO"
+database "context:Reservations"
+":ReservationController" -> ":ReservationDTO" : **2** reservation = reservations.FindAsync(id)
+":ReservationDTO" -> "context:Reservations": **3** confirm existance
+database "context:User"
+activate "context:Reservations"
+"context:Reservations" -> "context:Reservations" : **4** confirm existance
+"context:Reservations" --> ":ReservationDTO": **5** confirm
+deactivate ":ReservationDTO"
+":ReservationDTO" --> ":ReservationController": **6** confirm
+":ReservationController" -> "context:User" : **7** IsInRole("Administrator")
+activate "context:User"
+"context:User" -> "context:User" : **8** IsInRole("Administrator") = true
+"context:User" --> ":ReservationController" : **9** allow
+deactivate "context:User"
+":ReservationController" -> "context:Reservations" : **10** Remove(id)
+"context:Reservations" -> "context:Reservations" : **11** Remove
+"context:Reservations" --> ":ReservationController" : **12** sucess
+":ReservationController" --> "User" : **13** Informa o sucesso da operação
+deactivate ":ReservationController"
+deactivate ":ReservationDTO"
+deactivate User
+deactivate "context:Reservations"
+@enduml
