@@ -33,8 +33,6 @@ class Slot{
 - Locator
 - PricePerHour
 - StatusId
-- Latitude
-- Longitude
 - IsChargingAvailable
 GetSlots()
 GetSlot(id)
