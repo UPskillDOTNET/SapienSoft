@@ -13,5 +13,17 @@ namespace iParkPro.Services
             List<Reservation> list = new List<Reservation>();
             return list;
         }
+
+        public async Task<Reservation> PostReservation(DateTime start, DateTime end)
+        {
+            Reservation reservation = new Reservation();
+            return reservation;
+        }
+
+        public async Task<Reservation> CancelReservation(DateTime start, DateTime end)
+        {
+            Reservation reservation = new Reservation();
+            return reservation;
+        }
     }
 }

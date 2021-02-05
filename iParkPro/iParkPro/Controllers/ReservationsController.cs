@@ -61,7 +61,6 @@ namespace iParkPro.Controllers
             var list2 = await y.GetAvailable(start, end);
             listReservations.AddRange(list2);
 
-
             return Ok(listReservations);
 
         }

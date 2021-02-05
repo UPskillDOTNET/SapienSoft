@@ -243,7 +243,7 @@ namespace Park1API.Controllers
         }
 
         // DELETE: api/Reservations/5
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator, Moderator, User")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReservation(int id)
         {
@@ -257,7 +257,7 @@ namespace Park1API.Controllers
             ApplicationUser user = _context.Users.FirstOrDefault(u => u.UserName == userName);
             var userId = user.Id;
 
-            if (User.IsInRole("Administrator") || User.IsInRole("Moderator") && reservation.Start - DateTime.Now < Globals.CancelationPolicy && reservation.UserId == userId)
+            if (User.IsInRole("Administrator") || (reservation.Start - DateTime.Now > Globals.CancelationPolicy && reservation.UserId == userId))
             {
                 _context.Reservations.Remove(reservation);
                 await _context.SaveChangesAsync();
