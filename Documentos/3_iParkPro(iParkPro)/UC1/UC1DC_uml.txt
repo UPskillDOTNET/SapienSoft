@@ -1,0 +1,20 @@
+@startuml
+skinparam class {
+BackgroundColor #ECECEC
+ArrowColor Blue
+BorderColor Blue
+}
+
+class User {
+- FirstName
+- LastName
+- UserName
+- Email
+- Password
+RegisterAsync(registerModel)
+GetTokenAsync(registerModel)
+AddRoleAsync(registerModel)
+ChangePasswordAsync(changePasswordModel)
+}
+
+@enduml
