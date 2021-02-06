@@ -12,7 +12,7 @@
 					"name": "Users",
 					"item": [
 						{
-							"name": "Get Administrator Token (valid credentials)",
+							"name": "Get Administrator Token (valid)",
 							"event": [
 								{
 									"listen": "test",
@@ -21,7 +21,10 @@
 											"pm.test(\"Status code is 200\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
 											"    var responseData = JSON.parse(responseBody);\r",
-											"    pm.collectionVariables.set(\"adminToken\", responseData.token);    \r",
+											"    pm.collectionVariables.set(\"adminToken\", responseData.token);\r",
+											"});\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"token\");\r",
 											"});"
 										],
 										"type": "text/javascript"
@@ -62,6 +65,9 @@
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"Incorrect Credentials\");\r",
 											"});\r",
 											""
 										],
@@ -127,7 +133,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"FirstName\": \"Alexandre\",\r\n    \"LastName\": \"Alves\",\r\n    \"UserName\": \"aalves\",\r\n    \"Email\": \"aalves@gmail.com\",\r\n    \"Password\": \"Alex123!\"\r\n}",
+									"raw": "{\r\n    \"FirstName\": \"SapienSoft\",\r\n    \"LastName\": \"Lda.\",\r\n    \"UserName\": \"SapienSoft\",\r\n    \"Email\": \"sapiensoft@sapiensoft.com\",\r\n    \"Password\": \"SapienSoft123!\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -180,7 +186,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"FirstName\": \"Alexandre\",\r\n    \"LastName\": \"Alves\",\r\n    \"UserName\": \"aalves2\",\r\n    \"Email\": \"aalves@gmail.com\",\r\n    \"Password\": \"Alex123!\"\r\n}",
+									"raw": "{\r\n    \"FirstName\": \"SapienSoft\",\r\n    \"LastName\": \"Lda.\",\r\n    \"UserName\": \"SapienSoft2\",\r\n    \"Email\": \"sapiensoft@sapiensoft.com\",\r\n    \"Password\": \"SapienSoft123!\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -233,7 +239,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"FirstName\": \"Alexandre\",\r\n    \"LastName\": \"Alves\",\r\n    \"UserName\": \"aalves\",\r\n    \"Email\": \"aalves2@gmail.com\",\r\n    \"Password\": \"Alex123!\"\r\n}",
+									"raw": "{\r\n    \"FirstName\": \"SapienSoft\",\r\n    \"LastName\": \"Lda.\",\r\n    \"UserName\": \"SapienSoft\",\r\n    \"Email\": \"sapiensoft2@sapiensoft.com\",\r\n    \"Password\": \"SapienSoft123!\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -278,7 +284,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"Email\": \"aalves@gmail.com\",\r\n    \"Password\": \"Alex123!\"\r\n}",
+									"raw": "{\r\n    \"Email\": \"sapiensoft@sapiensoft.com\",\r\n    \"Password\": \"SapienSoft123!\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -324,7 +330,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"Email\": \"aalves@gmail.com\",\r\n    \"Password\": \"WrongPassword\"\r\n}",
+									"raw": "{\r\n    \"Email\": \"sapiensoft@sapiensoft.com\",\r\n    \"Password\": \"SapienSoft1234!\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -370,7 +376,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"Email\": \"aalves2@gmail.com\",\r\n    \"Password\": \"Alex123!\"\r\n}",
+									"raw": "{\r\n    \"Email\": \"sapiensoft2@sapiensoft.com\",\r\n    \"Password\": \"SapienSoft123!\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -429,6 +435,19 @@
 						},
 						{
 							"name": "Change Admin Password (invalid)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -463,6 +482,43 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Change back Admin Password (valid)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyIiwianRpIjoiMWMzNjA3ZTctNmM2Zi00ZGI1LTkzYTktNWZiODNkZmUyMThkIiwiZW1haWwiOiJ1c2VyQHNlY3VyZWFwaS5jb20iLCJ1aWQiOiIwMDJiY2I1NS0yY2YyLTQ3ZmEtOWY0Yi00NWQ4MWFmNzU5NjQiLCJyb2xlcyI6IkFkbWluaXN0cmF0b3IiLCJleHAiOjE2MTI3OTYxMjgsImlzcyI6IlNlY3VyZUFwaSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.KFDpnEPE2g_KcmuEkHNf21dYyx6Yp_x9VMSzIBV4cXs",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Email\": \"user@secureapi.com\",\r\n    \"CurrentPassword\": \"Admin123!\",\r\n    \"NewPassword\":\"Pa$$w0rd.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}api/user/password",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"user",
+										"password"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -470,7 +526,7 @@
 					"name": "Slots",
 					"item": [
 						{
-							"name": "Get Slots",
+							"name": "Get Slots with Admin Token (valid)",
 							"event": [
 								{
 									"listen": "test",
@@ -485,6 +541,56 @@
 								}
 							],
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}api/slots",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"slots"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Slots with User Token (invalid)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{userToken}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
 								"header": [],
 								"url": {
@@ -515,6 +621,16 @@
 								}
 							],
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
 								"header": [],
 								"url": {
@@ -546,6 +662,16 @@
 								}
 							],
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
 								"header": [],
 								"url": {
@@ -571,7 +697,7 @@
 											"pm.test(\"Status code is 200\", function () {\r",
 											"    pm.response.to.have.status(201);\r",
 											"    var responseData = JSON.parse(responseBody);\r",
-											"    pm.collectionVariables.set(\"slotId\", responseData.token);  \r",
+											"    pm.collectionVariables.set(\"slotId\", responseData.id);  \r",
 											"});"
 										],
 										"type": "text/javascript"
@@ -579,6 +705,16 @@
 								}
 							],
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
@@ -618,6 +754,16 @@
 								}
 							],
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
 								"header": [],
 								"url": {
@@ -634,14 +780,14 @@
 							"response": []
 						},
 						{
-							"name": "Delete Slot Id = 1",
+							"name": "Delete recent created slot",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {\r",
-											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.have.status(204);\r",
 											"});"
 										],
 										"type": "text/javascript"
@@ -649,23 +795,120 @@
 								}
 							],
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{url}}api/slots/1",
+									"raw": "{{url}}api/slots/{{slotId}}",
 									"host": [
 										"{{url}}api"
 									],
 									"path": [
 										"slots",
-										"1"
+										"{{slotId}}"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "Get Slot Id = 1 (was deleted)",
+							"name": "Delete inexistent Slot (invalid)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}api/slots/999",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"slots",
+										"999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Slot after delete (invalid)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}api/slots/{{slotId}}",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"slots",
+										"{{slotId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Reservations",
+					"item": [
+						{
+							"name": "Get all Reservations (no registration, 401 error)",
 							"event": [
 								{
 									"listen": "test",
@@ -683,27 +926,27 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{url}}api/slots/1",
+									"raw": "{{url}}api/reservations/",
 									"host": [
 										"{{url}}api"
 									],
 									"path": [
-										"slots",
-										"1"
+										"reservations",
+										""
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "Delete Slot Id = 99 (invalid)",
+							"name": "Get all Reservations (User Token, 403 error)",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {\r",
-											"    pm.response.to.have.status(404);\r",
+											"    pm.response.to.have.status(403);\r",
 											"});"
 										],
 										"type": "text/javascript"
@@ -711,27 +954,445 @@
 								}
 							],
 							"request": {
-								"method": "DELETE",
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{userToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{url}}api/slots/99",
+									"raw": "{{url}}api/reservations/",
 									"host": [
 										"{{url}}api"
 									],
 									"path": [
-										"slots",
-										"99"
+										"reservations",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all Reservations (Admin Token, 200 OK)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}api/reservations/",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"reservations",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Book Reservation (unauthorized)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Start\": \"2021-12-01T12:00:00\",\r\n    \"End\": \"2021-12-02T12:00:00\",\r\n    \"SlotId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}api/reservations/",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"reservations",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Book Reservation (authorized, user)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var responseData = JSON.parse(responseBody);\r",
+											"    pm.collectionVariables.set(\"reservationId\", responseData.id);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{userToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Start\": \"2021-03-01T12:00:00\",\r\n    \"End\": \"2021-03-02T12:00:00\",\r\n    \"SlotId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}api/reservations/booking",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"reservations",
+										"booking"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Book Reservation (authorized, admin)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var responseData = JSON.parse(responseBody);\r",
+											"    pm.collectionVariables.set(\"reservationId2\", responseData.id);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Start\": \"2021-03-01T12:00:00\",\r\n    \"End\": \"2021-03-02T12:00:00\",\r\n    \"SlotId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}api/reservations/booking",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"reservations",
+										"booking"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Book Reservation (conflict with other reservation, 400 Bad Request)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{userToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Start\": \"2021-06-01T12:00:00\",\r\n    \"End\": \"2021-06-02T12:00:00\",\r\n    \"SlotId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}api/reservations/booking",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"reservations",
+										"booking"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve Registration created (valid)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{userToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}api/reservations/{{reservationId}}",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"reservations",
+										"{{reservationId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User tries to retrieve admin reservation (invalid)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{userToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}api/reservations/{{reservationId2}}",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"reservations",
+										"{{reservationId2}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve Registration created (valid) Copy 2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}api/reservations/",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"reservations",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cancel a reservation (invalid authorization)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{userToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}api/reservations/{{reservationId}}",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"reservations",
+										"{{reservationId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cancel a reservation (valid authorization, user reservation)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{userToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}api/reservations/{{reservationId}}",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"reservations",
+										"{{reservationId}}"
 									]
 								}
 							},
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "Status",
+					"item": []
 				}
 			]
 		},
 		{
-			"name": "Startup",
+			"name": "Helper",
 			"item": [
 				{
 					"name": "https://localhost:44366/api/reservations/available/2022-01-01T12:00:00/2023-01-01T12:00:00",
@@ -993,15 +1654,27 @@
 	"variable": [
 		{
 			"key": "url",
-			"value": "https://localhost:44366/"
+			"value": "https://localhost:44361/"
 		},
 		{
 			"key": "adminToken",
-			"value": ""
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyIiwianRpIjoiYzY2N2Q0OTQtMzYwNC00ZTBlLWI4NmUtNGRlZDYwNGRjMDFlIiwiZW1haWwiOiJ1c2VyQHNlY3VyZWFwaS5jb20iLCJ1aWQiOiJkMDBjOGFjZS1mMDMzLTQ5NTktOGMwOC1iMDBmODI0ZWE2OTEiLCJyb2xlcyI6IkFkbWluaXN0cmF0b3IiLCJleHAiOjE2MTI4OTUxMDUsImlzcyI6IlNlY3VyZUFwaSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.ixBQtzDPaQRJz-YpSP2GBK4d94hkIFPLXjLl0YqGzhs"
 		},
 		{
 			"key": "userToken",
-			"value": ""
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTYXBpZW5Tb2Z0IiwianRpIjoiNDczMTE1MjgtNTJhNy00MzA1LWJlNTUtZDExMjJjMDk5YmRlIiwiZW1haWwiOiJzYXBpZW5zb2Z0QHNhcGllbnNvZnQuY29tIiwidWlkIjoiZGUzYjdlODItNmI1OS00NTFlLTg0MjUtMmNjYmYxYTMyMWEwIiwicm9sZXMiOiJVc2VyIiwiZXhwIjoxNjEyODk1MTA2LCJpc3MiOiJTZWN1cmVBcGkiLCJhdWQiOiJTZWN1cmVBcGlVc2VyIn0.Ozk21MY7dsLfCuJzRMdJp-GZU8zm8OH6L28leZCIUSs"
+		},
+		{
+			"key": "slotId",
+			"value": 7
+		},
+		{
+			"key": "reservationId",
+			"value": 1
+		},
+		{
+			"key": "reservationId2",
+			"value": 3
 		}
 	]
 }
