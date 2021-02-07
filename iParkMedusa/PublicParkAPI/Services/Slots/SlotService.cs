@@ -17,14 +17,24 @@ namespace PublicParkAPI.Services.Slots
             _repo = repo;
         }
 
-        public async Task<ActionResult<IEnumerable<Slot>>> GetAllSlots()
+        public async Task<IEnumerable<Slot>> GetAllSlots()
         {
             return await _repo.GetAllSlotsAsync();
         }
 
-        public async Task<ActionResult<Slot>> GetSlotById(int id)
+        public async Task<Slot> GetSlotById(int id)
         {
-            return await _repo.GetSlotById(id);
+            return await _repo.GetSlotByIdAsync(id);
+        }
+
+        public async Task<int> DeleteSlotbyId(int id)
+        {
+            return await _repo.DeleteSlotByIdAsync(id);
+        }
+
+        public async Task<int> UpdateSlot(Slot slot)
+        {
+            return await _repo.UpdateSlotAsync(slot);
         }
     }
 }

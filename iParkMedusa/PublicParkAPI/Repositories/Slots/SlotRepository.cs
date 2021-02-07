@@ -11,21 +11,36 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PublicParkAPI.Repositories.Slots
 {
-    public class SlotRepository : BaseRepository<Slot>, ISlotRepository
+    public class SlotRepository : ISlotRepository
     {
-        public SlotRepository(ApplicationDbContext context) : base (context)
+        protected ApplicationDbContext _context { get; set; }
+        public SlotRepository(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task<ActionResult<IEnumerable<Slot>>> GetAllSlotsAsync()
+        public async Task<IEnumerable<Slot>> GetAllSlotsAsync()
         {
+            //return await Task.FromResult<List<Slot>>(_context.Slots.Include(s => s.Status).ToList());
             return await _context.Slots.Include(s => s.Status).ToListAsync();
         }
 
-        public async Task<ActionResult<Slot>> GetSlotById(int id)
+        public async Task<Slot> GetSlotByIdAsync(int id)
         {
-            return await _context.Slots.FindAsync(id);
+            return await Task.FromResult<Slot>(_context.Slots.Where(s => s.Id.Equals(id)).Include(s => s.Status).SingleOrDefault());
+        }
+
+        public async Task<int> DeleteSlotByIdAsync(int id)
+        {
+            var slot = await _context.Slots.FindAsync(id);
+            _context.Slots.Remove(slot);
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> UpdateSlotAsync(Slot slot)
+        {
+            _context.Entry(slot).State = EntityState.Modified;
+            return await _context.SaveChangesAsync();
         }
     }
 }

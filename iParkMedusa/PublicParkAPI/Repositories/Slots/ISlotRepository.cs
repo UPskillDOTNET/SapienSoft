@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 
 namespace PublicParkAPI.Repositories.Slots
 {
-    public interface ISlotRepository : IBaseRepository<Slot>
+    public interface ISlotRepository
     {
-        Task<ActionResult<IEnumerable<Slot>>> GetAllSlotsAsync();
-        Task<ActionResult<Slot>> GetSlotById(int id);
+        Task<IEnumerable<Slot>> GetAllSlotsAsync();
+        Task<Slot> GetSlotByIdAsync(int id);
+        Task<int> DeleteSlotByIdAsync(int id);
+        Task<int> UpdateSlotAsync(Slot slot);
     }
 }

@@ -26,21 +26,73 @@ namespace PublicParkAPI.Controllers.Slots
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Slot>>> GetSlots()
         {
-            return await _service.GetAllSlots();
+            try
+            {
+                var slots = await _service.GetAllSlots();
+                return Ok(slots);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
+            }
         }
 
         // GET: api/Slots/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Slot>> GetSlot(int id)
         {
-            var slot = await _service.GetSlotById(id);
-            if (slot == null)
+            try
             {
-                return NotFound();
+                var slot = await _service.GetSlotById(id);
+                if (slot == null)
+                {
+                    return NotFound();
+                }
+                return Ok(slot);
             }
-            return slot;
+            catch (Exception e)
+            {
+                return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
+            }
         }
 
+        // PUT: api/Slots/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutSlot(int id, Slot slot)
+        {
+            if (id != slot.Id)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                await _service.UpdateSlot(slot);
+                return Ok(slot);
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
+            }
+
+        }
+
+        // DELETE: api/Slots/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteSlot(int id)
+        {
+            try
+            {
+                await _service.DeleteSlotbyId(id);
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
+            }
+        }
+
+        
 
         /*
         // PUT: api/Slots/5
