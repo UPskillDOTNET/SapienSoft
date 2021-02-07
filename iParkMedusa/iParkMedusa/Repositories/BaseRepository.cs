@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ParkAPI.Contexts;
+using iParkMedusa.Contexts;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ParkAPI.Repositories
+namespace iParkMedusa.Repositories
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {

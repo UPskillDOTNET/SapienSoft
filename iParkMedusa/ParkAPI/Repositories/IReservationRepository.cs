@@ -1,10 +1,8 @@
-﻿using PublicParkAPI.Entities;
-using System;
+﻿using ParkAPI.Entities;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace PublicParkAPI.Repositories
+namespace ParkAPI.Repositories
 {
     public interface IReservationRepository : IBaseRepository<Reservation>
     {

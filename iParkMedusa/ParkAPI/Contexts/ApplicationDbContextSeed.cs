@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using PublicParkAPI.Constants;
-using PublicParkAPI.Entities;
-using PublicParkAPI.Models.User;
-using System;
-using System.Collections.Generic;
+using ParkAPI.Constants;
+using ParkAPI.Entities;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PublicParkAPI.Contexts
+namespace ParkAPI.Contexts
 {
     public class ApplicationDbContextSeed
     {

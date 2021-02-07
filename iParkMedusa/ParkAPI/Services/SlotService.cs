@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PublicParkAPI.Entities;
-using PublicParkAPI.Repositories;
-using System;
+﻿using ParkAPI.Entities;
+using ParkAPI.Repositories;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace PublicParkAPI.Services
+namespace ParkAPI.Services
 {
     public class SlotService
     {
@@ -17,9 +14,9 @@ namespace PublicParkAPI.Services
             _repo = repo;
         }
 
-        public async Task<IEnumerable<Slot>> GetAllSlots()
+        public async Task<IEnumerable<Slot>> FindAll()
         {
-            return await _repo.GetAllSlotsAsync();
+            return await _repo.FindAllAsync();
         }
 
         public async Task<Slot> GetSlotById(int id)

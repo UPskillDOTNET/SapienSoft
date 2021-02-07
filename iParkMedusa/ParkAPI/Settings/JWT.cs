@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace PublicParkAPI.Settings
+﻿namespace ParkAPI.Settings
 {
     public class JWT
     {

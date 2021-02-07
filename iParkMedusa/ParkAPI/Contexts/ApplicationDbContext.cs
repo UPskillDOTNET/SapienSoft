@@ -1,13 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using PublicParkAPI.Entities;
-using PublicParkAPI.Models.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ParkAPI.Entities;
 
-namespace PublicParkAPI.Contexts
+namespace ParkAPI.Contexts
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

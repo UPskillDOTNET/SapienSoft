@@ -2,14 +2,14 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using PublicParkAPI.Entities;
-using PublicParkAPI.Services;
+using ParkAPI.Entities;
+using ParkAPI.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PublicParkAPI.Controllers
+namespace ParkAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -82,12 +82,14 @@ namespace PublicParkAPI.Controllers
                 return BadRequest($"DateTime 'start' ({start}) must happen in the future.");
             }
 
-            // Get active User (userName)
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            // Get active User
+            var userName = _userManager.GetUserId(HttpContext.User);
+            var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
+            var userId = user.Id;
 
             try
             {
-                var listReservationsDTO = await _service.GetAvailableSlotsToReservationDTO(start, end, user.Id);
+                var listReservationsDTO = await _service.GetAvailableSlotsToReservationDTO(start, end, userId);
                 return Ok(listReservationsDTO);
             }
             catch (Exception e)

@@ -1,13 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using PublicParkAPI.Entities;
-using PublicParkAPI.Repositories;
+﻿using ParkAPI.Entities;
+using ParkAPI.Repositories;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace PublicParkAPI.Services
+namespace ParkAPI.Services
 {
     public class ReservationService
     {

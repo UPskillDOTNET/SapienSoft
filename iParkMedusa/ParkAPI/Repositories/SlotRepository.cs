@@ -1,15 +1,12 @@
-﻿using PublicParkAPI.Contexts;
-using PublicParkAPI.Entities;
-using System;
+﻿using Microsoft.EntityFrameworkCore;
+using ParkAPI.Contexts;
+using ParkAPI.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using PublicParkAPI.Repositories;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 
-namespace PublicParkAPI.Repositories
+namespace ParkAPI.Repositories
 {
     public class SlotRepository : BaseRepository<Slot>, ISlotRepository
     {
@@ -39,7 +36,5 @@ namespace PublicParkAPI.Repositories
             _context.Slots.Remove(slot);
             return await _context.SaveChangesAsync();
         }
-
-
     }
 }

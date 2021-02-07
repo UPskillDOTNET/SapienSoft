@@ -1,30 +1,23 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using PublicParkAPI.Contexts;
-using PublicParkAPI.Entities;
-using PublicParkAPI.Models.User;
-using PublicParkAPI.Repositories;
-using PublicParkAPI.Services;
-using PublicParkAPI.Services.User;
-using PublicParkAPI.Settings;
+using ParkAPI.Contexts;
+using ParkAPI.Entities;
+using ParkAPI.Repositories;
+using ParkAPI.Services;
+using ParkAPI.Services.User;
+using ParkAPI.Settings;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace PublicParkAPI
+namespace ParkAPI
 {
     public class Startup
     {
@@ -46,6 +39,9 @@ namespace PublicParkAPI
 
             services.AddScoped<ISlotRepository, SlotRepository>();
             services.AddTransient<SlotService>();
+
+            services.AddScoped<IReservationRepository, ReservationRepository>();
+            services.AddTransient<ReservationService>();
 
             //Adding DB Context with MSSQL
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -77,7 +73,7 @@ namespace PublicParkAPI
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PublicParkAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ParkAPI", Version = "v1" });
             });
         }
 
@@ -88,7 +84,7 @@ namespace PublicParkAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PublicParkAPI v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ParkAPI v1"));
             }
 
             app.UseHttpsRedirection();

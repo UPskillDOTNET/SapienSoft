@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using PublicParkAPI.Constants;
-using PublicParkAPI.Entities;
-using PublicParkAPI.Models.User;
-using PublicParkAPI.Settings;
+using ParkAPI.Constants;
+using ParkAPI.Entities;
+using ParkAPI.Models.User;
+using ParkAPI.Settings;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,7 +13,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PublicParkAPI.Services.User
+namespace ParkAPI.Services.User
 {
     public class UserService : IUserService
     {

@@ -1,10 +1,10 @@
-﻿using PublicParkAPI.Models.User;
+﻿using ParkAPI.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PublicParkAPI.Services.User
+namespace ParkAPI.Services.User
 {
     public interface IUserService
     {

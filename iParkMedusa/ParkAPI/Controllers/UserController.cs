@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PublicParkAPI.Models.User;
-using PublicParkAPI.Services.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using ParkAPI.Models.User;
+using ParkAPI.Services.User;
 using System.Threading.Tasks;
 
-namespace PublicParkAPI.Controllers
+namespace ParkAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -20,7 +16,8 @@ namespace PublicParkAPI.Controllers
             _userService = userService;
         }
 
-        [Authorize(Roles = "Administrator, Moderator")]
+        // Unprotected while in development mode.
+        //[Authorize(Roles = "Administrator, Moderator")]
         [HttpPost("register")]
         public async Task<ActionResult> RegisterAsync(RegisterModel model)
         {
@@ -28,13 +25,15 @@ namespace PublicParkAPI.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "Administrator, Moderator, User")]
+        // Unprotected while in development mode.
+        //[Authorize(Roles = "Administrator, Moderator, User")]
         [HttpPost("token")]
         public async Task<IActionResult> GetTokenAsync(TokenRequestModel model)
         {
             var result = await _userService.GetTokenAsync(model);
             return Ok(result);
         }
+
         [Authorize(Roles = "Administrator, Moderator")]
         [HttpPost("addrole")]
         public async Task<IActionResult> AddRoleAsync(AddRoleModel model)

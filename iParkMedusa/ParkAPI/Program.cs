@@ -4,15 +4,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using PublicParkAPI.Contexts;
-using PublicParkAPI.Entities;
-using PublicParkAPI.Models.User;
+using ParkAPI.Contexts;
+using ParkAPI.Entities;
+using ParkAPI.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PublicParkAPI
+namespace ParkAPI
 {
     public class Program
     {

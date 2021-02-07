@@ -1,12 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PublicParkAPI.Contexts;
-using PublicParkAPI.Entities;
-using System;
+using ParkAPI.Contexts;
+using ParkAPI.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PublicParkAPI.Repositories
+namespace ParkAPI.Repositories
 {
     public class ReservationRepository : BaseRepository<Reservation>, IReservationRepository
     {
