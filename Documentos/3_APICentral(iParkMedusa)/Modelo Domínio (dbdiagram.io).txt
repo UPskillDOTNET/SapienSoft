@@ -1,0 +1,82 @@
+//// -- LEVEL 1
+//// -- Tables and References
+
+// Creating tables
+Table User {
+  Id int [pk, increment] // auto-increment
+  FirstName string
+  LastName string
+  PaymentMethodId int
+  LoginMethodId int
+}
+
+Table PaymentMethod {
+  Id int [pk, increment]
+  PaymentMethod string
+ }
+
+//Table LoginMethod {
+  //Id int [pk, increment]
+  //LoginMethod string
+//}
+
+//Table Park {
+  //Id int [pk, increment]
+  //Name string
+  //Address string
+//}
+
+Table Transaction {
+  Id int [pk, increment]
+  Date datetime
+  Value double
+  Balance double
+  UserId int
+  TypeId int
+}
+
+//Table Type {
+ // Id int [pk, increment]
+  //TypeName string
+//}
+
+//Table Reservation {
+  //Id int [pk, increment]
+  //Start datetime
+  //End datetime
+  //Value double
+  //UserId int
+  //Latitude double
+  //Longitude double
+  //Qr_Code byte[]
+  //ParkId int
+//}
+
+//Table RentProposal {
+  //Id int [pk, increment]
+  //ReservationId int
+  //Value double
+  //AvailableStart datetime
+  //AvailableEnd datetime
+//}
+
+//Table SubReservation {
+  //In int [pk, increment]
+  //StartDate datetime
+  //EndDate datetime
+  //RentProposalId int
+  //Renter int
+//}
+
+// Creating references
+// You can also define relaionship separately
+// > many-to-one; < one-to-many; - one-to-one
+Ref: User.Id > Transaction.UserId
+//Ref: User.Id > Reservation.UserId
+//Ref: User.Id > SubReservation.Renter
+Ref: PaymentMethod.Id > User.PaymentMethodId
+//Ref: LoginMethod.Id > User.LoginMethodId
+//Ref: Type.Id < Transaction.TypeId
+//Ref: RentProposal.ReservationId > Reservation.Id
+//Ref: SubReservation.RentProposalId > RentProposal.Id
+//Ref: Reservation.ParkId > Park.Id
