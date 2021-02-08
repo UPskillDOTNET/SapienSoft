@@ -1,0 +1,23 @@
+@startuml
+Actor User
+User -> Interface: Inicia Registo
+Interface --> User: Solicita informação
+User -> Interface: Introduz informação
+box API
+Interface -> UserController: Pedido HttpPost
+UserController -> UserService: Instantiate
+UserService -> UserManager: Instantiate
+UserService -> RoleManager: Instantiate
+UserController -> UserService : RegisterAsync()
+UserService -> UserManager : CreateAsync()
+database DbContext
+UserManager -> DbContext: CreateAsync()
+DbContext--> UserManager: <IdentityResult>
+UserService -> RoleManager: AddToRoleAsync()
+RoleManager --> UserService: <IdentityResult>
+UserManager --> UserService: <IdentityResult>
+UserService --> UserController: <string>
+end box
+UserController --> Interface: <string>
+Interface --> User: Confirma sucesso
+@enduml

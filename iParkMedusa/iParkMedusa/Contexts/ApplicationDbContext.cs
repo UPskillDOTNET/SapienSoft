@@ -15,6 +15,11 @@ namespace iParkMedusa.Contexts
         {
         }
 
+        public DbSet<Park> Parks { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<TransactionType> TransactionTypes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
