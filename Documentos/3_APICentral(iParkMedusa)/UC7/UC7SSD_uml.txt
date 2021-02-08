@@ -1,0 +1,25 @@
+@startuml
+skinparam sequence {
+ArrowColor Blue
+ActorBorderColor Blue
+LifeLineBorderColor blue
+LifeLineBackgroundColor #ECECEC
+
+ParticipantBorderColor Blue
+ParticipantBackgroundColor #ECECEC
+ParticipantFontName Impact
+ParticipantFontSize 15
+ParticipantFontColor black
+
+ActorBackgroundColor #ECECEC
+ActorFontColor Blue
+ActorFontSize 17
+ActorFontName Aapex
+}
+
+actor User
+User -> Sistema: User inicia o processo de sub-aluguer, escolhendo uma reserva sua.
+Sistema --> User: O Sistema solicita o valor da sub-reserva
+User -> Sistema: O User indica o valor.
+Sistema --> User: O Sistema valida os dados inseridos e informa o User do sucesso da operação.
+@enduml
