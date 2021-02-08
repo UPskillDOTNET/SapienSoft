@@ -116,12 +116,13 @@ namespace iParkMedusa.Controllers
         }
         [HttpGet]
         [Route("~/api/transactions/user/balance")]
-        public async Task<ActionResult<Transaction>> GetBalance(string userId)
+        public async Task<ActionResult<double>> GetBalance(string userId)
         {
             try
             {
                 var transactions = await _service.GetTransactionsByUserId(userId);
-                return (from x in transactions orderby x.Date descending select x).FirstOrDefault();
+                var balance =(from x in transactions orderby x.Date descending select x).FirstOrDefault();
+                return balance.Balance;
             }
             catch (Exception e)
             {
