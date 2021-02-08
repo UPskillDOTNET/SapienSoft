@@ -1,0 +1,65 @@
+@startuml
+
+skinparam {
+ActorBorderColor Blue
+ParticipantBorderColor Blue
+ParticipantBackgroundColor #ECECEC
+ParticipantFontName Impact
+ParticipantFontSize 15
+ParticipantFontColor black
+ActorBackgroundColor #ECECEC
+ActorFontSize 17
+ActorFontName Aapex
+DatabaseBackgroundColor #ECECEC
+DatabaseBorderColor Blue
+}
+
+skinparam sequence {
+LifeLineBorderColor Blue
+LifeLineBackgroundColor #ECECEC
+BoxBorderColor Blue
+ArrowColor Blue
+}
+
+actor User as Foo
+participant Interface as Foo1
+box API
+participant ReservationsController as Foo2
+participant ReservationService as Foo3
+participant SlotRepository as Foo4
+participant ReservationRepository as Foo5
+database DbContext as Foo6
+end box
+
+Foo -> Foo1: **1** Inicia consulta
+activate Foo
+activate Foo1
+Foo1 -> Foo2: **2** Pedido HttpGet
+activate Foo2
+Foo2 -> Foo3: **3** GetAvailableSlotsTo\nReservationDTO(start,end,userid)
+activate Foo3
+Foo3 -> Foo4: **4** GetSlotsByStatus("Available")
+activate Foo4
+Foo4 -> Foo6: **5** GetSlotsByStatus("Available")
+activate Foo6
+Foo6 --> Foo4: **6** List<Slot>
+deactivate Foo6
+Foo4 --> Foo3: **7** List<Slot>
+deactivate Foo4
+Foo3 -> Foo5: **8** GetAllReservationsAsync()
+activate Foo5
+Foo5 -> Foo6: **9** GetAllReservationsAsync()
+activate Foo6
+Foo6 --> Foo5: **10** List<Reservation>
+deactivate Foo6
+Foo5 --> Foo3: **11** List<Reservation>
+deactivate Foo5
+Foo3 -> Foo3: **12** filter
+Foo3 --> Foo2: **13** List<ReservationDTO>
+deactivate Foo3
+Foo2 --> Foo1: **14** List<ReservationDTO>
+deactivate Foo2
+Foo1 --> Foo: **15** Lista de lugares disponíveis
+deactivate Foo1
+deactivate Foo
+@enduml
