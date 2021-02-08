@@ -1,0 +1,40 @@
+@startuml
+actor User
+
+skinparam sequence {
+ArrowColor Blue
+ActorBorderColor Blue
+LifeLineBorderColor blue
+LifeLineBackgroundColor #ECECEC
+ParticipantBorderColor Blue
+ParticipantBackgroundColor #ECECEC
+ParticipantFontName Impact
+ParticipantFontSize 15
+ParticipantFontColor black
+ActorBackgroundColor #ECECEC
+ActorFontColor Blue
+ActorFontSize 17
+ActorFontName Aapex
+}
+
+activate User
+User -> ":UserController" : **1** User solicita um carregamento da sua carteira
+activate ":UserController"
+database "iParkProDB:PaymentMethod"
+":UserController" -> "iParkProDB:PaymentMethod" : **2** Pede a lista de metodos de pagamento
+activate "iParkProDB:PaymentMethod"
+":UserController" <-- "iParkProDB:PaymentMethod" : **3** Devolve a lista
+deactivate "iParkProDB:PaymentMethod"
+":UserController" --> User: **4** Apresenta a lista de metodos de pagamento
+User--> ":UserController": **5** scolhe o metodo pretendido e insere os dados necessarios (model)
+":UserController" -> ":UserServices" : **6** model = NewPayment(model)
+activate ":UserServices"
+database "iParkPro:Transactions"
+":UserServices" -> "iParkPro:Transactions" : **7** model=NewTransaction(model)
+":UserServices" --> ":UserController" : **8** Status de resposta
+deactivate ":UserServices"
+":UserController" --> User : **9** Informa do sucesso da operação e apresenta o novo saldo
+
+deactivate User
+deactivate ":UserController"
+@enduml
