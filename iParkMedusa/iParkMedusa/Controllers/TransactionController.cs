@@ -114,20 +114,29 @@ namespace iParkMedusa.Controllers
                 return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
             }
         }
+        [Authorize]
         [HttpGet]
         [Route("~/api/transactions/user/balance")]
-        public async Task<ActionResult<double>> GetBalance(string userId)
+        public async Task<ActionResult<double>> GetBalance()
         {
-            try
+            var userName = _userManager.GetUserId(HttpContext.User);
+            var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
+            var loggedUserId = user.Id;
+            if (loggedUserId != null)
             {
-                var transactions = await _service.GetTransactionsByUserId(userId);
-                var balance =(from x in transactions orderby x.Date descending select x).FirstOrDefault();
-                return balance.Balance;
+
+                try
+                {
+                    var balance = await _service.GetBalanceByUserId(loggedUserId);
+                    return Ok(balance);
+
+                }
+                catch (Exception e)
+                {
+                    return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
+                }
             }
-            catch (Exception e)
-            {
-                return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
-            }
+            else return Unauthorized();
         }
     }
 }

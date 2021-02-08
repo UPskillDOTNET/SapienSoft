@@ -24,5 +24,11 @@ namespace iParkMedusa.Repositories
         {
             return await _context.Transactions.Where(t => t.UserId == userId).Include(t => t.TransactionType).ToListAsync();
         }
+
+        public async Task<double> GetBalanceByUserIdAsync(string userId)
+        {
+            var transaction = await _context.Transactions.Where(t => t.UserId == userId).OrderByDescending(p => p.Date).FirstOrDefaultAsync(); 
+            return transaction.Balance;
+        }
     }
 }
