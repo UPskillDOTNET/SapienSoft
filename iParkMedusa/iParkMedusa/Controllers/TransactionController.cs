@@ -114,5 +114,19 @@ namespace iParkMedusa.Controllers
                 return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
             }
         }
+        [HttpGet]
+        [Route("~/api/transactions/user/balance")]
+        public async Task<ActionResult<Transaction>> GetBalance(string userId)
+        {
+            try
+            {
+                var transactions = await _service.GetTransactionsByUserId(userId);
+                return (from x in transactions orderby x.Date descending select x).FirstOrDefault();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
+            }
+        }
     }
 }

@@ -17,12 +17,12 @@ namespace iParkMedusa.Repositories
 
         public async Task<Transaction> GetTransactionByIdAsync(int id)
         {
-            return await _context.Transactions.Where(s => s.Id.Equals(id)).FirstOrDefaultAsync();
+            return await _context.Transactions.Where(s => s.Id.Equals(id)).Include(t => t.TransactionType).FirstOrDefaultAsync();
         }
 
         public async Task<List<Transaction>> GetTransactionsByUserId(string userId)
         {
-            return await _context.Transactions.Where(t => t.UserId == userId).ToListAsync();
+            return await _context.Transactions.Where(t => t.UserId == userId).Include(t => t.TransactionType).ToListAsync();
         }
     }
 }
