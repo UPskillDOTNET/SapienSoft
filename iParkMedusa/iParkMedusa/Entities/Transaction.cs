@@ -20,6 +20,6 @@ namespace iParkMedusa.Entities
 
         public string UserId { get; set; }
         [ForeignKey("UserId")]
-        public ApplicationUser User { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }
