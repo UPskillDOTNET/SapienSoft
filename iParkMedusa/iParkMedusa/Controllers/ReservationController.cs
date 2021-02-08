@@ -1,6 +1,9 @@
 ﻿using iParkMedusa.Entities;
+using iParkMedusa.Models;
 using iParkMedusa.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,10 +17,12 @@ namespace iParkMedusa.Controllers
     public class ReservationController : ControllerBase
     {
         private readonly ReservationService _service;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ReservationController(ReservationService service)
+        public ReservationController(ReservationService service, UserManager<ApplicationUser> userManager)
         {
             _service = service;
+            _userManager = userManager;
         }
 
         // GET: api/Reservations
@@ -53,6 +58,15 @@ namespace iParkMedusa.Controllers
                 return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
             }
         }
+        // GET: api/reservations/qrcode/5
+        [Authorize]
+        [HttpGet]
+        [Route("~/api/Reservations/qrcode/{id}")]
+        public async Task<ActionResult<QrCodeModel>> GetQrCodeInformation(int id)
+        {
+            return await _service.GetQrCodeInformation(id);
+        }
+
 
         // PUT: api/Reservations/5
         [HttpPut("{id}")]
@@ -64,7 +78,7 @@ namespace iParkMedusa.Controllers
             }
             try
             {
-                await _service.UpdatePark(reservation);
+                await _service.UpdateReservation(reservation);
                 return Ok(reservation);
             }
             catch (Exception e)
@@ -88,6 +102,45 @@ namespace iParkMedusa.Controllers
                 return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
             }
         }
+
+        // PUT: api/Reservations/Rent/5
+        [HttpPut]
+        [Route("~/api/Reservations/rent")]
+        public async Task<ActionResult<Reservation>> RentReservation([FromQuery] int id, [FromQuery] double rentValue)
+        {
+            try
+            {
+                var updatedReservation = await _service.RentReservation(id, rentValue);
+                return Ok(updatedReservation);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
+            }
+        }
+
+        // PUT: api/Reservations/Rental/5
+        [HttpPost]
+        [Route("~/api/reservations/rented")]
+        public async Task<ActionResult> RentedReservation(int reservationId)
+        {
+            try
+            {
+                var userName = _userManager.GetUserId(HttpContext.User);
+                var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
+                var userId = user.Id;
+
+                var reservation = await _service.RentedReservation(reservationId, userId);
+
+                return Ok(reservation);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
+            }
+        }
+
+
 
         // DELETE: api/Reservations/5
         [HttpDelete("{id}")]

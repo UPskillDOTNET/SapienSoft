@@ -11,7 +11,15 @@ namespace iParkMedusa.Entities
     {
         public int Id { get; set; }
         public string ExternalId { get; set; }
-        public double Value { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
+        public DateTime DateCreated { get; set; }
+        public double? Value { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public string QrCode { get; set; }
+        public bool AvailableToRent { get; set; }
+        public double RentValue { get; set; }
 
         public string UserId { get; set; }
         [ForeignKey("UserId")]
