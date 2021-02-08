@@ -102,6 +102,7 @@ namespace ParkAPI.Services
         public async Task<ReservationDTO> CreateNewReservation(DateTime start, DateTime end, int slotId, string userId)
         {
             var slot = await _slotRepository.GetSlotByIdAsync(slotId);
+
             Reservation reservation = new Reservation()
             {
                 Start = start,
