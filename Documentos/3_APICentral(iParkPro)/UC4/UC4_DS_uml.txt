@@ -1,0 +1,18 @@
+@startuml
+Actor User
+User -> Interface: Inicia Pedido
+box API
+Interface -> ReservationsController: Pedido HttpPost
+ReservationsController -> ReservationService: AddReservation(reservation)
+ReservationsController -> ReservationService : SaveChangesAsync()
+ReservationService -> ReservationRepository: AddEntityAsync(reservation)
+ReservationService -> ReservationRepository : SaveChangesAsync()
+database DbContext
+ReservationRepository -> DbContext: SaveChangesAsync()
+DbContext--> ReservationRepository: <ActionResult>
+ReservationRepository --> ReservationService: <ActionResult>
+ReservationService --> ReservationsController: <string>
+end box
+ReservationsController --> Interface: <string>
+Interface --> User: <string>
+@enduml

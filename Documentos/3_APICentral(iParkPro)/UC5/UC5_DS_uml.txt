@@ -1,0 +1,18 @@
+@startuml
+Actor User
+User -> Interface: Inicia Pedido
+box API
+Interface -> ReservationsController: Pedido HttpDelete
+ReservationsController -> ReservationService: DeleteReservation(int id)
+ReservationsController -> ReservationService : DeleteReservationById(id)
+ReservationService -> ReservationRepository: DeleteReservationByIdAsync(id)
+database DbContext
+ReservationRepository -> DbContext: Remove(reservation)
+ReservationRepository -> DbContext: SaveChangesAsync()
+DbContext--> ReservationRepository: <ActionResult>
+ReservationRepository --> ReservationService: <ActionResult>
+ReservationService --> ReservationsController: <string>
+end box
+ReservationsController --> Interface: <string>
+Interface --> User: <string>
+@enduml
