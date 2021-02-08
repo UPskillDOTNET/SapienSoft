@@ -17,8 +17,6 @@ ActorFontColor Blue
 ActorFontSize 17
 ActorFontName Aapex
 }
-User -> Sistema: faz um pedido dos lugares disponiveis
-Sistema--> User: Sistema solicita dados(dataInicio, dataFim).
-User -> Sistema: indica um periodo de tempo(dataInicio, dataFim)
+User -> Sistema: faz um pedido HttpGet dos lugares disponiveis.
 Sistema--> User: Sistema apresenta os dados solicitados.
 @enduml
