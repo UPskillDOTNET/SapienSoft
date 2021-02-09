@@ -26,7 +26,7 @@ namespace ParkAPI.Controllers
         {
             try
             {
-                var slots = await _service.FindAll();
+                var slots = await _service.GetAllSlots();
                 return Ok(slots);
             }
             catch (Exception e)

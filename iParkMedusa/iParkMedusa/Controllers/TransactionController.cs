@@ -61,17 +61,22 @@ namespace iParkMedusa.Controllers
             }
         }
 
-        // GET: api/Transaction/User?id=...
+        // GET: api/Transaction/User (for regular user)
+        // GET: api/Transactiob/User?id=... (for Admin user)
         [HttpGet]
         [Route("~/api/transactions/user")]
-        public async Task<ActionResult<List<Transaction>>> GetTransactionByUserId()
+        public async Task<ActionResult<List<Transaction>>> GetTransactionByUserId(string userId)
         {
-            // falta verificar user?
+            if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+            {
+                var transactionsAdmin = await _service.GetTransactionsByUserId(userId);
+                return transactionsAdmin;
+            }
             var userName = _userManager.GetUserId(HttpContext.User);
             var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
-            var userId = user.Id;
+            var loggedUserId = user.Id;
 
-            var transactions = await _service.GetTransactionsByUserId(userId);
+            var transactions = await _service.GetTransactionsByUserId(loggedUserId);
             return transactions;
         }
 
@@ -108,6 +113,30 @@ namespace iParkMedusa.Controllers
             {
                 return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
             }
+        }
+        [Authorize]
+        [HttpGet]
+        [Route("~/api/transactions/user/balance")]
+        public async Task<ActionResult<double>> GetBalance()
+        {
+            var userName = _userManager.GetUserId(HttpContext.User);
+            var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
+            var loggedUserId = user.Id;
+            if (loggedUserId != null)
+            {
+
+                try
+                {
+                    var balance = await _service.GetBalanceByUserId(loggedUserId);
+                    return Ok(balance);
+
+                }
+                catch (Exception e)
+                {
+                    return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
+                }
+            }
+            else return Unauthorized();
         }
     }
 }

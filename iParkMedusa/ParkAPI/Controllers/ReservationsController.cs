@@ -120,7 +120,7 @@ namespace ParkAPI.Controllers
         // POST: api/Reservations
         [Authorize(Roles = "Administrator, Moderator")]
         [HttpPost]
-        public async Task<ActionResult<Slot>> PostReservation(Reservation reservation)
+        public async Task<ActionResult<Reservation>> PostReservation(Reservation reservation)
         {
             try
             {
@@ -138,17 +138,20 @@ namespace ParkAPI.Controllers
         [Authorize(Roles = "User")]
         [Route("~/api/reservations/booking")]
         [HttpPost]
-        public async Task<ActionResult<ReservationDTO>> PostReservationBooking(DateTime start, DateTime end, int slotId)
+        public async Task<ActionResult<ReservationDTO>> PostReservationBooking(ReservationDTO reservation)
         {
+            var userName = _userManager.GetUserId(HttpContext.User);
+            var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
+            var userId = user.Id;
+
             try
             {
-                var isReservationPossible = await _service.IsReservationPossible(start, end, slotId);
+                var isReservationPossible = await _service.IsReservationPossible(reservation.Start, reservation.End, reservation.SlotId);
                 if (!isReservationPossible)
                 {
-                    return BadRequest($"The Slot id {slotId} has a conflict. Reservation not valid.");
+                    return BadRequest($"The Slot id {reservation.SlotId} has a conflict. Reservation not valid.");
                 }
-                var user = await _userManager.GetUserAsync(HttpContext.User);
-                var reservationDTO = await _service.CreateNewReservation(start, end, slotId, user.Id);
+                var reservationDTO = await _service.CreateNewReservation(reservation.Start, reservation.End, reservation.SlotId, userId);
                 return Ok(reservationDTO);
             }
             catch (Exception e)

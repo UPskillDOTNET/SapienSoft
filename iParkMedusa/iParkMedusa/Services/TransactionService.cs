@@ -36,9 +36,16 @@ namespace iParkMedusa.Services
             return await _repo.AddEntityAsync(transaction);
         }
 
-        public async Task<List<Transaction>> GetTransactionsByUserId (string UserId)
+        public async Task<List<Transaction>> GetTransactionsByUserId (string userId)
         {
-            // código
+            return await _repo.GetTransactionsByUserId(userId);
+        }
+        public async Task<double> GetBalanceByUserId(string userId)
+        {
+                var balance = await _repo.GetBalanceByUserIdAsync(userId);
+                return balance;
+            
+            
         }
     }
 }
