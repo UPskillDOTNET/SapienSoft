@@ -108,9 +108,7 @@ namespace iParkMedusa.Controllers
         [HttpPost("{id}")]
         public async Task<ActionResult<Reservation>> PostReservation(ReservationDTO reservation, int id)
         {
-            var userName = _userManager.GetUserId(HttpContext.User);
-            var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
-            var userId = user.Id;
+
 
             if (id == 1)
             {
@@ -127,7 +125,6 @@ namespace iParkMedusa.Controllers
                     Locator = reservationAPI.Locator,
                     Latitude = reservationAPI.Latitude,
                     Longitude = reservationAPI.Longitude,
-                    UserId = userId,
                     ParkId = id
                 };
 

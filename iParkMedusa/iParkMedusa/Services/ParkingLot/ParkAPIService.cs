@@ -1,6 +1,7 @@
 ﻿using iParkMedusa.Entities;
 using iParkMedusa.Models;
 using iParkMedusa.Settings;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
@@ -72,9 +73,16 @@ namespace iParkMedusa.Services.ParkingLot
 
                 // Post Request
                 Task<HttpResponseMessage> response2 = client.PostAsJsonAsync("api/reservations/booking", reservationDTO);
-                var reservation = await response2.Result.Content.ReadFromJsonAsync<ReservationDTO>();
+                if (response2.Result.IsSuccessStatusCode)
+                {
+                    var reservation = await response2.Result.Content.ReadFromJsonAsync<ReservationDTO>();
+                    return reservation;
+                }
+                else if (response2.Result.StatusCode.Equals(400))
+                {
+                }
 
-                return reservation;
+                return new ReservationDTO();
             }
         }
     }

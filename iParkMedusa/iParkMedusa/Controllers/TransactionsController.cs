@@ -116,6 +116,7 @@ namespace iParkMedusa.Controllers
                 return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
             }
         }
+
         [Authorize]
         [HttpGet]
         [Route("~/api/transactions/user/balance")]
