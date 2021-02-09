@@ -36,9 +36,13 @@ namespace iParkMedusa
             //User Manager Service
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddScoped<IUserService, UserService>();
+
+            //ParkingLotService
             services.AddScoped<IParkingLotService, ParkAPIService>();
 
-            // Reservations
+
+
+            //Reservations
             services.AddScoped<IReservationRepository, ReservationRepository>();
             services.AddTransient<ReservationService>();
 

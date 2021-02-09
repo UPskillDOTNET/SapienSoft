@@ -16,55 +16,28 @@ namespace iParkMedusa.Services.ParkingLot
         private readonly string username = "sapiensoft@sapiensoft.com";
         private readonly string password = "SapienSoft123!";
 
-        public async Task<List<ReservationDTO>> GetAvailableSlots(DateTime start, DateTime end)
+        public async Task<string> GetToken(string email, string password)
         {
-            TokenRequestModel tokenRequestModel = new TokenRequestModel()
+            try
             {
-                Email = username,
-                Password = password
-            };
-
-            using (var clientToken = new HttpClient())
-            {
-                clientToken.BaseAddress = new Uri("http://localhost:44365/");
-                clientToken.DefaultRequestHeaders.Clear();
-                clientToken.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await clientToken.PostAsJsonAsync("api/user/token", tokenRequestModel);
-            }
-
-            List<ReservationDTO> reservations = new List<ReservationDTO>();
-                        
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("http://localhost:44365/api/reservations/available");
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                var parkUrl = "?start=" + start.Year + "/" + start.Month + "/" + start.Day + "T" + start.Hour + ":" + start.Minute + ":" + start.Second +
-                    "&end=" + end.Year + "/" + end.Month + "/" + end.Day + "T" + end.Hour + ":" + end.Minute + ":" + end.Second;
-
-                try
+                using (var client = new HttpClient())
                 {
-                    //Sending request to find web api REST service resource Continents using HttpClient  
-                    HttpResponseMessage Res = await client.GetAsync(parkUrl);
+                    client.BaseAddress = new Uri("https://localhost:44365/");
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    TokenRequestModel trm = new TokenRequestModel() { Email = email, Password = password };
 
-                    //Checking the response is successful or not which is sent using HttpClient  
-                    if (Res.IsSuccessStatusCode)
-                    {
-                        //Storing the response details recieved from web api   
-                        var EmpResponse = Res.Content.ReadAsStringAsync().Result;
+                    Task<HttpResponseMessage> response = client.PostAsJsonAsync("api/user/token", trm);
+                    var tokenResult = await response.Result.Content.ReadFromJsonAsync<AuthenticationModel>();
+                    var token = tokenResult.Token;
 
-                        //Deserializing the response recieved from web api and storing into the Employee list  
-                        reservations = JsonConvert.DeserializeObject<List<ReservationDTO>>(EmpResponse);
-                    }
-                }
-
-                catch (Exception)
-                {
+                    return token;
                 }
             }
-
-            return reservations;
+            catch (Exception ex)
+            {
+            }
+            return "";
         }
     }
 }

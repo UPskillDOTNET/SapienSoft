@@ -68,28 +68,8 @@ namespace iParkMedusa.Controllers
         [Route("~/api/reservations/available")]
         public async Task<ActionResult<IEnumerable<Reservation>>> GetAvailableSlotsToReservationDTO([FromQuery] DateTime start, [FromQuery] DateTime end)
         {
-            // Dates validation (DateTime default value "0001-01-01 00:00:00")
-            if (start > end)
-            {
-                return BadRequest($"DateTime 'end' ({end}) must be greater than DateTime 'start' ({start}).");
-            }
-            else if (start < DateTime.Now)
-            {
-                return BadRequest($"DateTime 'start' ({start}) must happen in the future.");
-            }
-            // Get active User
-            var userName = _userManager.GetUserId(HttpContext.User);
-            var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
-            var userId = user.Id;
-
-            var listReservations = await _lotService.GetAvailableSlots(start, end);
-
-            /*
-            Park2APIService y = new Park2APIService();
-            var list2 = await y.GetAvailable(start, end);
-            listReservations.AddRange(list2);
-            */
-
+            var token = await _lotService.GetToken("sapiensoft@sapiensoft.com", "SapienSoft123!");
+            var listReservations = new List<Reservation>();
             return Ok(listReservations);
         }
 
