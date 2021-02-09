@@ -8,6 +8,6 @@ namespace iParkMedusa.Services.ParkingLot
 {
     public interface IParkingLotService
     {
-        Task<string> GetToken(string email, string password);
+        Task<List<ReservationDTO>> GetAvailable(DateTime start, DateTime end);
     }
 }

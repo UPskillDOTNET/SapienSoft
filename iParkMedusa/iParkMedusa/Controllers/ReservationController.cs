@@ -18,13 +18,13 @@ namespace iParkMedusa.Controllers
     public class ReservationController : ControllerBase
     {
         private readonly ReservationService _service;
-        private readonly IParkingLotService _lotService;
+        private readonly IParkingLotService _parkingLotService;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ReservationController(ReservationService service, IParkingLotService lotService, UserManager<ApplicationUser> userManager)
+        public ReservationController(ReservationService service, IParkingLotService parkingLotService, UserManager<ApplicationUser> userManager)
         {
             _service = service;
-            _lotService = lotService;
+            _parkingLotService = parkingLotService;
             _userManager = userManager;
         }
 
@@ -68,8 +68,8 @@ namespace iParkMedusa.Controllers
         [Route("~/api/reservations/available")]
         public async Task<ActionResult<IEnumerable<Reservation>>> GetAvailableSlotsToReservationDTO([FromQuery] DateTime start, [FromQuery] DateTime end)
         {
-            var token = await _lotService.GetToken("sapiensoft@sapiensoft.com", "SapienSoft123!");
-            var listReservations = new List<Reservation>();
+
+            var listReservations = await _parkingLotService.GetAvailable(start, end);
             return Ok(listReservations);
         }
 
