@@ -15,10 +15,12 @@ namespace iParkMedusa.Services
     public class ReservationService
     {
         private readonly IReservationRepository _repo;
+        
 
         public ReservationService(IReservationRepository repo)
         {
             _repo = repo;
+            
         }
 
         public async Task<IEnumerable<Reservation>> FindAll()
@@ -86,6 +88,26 @@ namespace iParkMedusa.Services
             reservation.Value = null;
             await _repo.UpdateEntityAsync(reservation);
             return reservation;
+        }
+        public  Reservation ReservationDTo2Reservation (ReservationDTO reservationAPI, int id/*, string loggedUserId*/)
+        {
+            
+
+            Reservation newReservation = new Reservation()
+            {
+                ExternalId = reservationAPI.Locator,
+                Start = reservationAPI.Start,
+                End = reservationAPI.End,
+                DateCreated = DateTime.Now,
+                Value = reservationAPI.Value,
+                SlotId = reservationAPI.SlotId,
+                Locator = reservationAPI.Locator,
+                Latitude = reservationAPI.Latitude,
+                Longitude = reservationAPI.Longitude,
+                /*UserId = loggedUserId,*/
+                ParkId = id
+            };
+            return newReservation;
         }
     }
 }

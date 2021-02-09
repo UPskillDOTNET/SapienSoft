@@ -116,19 +116,12 @@ namespace iParkMedusa.Controllers
 
                 if (reservationAPI != null)
                 {
-                    Reservation newReservation = new Reservation()
-                    {
-                        ExternalId = reservationAPI.Locator,
-                        Start = reservationAPI.Start,
-                        End = reservationAPI.End,
-                        DateCreated = DateTime.Now,
-                        Value = reservationAPI.Value,
-                        SlotId = reservationAPI.SlotId,
-                        Locator = reservationAPI.Locator,
-                        Latitude = reservationAPI.Latitude,
-                        Longitude = reservationAPI.Longitude,
-                        ParkId = id
-                    };
+                    //Falta associar o User ID á reserva mas nao esta a funcionar, o loggedUserId esta a entrar a null...
+                   /* var userName = _userManager.GetUserId(HttpContext.User);
+                    var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
+                    var loggedUserId = user.Id;*/
+
+                    var newReservation = _service.ReservationDTo2Reservation(reservationAPI, id/*, loggedUserId*/);
 
                     var x = await _service.AddReservation(newReservation);
 
