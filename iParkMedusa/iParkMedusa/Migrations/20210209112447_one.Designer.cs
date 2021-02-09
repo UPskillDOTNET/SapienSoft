@@ -10,8 +10,8 @@ using iParkMedusa.Contexts;
 namespace iParkMedusa.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210208211414_1")]
-    partial class _1
+    [Migration("20210209112447_one")]
+    partial class one
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -180,21 +180,6 @@ namespace iParkMedusa.Migrations
                         });
                 });
 
-            modelBuilder.Entity("iParkMedusa.Entities.PaymentMethod", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PaymentMethod");
-                });
-
             modelBuilder.Entity("iParkMedusa.Entities.Reservation", b =>
                 {
                     b.Property<int>("Id")
@@ -352,9 +337,6 @@ namespace iParkMedusa.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PaymentMethodId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
@@ -380,8 +362,6 @@ namespace iParkMedusa.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("PaymentMethodId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -469,17 +449,6 @@ namespace iParkMedusa.Migrations
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("TransactionType");
-                });
-
-            modelBuilder.Entity("iParkMedusa.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("iParkMedusa.Entities.PaymentMethod", "PaymentMethod")
-                        .WithMany()
-                        .HasForeignKey("PaymentMethodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PaymentMethod");
                 });
 #pragma warning restore 612, 618
         }

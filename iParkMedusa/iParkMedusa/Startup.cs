@@ -1,6 +1,8 @@
 using iParkMedusa.Contexts;
 using iParkMedusa.Models;
+using iParkMedusa.Repositories;
 using iParkMedusa.Services;
+using iParkMedusa.Services.ParkingLot;
 using iParkMedusa.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -34,6 +36,12 @@ namespace iParkMedusa
             //User Manager Service
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IParkingLotService, ParkAPIService>();
+
+            // Reservations
+            services.AddScoped<IReservationRepository, ReservationRepository>();
+            services.AddTransient<ReservationService>();
+
             //Adding DB Context with MSSQL
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(

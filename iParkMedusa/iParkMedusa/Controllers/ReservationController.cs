@@ -2,7 +2,6 @@
 using iParkMedusa.Models;
 using iParkMedusa.Services;
 using iParkMedusa.Services.ParkingLot;
-using iParkMedusa.Services.Parks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -64,7 +63,7 @@ namespace iParkMedusa.Controllers
         }
 
         // GET: api/Reservations/Available?start=...&end=...
-        [Authorize(Roles = "Administrator, Moderator, User")]
+        // [Authorize(Roles = "Administrator, Moderator, User")]
         [HttpGet]
         [Route("~/api/reservations/available")]
         public async Task<ActionResult<IEnumerable<Reservation>>> GetAvailableSlotsToReservationDTO([FromQuery] DateTime start, [FromQuery] DateTime end)
@@ -83,7 +82,7 @@ namespace iParkMedusa.Controllers
             var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
             var userId = user.Id;
 
-            var listReservations = await _service.GetReservationsAvailable(start, end);
+            var listReservations = await _lotService.GetAvailableSlots(start, end);
 
             /*
             Park2APIService y = new Park2APIService();

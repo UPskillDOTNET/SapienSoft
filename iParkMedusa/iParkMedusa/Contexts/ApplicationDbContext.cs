@@ -20,6 +20,8 @@ namespace iParkMedusa.Contexts
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<TransactionType> TransactionTypes { get; set; }
 
+        // public DbSet<PaymentMethod> PaymentMethods { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -31,6 +33,11 @@ namespace iParkMedusa.Contexts
             builder.Entity<Park>().HasData(
                 new Park { Id = 1, Name = "Park1" },
                 new Park { Id = 2, Name = "Park2" });
+            /* builder.Entity<PaymentMethod>().HasData(
+                new PaymentMethod { Id = 1, Name = "Paypal" },
+                new PaymentMethod { Id = 2, Name = "Bank Transfer" },
+                new PaymentMethod { Id = 3, Name = "Mastercard" },
+                new PaymentMethod { Id = 4, Name = "Visa" }); */
         }
     }
 }
