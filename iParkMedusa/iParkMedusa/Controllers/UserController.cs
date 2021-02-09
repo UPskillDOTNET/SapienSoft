@@ -1,5 +1,6 @@
 ﻿using iParkMedusa.Models;
 using iParkMedusa.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -33,6 +34,7 @@ namespace iParkMedusa.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpPost("addrole")]
         public async Task<IActionResult> AddRoleAsync(AddRoleModel model)
         {

@@ -14,9 +14,9 @@ namespace ParkAPI.Services
             _repo = repo;
         }
 
-        public async Task<IEnumerable<Slot>> FindAll()
+        public async Task<IEnumerable<Slot>> GetAllSlots()
         {
-            return await _repo.FindAllAsync();
+            return await _repo.GetAllSlotsAsync();
         }
 
         public async Task<Slot> GetSlotById(int id)

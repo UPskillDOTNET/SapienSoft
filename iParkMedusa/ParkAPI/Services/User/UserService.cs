@@ -113,18 +113,15 @@ namespace ParkAPI.Services.User
             {
                 return $"No Accounts Registered with {model.Email}.";
             }
-            if (await _userManager.CheckPasswordAsync(user, model.Password))
+
+            var roleExists = Enum.GetNames(typeof(Authorization.Roles)).Any(x => x.ToLower() == model.Role.ToLower());
+            if (roleExists)
             {
-                var roleExists = Enum.GetNames(typeof(Authorization.Roles)).Any(x => x.ToLower() == model.Role.ToLower());
-                if (roleExists)
-                {
-                    var validRole = Enum.GetValues(typeof(Authorization.Roles)).Cast<Authorization.Roles>().Where(x => x.ToString().ToLower() == model.Role.ToLower()).FirstOrDefault();
-                    await _userManager.AddToRoleAsync(user, validRole.ToString());
-                    return $"Added {model.Role} to user {model.Email}.";
-                }
-                return $"Role {model.Role} not found.";
+                var validRole = Enum.GetValues(typeof(Authorization.Roles)).Cast<Authorization.Roles>().Where(x => x.ToString().ToLower() == model.Role.ToLower()).FirstOrDefault();
+                await _userManager.AddToRoleAsync(user, validRole.ToString());
+                return $"Added {model.Role} to user {model.Email}.";
             }
-            return $"Incorrect Credentials for user {user.Email}.";
+            return $"Role {model.Role} not found.";
         }
     }
 }
