@@ -30,8 +30,8 @@ namespace ParkAPI.Repositories
 
         public async Task<int> DeleteReservationByIdAsync(int id)
         {
-            var slot = await _context.Slots.FindAsync(id);
-            _context.Slots.Remove(slot);
+            var reservation = await _context.Reservations.FindAsync(id);
+            _context.Reservations.Remove(reservation);
             return await _context.SaveChangesAsync();
         }
     }
