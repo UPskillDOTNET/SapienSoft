@@ -15,12 +15,14 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace iParkMedusa.Controllers
 {
-    public class TransactionController : ControllerBase
+    [Route("api/[controller]")]
+    [ApiController]
+    public class TransactionsController : ControllerBase
     {
         private readonly TransactionService _service;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public TransactionController(TransactionService service, UserManager<ApplicationUser> userManager)
+        public TransactionsController(TransactionService service, UserManager<ApplicationUser> userManager)
         {
             _service = service;
             _userManager = userManager;

@@ -15,6 +15,8 @@ namespace iParkMedusa.Entities
         public DateTime End { get; set; }
         public DateTime DateCreated { get; set; }
         public double? Value { get; set; }
+        public int SlotId { get; set; }
+        public string Locator { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public string QrCode { get; set; }

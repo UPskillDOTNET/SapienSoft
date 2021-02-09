@@ -1,5 +1,7 @@
 ﻿using iParkMedusa.Entities;
 using iParkMedusa.Models;
+using iParkMedusa.Settings;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -13,8 +15,12 @@ namespace iParkMedusa.Services.ParkingLot
 {
     public class ParkAPIService : IParkingLotService
     {
-        private readonly string username = "sapiensoft@sapiensoft.com";
-        private readonly string password = "SapienSoft123!";
+        private readonly ParkAPISecrets _parkAPISecrets;
+
+        public ParkAPIService(IOptions<ParkAPISecrets> parkAPISecrets)
+        {
+            _parkAPISecrets = parkAPISecrets.Value ?? throw new ArgumentException(nameof(parkAPISecrets));
+        }
 
         public async Task<List<ReservationDTO>> GetAvailable(DateTime start, DateTime end)
         {
@@ -23,7 +29,8 @@ namespace iParkMedusa.Services.ParkingLot
                 client.BaseAddress = new Uri("https://localhost:44365/");
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                TokenRequestModel trm = new TokenRequestModel() { Email = username, Password = password };
+
+                TokenRequestModel trm = new TokenRequestModel() { Email = _parkAPISecrets.Email, Password = _parkAPISecrets.Password };
 
                 Task<HttpResponseMessage> response = client.PostAsJsonAsync("api/user/token", trm);
                 var authenticationModel = await response.Result.Content.ReadFromJsonAsync<AuthenticationModel>();
@@ -39,6 +46,35 @@ namespace iParkMedusa.Services.ParkingLot
                 var list = JsonConvert.DeserializeObject<List<ReservationDTO>>(content);
 
                 return list;
+            }
+        }
+
+        public async Task<ReservationDTO> PostReservation(DateTime start, DateTime end, int slotId)
+        {
+            using (var client = new HttpClient())
+            {
+                // Get Token
+                client.BaseAddress = new Uri("https://localhost:44365/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                TokenRequestModel trm = new TokenRequestModel() { Email = _parkAPISecrets.Email, Password = _parkAPISecrets.Password };
+
+                Task<HttpResponseMessage> response = client.PostAsJsonAsync("api/user/token", trm);
+                var authenticationModel = await response.Result.Content.ReadFromJsonAsync<AuthenticationModel>();
+                var token = authenticationModel.Token;
+
+                // Insert Token
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+
+                // Create Json Body
+                ReservationDTO reservationDTO = new ReservationDTO() { Start = start, End = end, SlotId = slotId };
+
+                // Post Request
+                Task<HttpResponseMessage> response2 = client.PostAsJsonAsync("api/reservations/booking", reservationDTO);
+                var reservation = await response2.Result.Content.ReadFromJsonAsync<ReservationDTO>();
+
+                return reservation;
             }
         }
     }

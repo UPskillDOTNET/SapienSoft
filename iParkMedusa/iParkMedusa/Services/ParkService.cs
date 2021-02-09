@@ -16,7 +16,7 @@ namespace iParkMedusa.Services
             _repo = repo;
         }
 
-        public async Task<IEnumerable<Park>> FindAll()
+        public async Task<List<Park>> FindAll()
         {
             return await _repo.FindAllAsync();
         }

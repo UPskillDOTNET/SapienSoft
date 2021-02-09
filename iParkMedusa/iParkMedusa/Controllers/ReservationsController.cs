@@ -15,13 +15,13 @@ namespace iParkMedusa.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ReservationController : ControllerBase
+    public class ReservationsController : ControllerBase
     {
         private readonly ReservationService _service;
         private readonly IParkingLotService _parkingLotService;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ReservationController(ReservationService service, IParkingLotService parkingLotService, UserManager<ApplicationUser> userManager)
+        public ReservationsController(ReservationService service, IParkingLotService parkingLotService, UserManager<ApplicationUser> userManager)
         {
             _service = service;
             _parkingLotService = parkingLotService;
@@ -104,19 +104,41 @@ namespace iParkMedusa.Controllers
 
         }
 
-        // POST: api/Reservations
-        [HttpPost]
-        public async Task<ActionResult<Reservation>> PostReservation(Reservation reservation)
+        // POST: api/Reservations/2
+        [HttpPost("{id}")]
+        public async Task<ActionResult<Reservation>> PostReservation(ReservationDTO reservation, int id)
         {
-            try
+            var userName = _userManager.GetUserId(HttpContext.User);
+            var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
+            var userId = user.Id;
+
+            if (id == 1)
             {
-                await _service.AddReservation(reservation);
-                return CreatedAtAction("GetReservation", new { id = reservation.Id }, reservation); ;
+                var reservationAPI = await _parkingLotService.PostReservation(reservation.Start, reservation.End, reservation.SlotId);
+
+                Reservation newReservation = new Reservation()
+                {
+                    ExternalId = reservationAPI.Locator,
+                    Start = reservationAPI.Start,
+                    End = reservationAPI.End,
+                    DateCreated = DateTime.Now,
+                    Value = reservationAPI.Value,
+                    SlotId = reservationAPI.SlotId,
+                    Locator = reservationAPI.Locator,
+                    Latitude = reservationAPI.Latitude,
+                    Longitude = reservationAPI.Longitude,
+                    UserId = userId,
+                    ParkId = id
+                };
+
+                var x = await _service.AddReservation(newReservation);
+
+                return Ok(reservationAPI);
             }
-            catch (Exception e)
+            else if (id == 2)
             {
-                return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
             }
+            return BadRequest();
         }
 
         // PUT: api/Reservations/Rent/5

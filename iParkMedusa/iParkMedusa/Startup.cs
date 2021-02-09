@@ -33,6 +33,9 @@ namespace iParkMedusa
         {
             //Configuration from AppSettings
             services.Configure<JWT>(Configuration.GetSection("JWT"));
+
+            services.Configure<ParkAPISecrets>(Configuration.GetSection("ParkAPISecrets"));
+
             //User Manager Service
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddScoped<IUserService, UserService>();
@@ -40,7 +43,13 @@ namespace iParkMedusa
             //ParkingLotService
             services.AddScoped<IParkingLotService, ParkAPIService>();
 
+            //Parks
+            services.AddScoped<IParkRepository, ParkRepository>();
+            services.AddTransient<ParkService>();
 
+            //Transactions
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddTransient<TransactionService>();
 
             //Reservations
             services.AddScoped<IReservationRepository, ReservationRepository>();

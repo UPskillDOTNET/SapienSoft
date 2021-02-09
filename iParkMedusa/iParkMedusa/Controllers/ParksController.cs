@@ -24,7 +24,7 @@ namespace iParkMedusa.Controllers
 
         // GET: api/Parks
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Park>>> GetParks()
+        public async Task<ActionResult<List<Park>>> GetParks()
         {
             try
             {
