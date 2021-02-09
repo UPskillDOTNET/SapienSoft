@@ -1,0 +1,39 @@
+@startuml
+skinparam {
+ActorBorderColor Blue
+ParticipantBorderColor Blue
+ParticipantBackgroundColor #ECECEC
+ParticipantFontName Impact
+ParticipantFontSize 15
+ParticipantFontColor black
+ActorBackgroundColor #ECECEC
+ActorFontSize 17
+ActorFontName Aapex
+DatabaseBackgroundColor #ECECEC
+DatabaseBorderColor Blue
+}
+
+skinparam sequence {
+LifeLineBorderColor Blue
+LifeLineBackgroundColor #ECECEC
+BoxBorderColor Blue
+ArrowColor Blue
+}
+
+Actor User
+User -> Interface: Inicia Pedido
+box API
+Interface -> ReservationsController: Pedido HttpPatch
+ReservationsController -> ReservationService: PatchReservation(int id)
+ReservationsController -> ReservationService : PatchReservationById(id)
+ReservationService -> ReservationRepository: PatchReservationByIdAsync(id)
+database DbContext
+ReservationRepository -> DbContext: Update(reservation)
+ReservationRepository -> DbContext: SaveChangesAsync()
+DbContext--> ReservationRepository: <ActionResult>
+ReservationRepository --> ReservationService: <ActionResult>
+ReservationService --> ReservationsController: <string>
+end box
+ReservationsController --> Interface: <string>
+Interface --> User: <string>
+@enduml
