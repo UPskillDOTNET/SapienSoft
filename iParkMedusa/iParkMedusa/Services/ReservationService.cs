@@ -2,9 +2,12 @@
 using iParkMedusa.Models;
 using iParkMedusa.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace iParkMedusa.Services
@@ -44,6 +47,36 @@ namespace iParkMedusa.Services
         {
             return await _repo.DeleteReservationByIdAsync(id);
         }
+
+        public async Task<List<ReservationDTO>> GetReservationsAvailable(DateTime start, DateTime end)
+        {
+            // Code repeates for each park
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:44365/api/reservations/available");
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var parkUrl = "?start=" + start.Year + "/" + start.Month + "/" + start.Day + "T" + start.Hour + ":" + start.Minute + ":" + start.Second +
+                    "&end=" + end.Year + "/" + end.Month + "/" + end.Day + "T" + end.Hour + ":" + end.Minute + ":" + end.Second;
+
+                try
+                {
+                    HttpResponseMessage Res = await client.GetAsync(parkUrl);
+                    if (Res.IsSuccessStatusCode)
+                    {
+                        var EmpResponse = Res.Content.ReadAsStringAsync().Result;
+                        var reservations = JsonConvert.DeserializeObject<List<ReservationDTO>>(EmpResponse);
+                        return reservations;
+                    }
+                }
+                catch (Exception)
+                {
+                }
+
+            }
+        }
+
 
         public async Task<QrCodeModel> GetQrCodeInformation(int id)
         {
