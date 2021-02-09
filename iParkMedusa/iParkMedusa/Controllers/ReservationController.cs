@@ -1,6 +1,7 @@
 ﻿using iParkMedusa.Entities;
 using iParkMedusa.Models;
 using iParkMedusa.Services;
+using iParkMedusa.Services.ParkingLot;
 using iParkMedusa.Services.Parks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,11 +19,13 @@ namespace iParkMedusa.Controllers
     public class ReservationController : ControllerBase
     {
         private readonly ReservationService _service;
+        private readonly IParkingLotService _lotService;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ReservationController(ReservationService service, UserManager<ApplicationUser> userManager)
+        public ReservationController(ReservationService service, IParkingLotService lotService, UserManager<ApplicationUser> userManager)
         {
             _service = service;
+            _lotService = lotService;
             _userManager = userManager;
         }
 
