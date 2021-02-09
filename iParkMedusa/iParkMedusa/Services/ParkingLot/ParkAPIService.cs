@@ -78,11 +78,11 @@ namespace iParkMedusa.Services.ParkingLot
                     var reservation = await response2.Result.Content.ReadFromJsonAsync<ReservationDTO>();
                     return reservation;
                 }
-                else if (response2.Result.StatusCode.Equals(400))
+                else 
                 {
+                    return null;
                 }
 
-                return new ReservationDTO();
             }
         }
     }

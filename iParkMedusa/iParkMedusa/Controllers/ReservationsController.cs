@@ -114,28 +114,29 @@ namespace iParkMedusa.Controllers
             {
                 var reservationAPI = await _parkingLotService.PostReservation(reservation.Start, reservation.End, reservation.SlotId);
 
-                Reservation newReservation = new Reservation()
+                if (reservationAPI != null)
                 {
-                    ExternalId = reservationAPI.Locator,
-                    Start = reservationAPI.Start,
-                    End = reservationAPI.End,
-                    DateCreated = DateTime.Now,
-                    Value = reservationAPI.Value,
-                    SlotId = reservationAPI.SlotId,
-                    Locator = reservationAPI.Locator,
-                    Latitude = reservationAPI.Latitude,
-                    Longitude = reservationAPI.Longitude,
-                    ParkId = id
-                };
+                    Reservation newReservation = new Reservation()
+                    {
+                        ExternalId = reservationAPI.Locator,
+                        Start = reservationAPI.Start,
+                        End = reservationAPI.End,
+                        DateCreated = DateTime.Now,
+                        Value = reservationAPI.Value,
+                        SlotId = reservationAPI.SlotId,
+                        Locator = reservationAPI.Locator,
+                        Latitude = reservationAPI.Latitude,
+                        Longitude = reservationAPI.Longitude,
+                        ParkId = id
+                    };
 
-                var x = await _service.AddReservation(newReservation);
+                    var x = await _service.AddReservation(newReservation);
 
-                return Ok(reservationAPI);
-            }
-            else if (id == 2)
-            {
-            }
-            return BadRequest();
+                    return Ok(reservationAPI);
+                }
+                return BadRequest();
+            } else return BadRequest();
+            
         }
 
         // PUT: api/Reservations/Rent/5
