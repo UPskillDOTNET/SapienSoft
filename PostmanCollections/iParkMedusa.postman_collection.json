@@ -461,7 +461,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "https://localhost:44365/api/reservations/available?start=2021-05-01T12:00:00&end=2021-05-03T12:00:00",
+											"raw": "https://localhost:44365/api/reservations",
 											"protocol": "https",
 											"host": [
 												"localhost"
@@ -469,18 +469,7 @@
 											"port": "44365",
 											"path": [
 												"api",
-												"reservations",
-												"available"
-											],
-											"query": [
-												{
-													"key": "start",
-													"value": "2021-05-01T12:00:00"
-												},
-												{
-													"key": "end",
-													"value": "2021-05-03T12:00:00"
-												}
+												"reservations"
 											]
 										}
 									},
@@ -544,7 +533,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"start\": \"2021-12-01T12:00:00\",\r\n    \"end\": \"2021-12-02T12:00:00\",\r\n    \"slotId\": 2\r\n}",
+											"raw": "{\r\n    \"start\": \"2021-12-03T12:00:00\",\r\n    \"end\": \"2021-12-04T12:00:00\",\r\n    \"slotId\": 2\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -626,7 +615,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"FirstName\": \"SapienSoft\",\r\n    \"LastName\": \"Lda.\",\r\n    \"UserName\": \"SapienSoft\",\r\n    \"Email\": \"sapiensoft@sapiensoft.com\",\r\n    \"Password\": \"SapienSoft123!\"\r\n}",
+							"raw": "{\r\n    \"FirstName\": \"Alexandre\",\r\n    \"LastName\": \"Alves\",\r\n    \"UserName\": \"aalves\",\r\n    \"Email\": \"aalves@gmail.com\",\r\n    \"Password\": \"Alex123!\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -634,12 +623,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:44365/api/User/register",
+							"raw": "https://localhost:44398/api/User/register",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "44365",
+							"port": "44398",
 							"path": [
 								"api",
 								"User",
@@ -674,7 +663,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Email\": \"sapiensoft@sapiensoft.com\",\r\n    \"Password\": \"SapienSoft123!\"\r\n}",
+							"raw": "{\r\n    \"Email\": \"aalves@gmail.com\",\r\n    \"Password\": \"Alex123!\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -682,12 +671,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:44365/api/User/token",
+							"raw": "https://localhost:44398/api/User/token",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "44365",
+							"port": "44398",
 							"path": [
 								"api",
 								"User",
@@ -722,7 +711,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Email\": \"sapiensoft@sapiensoft.com\",\r\n    \"Password\": \"SapienSoft123!\"\r\n}",
+							"raw": "{\r\n    \"Email\": \"admin@publicpark.com\",\r\n    \"Password\": \"Admin123!\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -769,11 +758,21 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhYWx2ZXMiLCJqdGkiOiJkY2Y3ZjhjOS0yMjhjLTQ1OTEtYTJkMC00YmYzOGRkYjQ4NWIiLCJlbWFpbCI6ImFhbHZlc0BnbWFpbC5jb20iLCJ1aWQiOiI1ZjNjZDQyZS0wZjVhLTRiMDktYTU0ZC1iOWQ5Zjg3NmQ2NmMiLCJyb2xlcyI6IlVzZXIiLCJleHAiOjE2MTI4Nzg2NjIsImlzcyI6IlNlY3VyZUFwaSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.op73AMGjFxukD7-NWuUSd7mfHfF4DNqObKUdM3FIsqQ",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Email\": \"sapiensoft@sapiensoft.com\",\r\n    \"Password\": \"SapienSoft123!\"\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -781,16 +780,26 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:44365/api/User/token",
+							"raw": "https://localhost:44398/api/reservations/available?start=2021-05-01T12:00:00&end=2021-05-03T12:00:00",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "44365",
+							"port": "44398",
 							"path": [
 								"api",
-								"User",
-								"token"
+								"reservations",
+								"available"
+							],
+							"query": [
+								{
+									"key": "start",
+									"value": "2021-05-01T12:00:00"
+								},
+								{
+									"key": "end",
+									"value": "2021-05-03T12:00:00"
+								}
 							]
 						}
 					},
@@ -831,7 +840,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"start\": \"2021-05-01T12:00:00\",\r\n    \"end\": \"2021-05-03T12:00:00\",\r\n    \"dateCreated\": \"2021-02-09T14:39:32.3033498+00:00\",\r\n    \"value\": 48,\r\n    \"slotId\": 1,\r\n    \"locator\": \"A01\",\r\n    \"latitude\": 41.17863016255019,\r\n    \"longitude\": -8.608977694694504,\r\n    \"userId\": \"ee1000d3-04d7-413c-a83f-84ceea6b6e72\"\r\n}",
+							"raw": "{\r\n    \"start\": \"2021-05-04T12:00:00\",\r\n    \"end\": \"2021-05-07T12:00:00\",\r\n    \"slotId\": 3\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -839,7 +848,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:44398/api/reservations",
+							"raw": "https://localhost:44398/api/reservations/1",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -847,7 +856,8 @@
 							"port": "44398",
 							"path": [
 								"api",
-								"reservations"
+								"reservations",
+								"1"
 							]
 						}
 					},
