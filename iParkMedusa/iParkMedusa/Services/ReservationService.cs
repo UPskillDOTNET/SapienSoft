@@ -14,46 +14,48 @@ namespace iParkMedusa.Services
 {
     public class ReservationService
     {
-        private readonly IReservationRepository _repo;
+        private readonly IReservationRepository _reservationRepo;
+        private readonly ITransactionRepository _transactionRepo;
         
 
-        public ReservationService(IReservationRepository repo)
+        public ReservationService(IReservationRepository reservationRepo, ITransactionRepository transactionRepo)
         {
-            _repo = repo;
+            _reservationRepo = reservationRepo;
+            _transactionRepo = transactionRepo;
             
         }
 
         public async Task<IEnumerable<Reservation>> GetAllReservations()
         {
-            return await _repo.GetAllReservationsAsync();
+            return await _reservationRepo.GetAllReservationsAsync();
         }
 
         public async Task<Reservation> GetReservationById(int id)
         {
-            return await _repo.GetReservationByIdAsync(id);
+            return await _reservationRepo.GetReservationByIdAsync(id);
         }
 
         public async Task<int> UpdateReservation(Reservation reservation)
         {
-            return await _repo.UpdateEntityAsync(reservation);
+            return await _reservationRepo.UpdateEntityAsync(reservation);
         }
 
         public async Task<int> AddReservation(Reservation reservation)
         {
             
 
-            return await _repo.AddEntityAsync(reservation);
+            return await _reservationRepo.AddEntityAsync(reservation);
         }
 
         public async Task<int> DeleteReservationbyId(int id)
         {
-            return await _repo.DeleteReservationByIdAsync(id);
+            return await _reservationRepo.DeleteReservationByIdAsync(id);
         }
 
        
         public async Task<QrCodeModel> GetQrCodeInformation(int id)
         {
-            var reservation = await _repo.GetReservationByIdAsync(id);
+            var reservation = await _reservationRepo.GetReservationByIdAsync(id);
          
             var qrCodeInformation = new QrCodeModel()
             {
@@ -73,20 +75,20 @@ namespace iParkMedusa.Services
 
         public async Task<Reservation> RentReservation(int reservationId, double rentValue)
         {
-            var reservation = await _repo.GetReservationByIdAsync(reservationId);
+            var reservation = await _reservationRepo.GetReservationByIdAsync(reservationId);
             reservation.AvailableToRent = true;
             reservation.RentValue = rentValue;
-            await _repo.UpdateEntityAsync(reservation);
+            await _reservationRepo.UpdateEntityAsync(reservation);
             return reservation;
         }
 
         public async Task<Reservation> RentedReservation(int reservationId, string userId)
         {
-            var reservation = await _repo.GetReservationByIdAsync(reservationId);
+            var reservation = await _reservationRepo.GetReservationByIdAsync(reservationId);
             reservation.UserId = userId;
             reservation.AvailableToRent = false;
-            reservation.Value = null;
-            await _repo.UpdateEntityAsync(reservation);
+            reservation.Value = 0;
+            await _reservationRepo.UpdateEntityAsync(reservation);
             return reservation;
         }
 
@@ -107,6 +109,19 @@ namespace iParkMedusa.Services
                 ParkId = parkId
             };
             return newReservation;
+        }
+
+        public async Task<bool> UserHasBalance(ApplicationUser user, double value)
+        {
+            var userBalance = await _transactionRepo.GetBalanceByUserIdAsync(user.Id);
+            if (userBalance >= value)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

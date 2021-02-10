@@ -94,9 +94,9 @@ namespace iParkMedusa.Controllers
         [Authorize]
         [HttpGet]
         [Route("~/api/Reservations/qrcode/{id}")]
-        public async Task<ActionResult<QrCodeModel>> GetQrCodeInformation(int id)
+        public async Task<ActionResult<QrCodeModel>> GetQrCodeInformation(int reservationId)
         {
-            return await _service.GetQrCodeInformation(id);
+            return await _service.GetQrCodeInformation(reservationId);
         }
 
 
@@ -138,13 +138,23 @@ namespace iParkMedusa.Controllers
                     var userId = user.Id;
 
                     var newReservation = _service.ReservationDTO2Reservation(reservationAPI, idPark, userId);
-                    newReservation.QrCode = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://localhost:44398/api/reservations/qrcode/" + newReservation.Id;
-                    var x = await _service.AddReservation(newReservation);
+                    if (await _service.UserHasBalance(user, newReservation.Value))
+                    {
+                        newReservation.QrCode = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://localhost:44398/api/reservations/qrcode/" + newReservation.Id;
+                        var x = await _service.AddReservation(newReservation);
+                        return Ok(newReservation);
+                    }
+                    else
+                    {
+                        return StatusCode(402);
+                    }
 
-                    return Ok(newReservation);
+                    
                 }
                 return BadRequest();
-            } else return BadRequest();
+            }
+            else
+                return BadRequest();
             
         }
 
