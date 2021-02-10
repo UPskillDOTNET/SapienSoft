@@ -138,8 +138,8 @@ namespace iParkMedusa.Controllers
                     var newReservation = _service.ReservationDTO2Reservation(reservationAPI, idPark, userId);
                     if (await _service.UserHasBalance(user, newReservation.Value))
                     {
-                        newReservation.QrCode = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://localhost:44398/api/reservations/qrcode/" + newReservation.Id;
-                        var x = await _service.AddReservation(newReservation);
+                        newReservation = _service.GenerateQrCode(newReservation);
+                        await _service.AddReservation(newReservation);
                         return Ok(newReservation);
                     }
                     else

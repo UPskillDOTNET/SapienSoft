@@ -51,6 +51,12 @@ namespace iParkMedusa.Services
             return await _reservationRepo.DeleteReservationByIdAsync(id);
         }
 
+        public Reservation GenerateQrCode(Reservation reservation)
+        {
+            reservation.QrCode = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://localhost:44398/api/reservations/qrcode/" + reservation.Id;
+            return reservation;
+        }
+
         public async Task<QrCodeModel> GetQrCodeInformation(int id)
         {
             var reservation = await _reservationRepo.GetReservationByIdAsync(id);
