@@ -89,10 +89,9 @@ namespace iParkMedusa.Services
             await _repo.UpdateEntityAsync(reservation);
             return reservation;
         }
-        public  Reservation ReservationDTo2Reservation (ReservationDTO reservationAPI, int id/*, string loggedUserId*/)
-        {
-            
 
+        public  Reservation ReservationDTo2Reservation (ReservationDTO reservationAPI, int userId)
+        {
             Reservation newReservation = new Reservation()
             {
                 ExternalId = reservationAPI.Locator,
@@ -105,7 +104,7 @@ namespace iParkMedusa.Services
                 Latitude = reservationAPI.Latitude,
                 Longitude = reservationAPI.Longitude,
                 /*UserId = loggedUserId,*/
-                ParkId = id
+                ParkId = userId
             };
             return newReservation;
         }

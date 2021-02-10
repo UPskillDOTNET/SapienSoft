@@ -104,24 +104,24 @@ namespace iParkMedusa.Controllers
 
         }
 
-        // POST: api/Reservations/2
-        [HttpPost("{id}")]
-        public async Task<ActionResult<Reservation>> PostReservation(ReservationDTO reservation, int id)
+        // POST: api/Reservations/1
+        [Authorize(Roles ="Administrator, Moderator, User")]
+        [HttpPost("{idPark}")]
+        public async Task<ActionResult<Reservation>> PostReservation(ReservationDTO reservation, int idPark)
         {
 
 
-            if (id == 1)
+            if (idPark == 1)
             {
                 var reservationAPI = await _parkingLotService.PostReservation(reservation.Start, reservation.End, reservation.SlotId);
 
                 if (reservationAPI != null)
                 {
-                    //Falta associar o User ID á reserva mas nao esta a funcionar, o loggedUserId esta a entrar a null...
-                   /* var userName = _userManager.GetUserId(HttpContext.User);
+                    var userName = _userManager.GetUserId(HttpContext.User);
                     var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
-                    var loggedUserId = user.Id;*/
+                    var loggedUserId = user.Id;
 
-                    var newReservation = _service.ReservationDTo2Reservation(reservationAPI, id/*, loggedUserId*/);
+                    var newReservation = _service.ReservationDTo2Reservation(reservationAPI, idPark);
                     newReservation.QrCode = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://localhost:44398/api/reservations/qrcode/" + newReservation.Id;
                     var x = await _service.AddReservation(newReservation);
 
