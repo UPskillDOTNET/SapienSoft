@@ -14,9 +14,8 @@ namespace iParkMedusa.Repositories
         {
         }
 
-        public async Task<IEnumerable<Park>> GetAllSlotsAsync()
+        public async Task<IEnumerable<Park>> GetAllParksAsync()
         {
-            //return await Task.FromResult<List<Slot>>(_context.Slots.Include(s => s.Status).ToList());
             return await _context.Parks.ToListAsync();
         }
 
@@ -27,8 +26,8 @@ namespace iParkMedusa.Repositories
 
         public async Task<int> DeleteParkByIdAsync(int id)
         {
-            var slot = await _context.Parks.FindAsync(id);
-            _context.Parks.Remove(slot);
+            var park = await _context.Parks.FindAsync(id);
+            _context.Parks.Remove(park);
             return await _context.SaveChangesAsync();
         }
     }
