@@ -125,8 +125,6 @@ namespace iParkMedusa.Controllers
         [HttpPost("{idPark}")]
         public async Task<ActionResult<Reservation>> PostReservation(ReservationDTO reservation, int idPark)
         {
-
-
             if (idPark == 1)
             {
                 var reservationAPI = await _parkingLotService.PostReservation(reservation.Start, reservation.End, reservation.SlotId);
@@ -148,14 +146,13 @@ namespace iParkMedusa.Controllers
                     {
                         return StatusCode(402);
                     }
-
-                    
                 }
                 return BadRequest();
             }
             else
+            {
                 return BadRequest();
-            
+            }
         }
 
         // PUT: api/Reservations/Rent/5

@@ -44,8 +44,6 @@ namespace iParkMedusa.Services
         {
                 var balance = await _repo.GetBalanceByUserIdAsync(userId);
                 return balance;
-            
-            
         }
     }
 }

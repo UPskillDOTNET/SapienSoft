@@ -91,6 +91,7 @@ namespace iParkMedusa.Controllers
             {
                 return BadRequest();
             }
+
             try
             {
                 await _service.UpdateTransaction(transaction);

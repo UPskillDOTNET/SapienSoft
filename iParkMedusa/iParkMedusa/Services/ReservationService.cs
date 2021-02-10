@@ -17,7 +17,6 @@ namespace iParkMedusa.Services
         private readonly IReservationRepository _reservationRepo;
         private readonly ITransactionRepository _transactionRepo;
         
-
         public ReservationService(IReservationRepository reservationRepo, ITransactionRepository transactionRepo)
         {
             _reservationRepo = reservationRepo;
@@ -52,7 +51,6 @@ namespace iParkMedusa.Services
             return await _reservationRepo.DeleteReservationByIdAsync(id);
         }
 
-       
         public async Task<QrCodeModel> GetQrCodeInformation(int id)
         {
             var reservation = await _reservationRepo.GetReservationByIdAsync(id);
