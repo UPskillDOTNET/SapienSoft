@@ -47,6 +47,10 @@ namespace iParkMedusa
             services.AddScoped<IParkRepository, ParkRepository>();
             services.AddTransient<ParkService>();
 
+            //PaymentMethods
+            services.AddScoped<IPaymentMethodRepository, PaymentMethodRepository>();
+            services.AddTransient<PaymentMethodService>();
+
             //Transactions
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddTransient<TransactionService>();
