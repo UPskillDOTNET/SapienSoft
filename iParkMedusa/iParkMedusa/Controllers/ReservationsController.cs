@@ -68,9 +68,25 @@ namespace iParkMedusa.Controllers
         [Route("~/api/reservations/available")]
         public async Task<ActionResult<IEnumerable<Reservation>>> GetAvailableSlotsToReservationDTO([FromQuery] DateTime start, [FromQuery] DateTime end)
         {
+            // Dates validation (DateTime default value "0001-01-01 00:00:00")
+            if (start > end)
+            {
+                return BadRequest($"DateTime 'end' ({end}) must be greater than DateTime 'start' ({start}).");
+            }
+            else if (start < DateTime.Now)
+            {
+                return BadRequest($"DateTime 'start' ({start}) must happen in the future.");
+            }
 
-            var listReservations = await _parkingLotService.GetAvailable(start, end);
-            return Ok(listReservations);
+            try
+            {
+                var listReservations = await _parkingLotService.GetAvailable(start, end);
+                return Ok(listReservations);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
+            }
         }
 
 
