@@ -23,9 +23,9 @@ namespace iParkMedusa.Services
             
         }
 
-        public async Task<IEnumerable<Reservation>> FindAll()
+        public async Task<IEnumerable<Reservation>> GetAllReservations()
         {
-            return await _repo.FindAllAsync();
+            return await _repo.GetAllReservationsAsync();
         }
 
         public async Task<Reservation> GetReservationById(int id)
@@ -90,7 +90,7 @@ namespace iParkMedusa.Services
             return reservation;
         }
 
-        public  Reservation ReservationDTo2Reservation (ReservationDTO reservationAPI, int userId)
+        public  Reservation ReservationDTO2Reservation (ReservationDTO reservationAPI, int parkId, string userId)
         {
             Reservation newReservation = new Reservation()
             {
@@ -103,8 +103,8 @@ namespace iParkMedusa.Services
                 Locator = reservationAPI.Locator,
                 Latitude = reservationAPI.Latitude,
                 Longitude = reservationAPI.Longitude,
-                /*UserId = loggedUserId,*/
-                ParkId = userId
+                UserId = userId,
+                ParkId = parkId
             };
             return newReservation;
         }

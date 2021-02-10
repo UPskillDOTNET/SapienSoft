@@ -34,7 +34,7 @@ namespace iParkMedusa.Controllers
         {
             try
             {
-                var parks = await _service.FindAll();
+                var parks = await _service.GetAllReservations();
                 return Ok(parks);
             }
             catch (Exception e)
@@ -135,9 +135,9 @@ namespace iParkMedusa.Controllers
                 {
                     var userName = _userManager.GetUserId(HttpContext.User);
                     var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
-                    var loggedUserId = user.Id;
+                    var userId = user.Id;
 
-                    var newReservation = _service.ReservationDTo2Reservation(reservationAPI, idPark);
+                    var newReservation = _service.ReservationDTO2Reservation(reservationAPI, idPark, userId);
                     newReservation.QrCode = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://localhost:44398/api/reservations/qrcode/" + newReservation.Id;
                     var x = await _service.AddReservation(newReservation);
 

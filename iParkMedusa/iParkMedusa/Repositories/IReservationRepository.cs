@@ -8,6 +8,7 @@ namespace iParkMedusa.Repositories
 {
     public interface IReservationRepository : IBaseRepository<Reservation>
     {
+        Task<IEnumerable<Reservation>> GetAllReservationsAsync();
         Task<Reservation> GetReservationByIdAsync(int id);
         Task<int> DeleteReservationByIdAsync(int id);
     }
