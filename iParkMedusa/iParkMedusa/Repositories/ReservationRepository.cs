@@ -17,12 +17,12 @@ namespace iParkMedusa.Repositories
         public async Task<IEnumerable<Reservation>> GetAllReservationsAsync()
         {
             //return await Task.FromResult<List<Slot>>(_context.Slots.Include(s => s.Status).ToList());
-            return await _context.Reservations.ToListAsync();
+            return await _context.Reservations.Include(u => u.ApplicationUser).Include(p => p.Park).ToListAsync();
         }
 
         public async Task<Reservation> GetReservationByIdAsync(int id)
         {
-            return await _context.Reservations.Where(s => s.Id.Equals(id)).Include(u => u.ApplicationUser).Include(p => p.Park).FirstOrDefaultAsync();
+            return await _context.Reservations.Where(s => s.Id.Equals(id)).Include(u => u.ApplicationUser).Include(p => p.Park).SingleOrDefaultAsync();
         }
 
         public async Task<int> DeleteReservationByIdAsync(int id)

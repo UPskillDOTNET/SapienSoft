@@ -34,7 +34,7 @@ namespace iParkMedusa.Controllers
         {
             try
             {
-                var parks = await _service.FindAll();
+                var parks = await _service.GetAllReservations();
                 return Ok(parks);
             }
             catch (Exception e)
@@ -68,9 +68,25 @@ namespace iParkMedusa.Controllers
         [Route("~/api/reservations/available")]
         public async Task<ActionResult<IEnumerable<Reservation>>> GetAvailableSlotsToReservationDTO([FromQuery] DateTime start, [FromQuery] DateTime end)
         {
+            // Dates validation (DateTime default value "0001-01-01 00:00:00")
+            if (start > end)
+            {
+                return BadRequest($"DateTime 'end' ({end}) must be greater than DateTime 'start' ({start}).");
+            }
+            else if (start < DateTime.Now)
+            {
+                return BadRequest($"DateTime 'start' ({start}) must happen in the future.");
+            }
 
-            var listReservations = await _parkingLotService.GetAvailable(start, end);
-            return Ok(listReservations);
+            try
+            {
+                var listReservations = await _parkingLotService.GetAvailable(start, end);
+                return Ok(listReservations);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
+            }
         }
 
 
@@ -119,9 +135,9 @@ namespace iParkMedusa.Controllers
                 {
                     var userName = _userManager.GetUserId(HttpContext.User);
                     var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
-                    var loggedUserId = user.Id;
+                    var userId = user.Id;
 
-                    var newReservation = _service.ReservationDTo2Reservation(reservationAPI, idPark);
+                    var newReservation = _service.ReservationDTO2Reservation(reservationAPI, idPark, userId);
                     newReservation.QrCode = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://localhost:44398/api/reservations/qrcode/" + newReservation.Id;
                     var x = await _service.AddReservation(newReservation);
 
