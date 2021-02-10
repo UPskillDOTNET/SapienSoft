@@ -1,0 +1,100 @@
+@startuml
+skinparam class {
+BackgroundColor #ECECEC
+ArrowColor Blue
+BorderColor Blue
+}
+
+class Reservation{
+- Id
+- ExternalId
+- Start
+- End
+- DateCreated
+- Value
+- SlotId
+- Locator
+- Latitude
+- Longitude
+- QrCode
+- AvailableToRent
+- RentValue
+- UserId
+- ParkId
+GetReservations()
+GetReservation()
+GetAvailableSlotsToReservationDTO()
+GetQRCodeInformation()
+PutReservation()
+PostReservation()
+RentReservation()
+RentedReservation()
+DeleteReservation()
+}
+
+class Park{
+- Id
+- Name
+GetParks()
+GetPark()
+PutPark()
+PostPark()
+DeletePark()
+}
+
+class PaymentMethod{
+- Id
+- Name
+GetPaymentMethods()
+GetPaymentMethod()
+PutPaymentMethod()
+PostPaymentMethod()
+DeletePaymentMethod()
+}
+
+class Transaction {
+- Id
+- Date
+- Value
+- Balance
+- TransactionTypeId
+- UserId
+GetTransactions()
+GetTransaction()
+GetTransactionByUserId()
+PutTransaction()
+PostTransaction()
+GetBalance()
+}
+
+class TransactionType {
+- Id
+- Name
+GetTransactionTypes()
+GetTransactionType()
+PutTransactionType()
+PostTransactionType()
+DeleteTransactionType()
+}
+
+
+class ApplicationUser{
+- FirstName
+- LastName
+- UserName
+- Email
+- Password
+RegisterAsync()
+TokenAsync()
+AddRoleAsync()
+}
+
+
+Reservation"*" -- "1" Park : > tem
+Reservation"*" -right- "1" ApplicationUser: > tem
+
+Transaction"*" -down- "1" TransactionType : > tem
+Transaction"*" -left- "1" ApplicationUser: > tem
+
+ApplicationUser"*" -- "1" PaymentMethod : > tem
+@enduml
