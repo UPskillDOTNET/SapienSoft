@@ -253,6 +253,13 @@ namespace iParkMedusa.Controllers
         {
             try
             {
+                var reservation = await _service.GetReservationById(id);
+                var transaction = new Transaction()
+                {
+                    Value = reservation.Value,
+                    TransactionTypeId = 3
+                };
+                await _transactionService.CreateTransaction(transaction, reservation.UserId);
                 await _service.DeleteReservationbyId(id);
                 return NoContent();
             }

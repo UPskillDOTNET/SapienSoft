@@ -151,9 +151,7 @@ namespace iParkMedusa.Controllers
         [HttpPost]
         public async Task<ActionResult> AddFunds(Transaction transaction)
         {
-            //"value" : -100
-            //"TransactionTypeID": 1
-            //
+            
            
             var userName = _userManager.GetUserId(HttpContext.User);
             var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
