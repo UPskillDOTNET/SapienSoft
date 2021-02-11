@@ -113,6 +113,8 @@ namespace ParkAPI.Services
                 UserId = userId
             };
             await _reservationRepository.AddEntityAsync(reservation);
+            
+            var id = reservation.Id;
             ReservationDTO reservationDTO = new ReservationDTO()
             {
                 Start = start,
@@ -123,7 +125,8 @@ namespace ParkAPI.Services
                 Locator = slot.Locator,
                 Latitude = slot.Latitude,
                 Longitude = slot.Longitude,
-                UserId = userId
+                UserId = userId,
+                ExternalId = reservation.Id
             };
             return reservationDTO;
         }

@@ -8,7 +8,7 @@ namespace iParkMedusa.Models
     public class QrCodeModel
     {
         public int Id { get; set; }
-        public string ExternalId { get; set; }
+        public int ExternalId { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public double Latitude { get; set; }

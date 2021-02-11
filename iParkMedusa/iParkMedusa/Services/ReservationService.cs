@@ -101,7 +101,7 @@ namespace iParkMedusa.Services
         {
             Reservation newReservation = new Reservation()
             {
-                ExternalId = reservationAPI.Locator,
+                ExternalId = reservationAPI.ExternalId,
                 Start = reservationAPI.Start,
                 End = reservationAPI.End,
                 DateCreated = DateTime.Now,

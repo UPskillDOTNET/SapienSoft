@@ -78,14 +78,48 @@ namespace iParkMedusa.Services.ParkingLot
                     var reservation = await response2.Result.Content.ReadFromJsonAsync<ReservationDTO>();
                     return reservation;
                 }
-                else 
+                else
                 {
                     return null;
                 }
 
             }
-            
+
         }
-        
+        public async Task<string> CancelReservation(int id)
+        {
+            
+            using (var client = new HttpClient())
+            {
+                // Get Token
+                client.BaseAddress = new Uri("https://localhost:44365/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                TokenRequestModel trm = new TokenRequestModel() { Email = _parkAPISecrets.Email, Password = _parkAPISecrets.Password };
+
+                Task<HttpResponseMessage> response = client.PostAsJsonAsync("api/user/token", trm);
+                var authenticationModel = await response.Result.Content.ReadFromJsonAsync<AuthenticationModel>();
+                var token = authenticationModel.Token;
+
+                // Insert Token
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+
+
+                // Post Request
+                Task<HttpResponseMessage> response2 = client.DeleteAsync("api/reservations/" + id);
+                if (response2.Result.IsSuccessStatusCode)
+                {
+
+                    return "Deleted";
+                }
+                else
+                {
+                    return "Not Deleted";
+                }
+            }
+
+        }
     }
 }
+

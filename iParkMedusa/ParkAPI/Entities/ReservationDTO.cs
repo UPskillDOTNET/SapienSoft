@@ -13,5 +13,6 @@ namespace ParkAPI.Entities
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public string UserId { get; set; }
+        public int ExternalId { get; set; }
     }
 }
