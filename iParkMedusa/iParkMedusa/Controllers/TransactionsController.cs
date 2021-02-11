@@ -3,15 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using iParkMedusa.Controllers;
 using iParkMedusa.Entities;
 using iParkMedusa.Services;
-
-
+using System.Net.Http;
+using System.Net.Http.Json;
 using iParkMedusa.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using System.Text;
 
 namespace iParkMedusa.Controllers
 {
@@ -123,6 +123,7 @@ namespace iParkMedusa.Controllers
         [Route("~/api/transactions/user/balance")]
         public async Task<ActionResult<double>> GetBalance()
         {
+
             var userName = _userManager.GetUserId(HttpContext.User);
             var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
             var loggedUserId = user.Id;
@@ -141,6 +142,62 @@ namespace iParkMedusa.Controllers
                 }
             }
             else return Unauthorized();
+        }
+        [Authorize(Roles = "User")]
+        [Route("~/api/transactions/user/addfunds")]
+        [HttpPost]
+        public async Task<ActionResult> PostCharge()
+        {
+            var userName = _userManager.GetUserId(HttpContext.User);
+            var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
+            var loggedUserId = user.Id;
+            // Pedido de token
+            //Cria Modelo de "registo"
+            var model = new StripeModel()
+            {
+                CardNumber = "4242424242424242",
+                Cvc = 123,
+                ExpMonth = 8,
+                ExpYear = 2022,
+                Test = "true"
+            };
+            //Formata pedido HTTP
+            var Json = Newtonsoft.Json.JsonConvert.SerializeObject(model);
+            var data = new StringContent(Json, Encoding.UTF8, "application/json");
+            var url = "https://noodlio-pay.p.rapidapi.com/tokens/create";
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.Add("x-rapidapi-key", "e86d877af5msh19b8acc8a01228fp14d306jsn02e68f5b3ff1");
+            client.DefaultRequestHeaders.Add("x-rapidapi-host", "noodlio-pay.p.rapidapi.com");
+            //Faz Post
+            var response = await client.PostAsync(url, data);
+            //Recebe Token
+            var Token = await response.Content.ReadAsStringAsync();
+            //Cria pedido de carregamento com o novo token
+            var Payment = new PaymentModel()
+            {
+                Amount = 100,
+                Source = Token,
+                Currency = "Eu",
+                Stripe_account = "acct_12abcDEF34GhIJ5K",
+                Description = "This is only a test",
+                Test = "true",
+            };
+            var NewUrl = "https://noodlio-pay.p.rapidapi.com/charge/token";
+            //Faz post de pedido de carregamento
+            Task<HttpResponseMessage> response2 = client.PostAsJsonAsync(NewUrl, Payment);
+            //New transaction
+            var CurrentBalance = await _service.GetBalanceByUserId(loggedUserId);
+            var NewTransaction = new Transaction()
+            {
+                Date = DateTime.Now,
+                Value = Payment.Amount,
+                Balance = CurrentBalance + Payment.Amount,
+                TransactionTypeId = 2,
+                UserId = loggedUserId
+            };
+            await _service.AddTransaction(NewTransaction);
+            return Ok( NewTransaction.Value +" were added to user's " + userName + " wallet. New balance = " + NewTransaction.Balance + ".");
+
         }
     }
 }
