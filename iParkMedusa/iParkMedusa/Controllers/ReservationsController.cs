@@ -1,4 +1,7 @@
-﻿using iParkMedusa.Entities;
+﻿using FluentEmail.Core;
+using FluentEmail.Razor;
+using FluentEmail.Smtp;
+using iParkMedusa.Entities;
 using iParkMedusa.Models;
 using iParkMedusa.Services;
 using iParkMedusa.Services.ParkingLot;
@@ -8,7 +11,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace iParkMedusa.Controllers
@@ -138,6 +145,7 @@ namespace iParkMedusa.Controllers
                     var userId = user.Id;
 
                     var newReservation = _service.ReservationDTO2Reservation(reservationAPI, idPark, userId);
+
                     if (await _service.UserHasBalance(user, newReservation.Value))
                     {
                         newReservation = _service.GenerateQrCode(newReservation);
@@ -148,6 +156,43 @@ namespace iParkMedusa.Controllers
                         };
                         await _transactionService.CreateTransaction(transaction, userId);
                         await _service.AddReservation(newReservation);
+
+                        // send email with ticket 
+                        string imageUrl = newReservation.QrCode;
+                        var webClient = new WebClient();
+                        byte[] imageBytes = webClient.DownloadData(imageUrl);
+                        MemoryStream ms = new MemoryStream(imageBytes);
+                        LinkedResource image = new LinkedResource(ms, MediaTypeNames.Image.Jpeg) { ContentId = "myimage" };
+
+                        using (MailMessage mail = new MailMessage())
+                        using (SmtpClient sender = new SmtpClient("smtp.gmail.com", 587))
+                        {
+                            sender.EnableSsl = true;
+                            sender.Credentials = new NetworkCredential("sapiensoft.upskill@gmail.com", "Sapien123!");
+                            sender.DeliveryMethod = SmtpDeliveryMethod.Network;
+
+                            String body = @"
+                                        <html>
+                                            <body>
+                                                <p> Here's your ticket QR code:</p>
+                                                <p> <img src=""cid:myimage"" /> </p>
+                                                <p> ~ The SapienSoft Team </p>
+                                            </body>
+                                        </html>
+                                        ";
+
+                            AlternateView view = AlternateView.CreateAlternateViewFromString(body, null, "text/html");
+                            view.LinkedResources.Add(image);
+
+                            mail.IsBodyHtml = true;
+                            mail.AlternateViews.Add(view);
+                            mail.From = new MailAddress("sapiensoft.upskill@gmail.com");
+                            mail.To.Add("sapiensoft.upskill@gmail.com");
+                            mail.Subject = "Reservation " + newReservation.Id + " is completed";
+
+                            sender.Send(mail);
+                        }
+
                         return Ok(newReservation);
                     }
                     else
