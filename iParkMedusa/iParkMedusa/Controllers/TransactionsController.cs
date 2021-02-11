@@ -107,9 +107,12 @@ namespace iParkMedusa.Controllers
         [HttpPost]
         public async Task<ActionResult<Transaction>> PostTransaction(Transaction transaction)
         {
+            var userName = _userManager.GetUserId(HttpContext.User);
+            var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
+            var id = user.Id;
             try
             {
-                await _service.AddTransaction(transaction);
+                await _service.AddTransaction(transaction, id);
                 return CreatedAtAction("GetSlot", new { id = transaction.Id }, transaction); ;
             }
             catch (Exception e)
@@ -146,57 +149,43 @@ namespace iParkMedusa.Controllers
         [Authorize(Roles = "User")]
         [Route("~/api/transactions/user/addfunds")]
         [HttpPost]
-        public async Task<ActionResult> PostCharge()
+        public async Task<ActionResult> AddFunds(Transaction transaction)
         {
             var userName = _userManager.GetUserId(HttpContext.User);
             var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
-            var loggedUserId = user.Id;
-            // Pedido de token
-            //Cria Modelo de "registo"
-            var model = new StripeModel()
+            var id= user.Id;
+            var Funds = await _service.AddTransaction(transaction, id);
+
+            return Ok( Funds.Value +" were added to user's " + userName + " wallet. New balance = " + Funds.Balance + ".");
+
+        }
+        [Authorize(Roles = "User")]
+        [Route("~/api/transactions/user/addfunds/stripe")]
+        [HttpPost]
+        public async Task<ActionResult> AddFundsStripe(Transaction transaction)
+        {
+            var userName = _userManager.GetUserId(HttpContext.User);
+            var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
+            var id = user.Id;
+            var StripeModel =  _service.GetStripeModel();
+            var token = await _service.GetStripeToken(StripeModel);
+            var amount = transaction.Value;
+            var payment = _service.CreatePaymentModel(token, amount);
+            var response = await _service.PostFundsStripe(payment);
+            try
             {
-                CardNumber = "4242424242424242",
-                Cvc = 123,
-                ExpMonth = 8,
-                ExpYear = 2022,
-                Test = "true"
-            };
-            //Formata pedido HTTP
-            var Json = Newtonsoft.Json.JsonConvert.SerializeObject(model);
-            var data = new StringContent(Json, Encoding.UTF8, "application/json");
-            var url = "https://noodlio-pay.p.rapidapi.com/tokens/create";
-            using var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("x-rapidapi-key", "e86d877af5msh19b8acc8a01228fp14d306jsn02e68f5b3ff1");
-            client.DefaultRequestHeaders.Add("x-rapidapi-host", "noodlio-pay.p.rapidapi.com");
-            //Faz Post
-            var response = await client.PostAsync(url, data);
-            //Recebe Token
-            var Token = await response.Content.ReadAsStringAsync();
-            //Cria pedido de carregamento com o novo token
-            var Payment = new PaymentModel()
+                if (response.IsSuccessStatusCode)
+
+                    await _service.AddTransaction(transaction, id);
+                    var balance = await _service.GetBalanceByUserId(id);
+                    return Ok(transaction.Value + " were added to user's " + userName + " wallet. New balance = " + balance + ".");
+            }
+            catch (Exception e)
             {
-                Amount = 100,
-                Source = Token,
-                Currency = "Eu",
-                Stripe_account = "acct_12abcDEF34GhIJ5K",
-                Description = "This is only a test",
-                Test = "true",
-            };
-            var NewUrl = "https://noodlio-pay.p.rapidapi.com/charge/token";
-            //Faz post de pedido de carregamento
-            Task<HttpResponseMessage> response2 = client.PostAsJsonAsync(NewUrl, Payment);
-            //New transaction
-            var CurrentBalance = await _service.GetBalanceByUserId(loggedUserId);
-            var NewTransaction = new Transaction()
-            {
-                Date = DateTime.Now,
-                Value = Payment.Amount,
-                Balance = CurrentBalance + Payment.Amount,
-                TransactionTypeId = 2,
-                UserId = loggedUserId
-            };
-            await _service.AddTransaction(NewTransaction);
-            return Ok( NewTransaction.Value +" were added to user's " + userName + " wallet. New balance = " + NewTransaction.Balance + ".");
+                return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
+            }
+
+           
 
         }
     }

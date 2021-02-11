@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using iParkMedusa.Models;
+using System.Net.Http;
 
 namespace iParkMedusa.Services
 {
@@ -31,19 +33,36 @@ namespace iParkMedusa.Services
             return await _repo.UpdateEntityAsync(transaction);
         }
 
-        public async Task<int> AddTransaction(Transaction transaction)
+        public async Task<Transaction> AddTransaction(Transaction transaction, string id)
         {
-            return await _repo.AddEntityAsync(transaction);
+            return await _repo.AddTransaction(transaction, id);
         }
 
-        public async Task<List<Transaction>> GetTransactionsByUserId (string userId)
+        public async Task<List<Transaction>> GetTransactionsByUserId(string userId)
         {
             return await _repo.GetTransactionsByUserId(userId);
         }
         public async Task<double> GetBalanceByUserId(string userId)
         {
-                var balance = await _repo.GetBalanceByUserIdAsync(userId);
-                return balance;
+            var balance = await _repo.GetBalanceByUserIdAsync(userId);
+            return balance;
+        }
+        public StripeModel GetStripeModel()
+        {
+            return _repo.GetStripeModel();
+        }
+        public async Task<string> GetStripeToken(StripeModel model)
+        {
+            return await _repo.GetStripeToken(model);
+        }
+
+        public PaymentModel CreatePaymentModel(string Token, double amount)
+        {
+            return  _repo.CreatePaymentModel(Token, amount);
+        }
+        public Task<HttpResponseMessage> PostFundsStripe(PaymentModel model)
+        {
+            return  _repo.PostFundsStripe(model);
         }
     }
 }
