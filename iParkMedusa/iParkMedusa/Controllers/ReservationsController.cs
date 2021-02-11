@@ -197,6 +197,7 @@ namespace iParkMedusa.Controllers
                     }
                     else
                     {
+                        await _parkingLotService.CancelReservation(reservationAPI.ExternalId);
                         return StatusCode(402);
                     }
                 }
