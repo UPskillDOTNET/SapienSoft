@@ -3,15 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using iParkMedusa.Controllers;
 using iParkMedusa.Entities;
 using iParkMedusa.Services;
-
-
+using System.Net.Http;
+using System.Net.Http.Json;
 using iParkMedusa.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using System.Text;
 
 namespace iParkMedusa.Controllers
 {
@@ -107,9 +107,12 @@ namespace iParkMedusa.Controllers
         [HttpPost]
         public async Task<ActionResult<Transaction>> PostTransaction(Transaction transaction)
         {
+            var userName = _userManager.GetUserId(HttpContext.User);
+            var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
+            var id = user.Id;
             try
             {
-                await _service.AddTransaction(transaction);
+                await _service.AddTransaction(transaction, id);
                 return CreatedAtAction("GetSlot", new { id = transaction.Id }, transaction); ;
             }
             catch (Exception e)
@@ -123,6 +126,7 @@ namespace iParkMedusa.Controllers
         [Route("~/api/transactions/user/balance")]
         public async Task<ActionResult<double>> GetBalance()
         {
+
             var userName = _userManager.GetUserId(HttpContext.User);
             var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
             var loggedUserId = user.Id;
@@ -141,6 +145,48 @@ namespace iParkMedusa.Controllers
                 }
             }
             else return Unauthorized();
+        }
+        [Authorize(Roles = "User")]
+        [Route("~/api/transactions/user/addfunds")]
+        [HttpPost]
+        public async Task<ActionResult> AddFunds(Transaction transaction)
+        {
+            var userName = _userManager.GetUserId(HttpContext.User);
+            var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
+            var id= user.Id;
+            var Funds = await _service.AddTransaction(transaction, id);
+
+            return Ok( Funds.Value +" were added to user's " + userName + " wallet. New balance = " + Funds.Balance + ".");
+
+        }
+        [Authorize(Roles = "User")]
+        [Route("~/api/transactions/user/addfunds/stripe")]
+        [HttpPost]
+        public async Task<ActionResult> AddFundsStripe(Transaction transaction)
+        {
+            var userName = _userManager.GetUserId(HttpContext.User);
+            var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
+            var id = user.Id;
+            var StripeModel =  _service.GetStripeModel();
+            var token = await _service.GetStripeToken(StripeModel);
+            var amount = transaction.Value;
+            var payment = _service.CreatePaymentModel(token, amount);
+            var response = await _service.PostFundsStripe(payment);
+            try
+            {
+                if (response.IsSuccessStatusCode)
+
+                    await _service.AddTransaction(transaction, id);
+                    var balance = await _service.GetBalanceByUserId(id);
+                    return Ok(transaction.Value + " were added to user's " + userName + " wallet. New balance = " + balance + ".");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
+            }
+
+           
+
         }
     }
 }
