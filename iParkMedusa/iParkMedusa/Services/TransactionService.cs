@@ -36,6 +36,7 @@ namespace iParkMedusa.Services
 
         public async Task<Transaction> CreateTransaction(Transaction transaction, string id)
         {
+
             switch (transaction.TransactionTypeId)
             {
 

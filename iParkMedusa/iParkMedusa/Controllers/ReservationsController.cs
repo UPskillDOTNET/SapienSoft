@@ -236,7 +236,7 @@ namespace iParkMedusa.Controllers
 
         // PUT: api/Reservations/Rental/5
         [HttpPost]
-        [Route("~/api/reservations/rented")]
+        [Route("~/api/reservations/rented/{reservationId}")]
         public async Task<ActionResult> RentedReservation(int reservationId)
         {
             try
@@ -244,10 +244,35 @@ namespace iParkMedusa.Controllers
                 var userName = _userManager.GetUserId(HttpContext.User);
                 var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
                 var userId = user.Id;
+                var temp = await _service.GetReservationById(reservationId);
+                if (temp.AvailableToRent == true )
+                {
+                    if (userId != temp.UserId)
+                    {
+                        if (await _service.UserHasBalance(user, temp.Value))
+                        {
+                            var OwnerTransaction = new Transaction()
+                            {
+                                Value = temp.Value,
+                                TransactionTypeId = 2
+                            };
+                            await _transactionService.CreateTransaction(OwnerTransaction, temp.UserId);
+                            var NewOwnerTransaction = new Transaction()
+                            {
+                                Value = temp.Value,
+                                TransactionTypeId = 1
+                            };
+                            await _transactionService.CreateTransaction(NewOwnerTransaction, userId);
 
-                var reservation = await _service.RentedReservation(reservationId, userId);
+                            var reservation = await _service.RentedReservation(reservationId, userId);
 
-                return Ok(reservation);
+                            return Ok(reservation);
+                        }
+                        else return BadRequest("You do not possess the required funds");
+                    }
+                    else return BadRequest("You can't rent a reservation that already belongs to you.");
+                }
+                else return BadRequest("This reservation is no longer available to sub-rent.");
             }
             catch (Exception e)
             {
@@ -280,5 +305,6 @@ namespace iParkMedusa.Controllers
                 return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
             }
         }
+
     }
 }
