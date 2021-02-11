@@ -124,5 +124,6 @@ namespace iParkMedusa.Services
             }
             return $"Role {model.Role} not found.";
         }
+
     }
 }
