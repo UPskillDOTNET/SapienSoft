@@ -34,20 +34,45 @@ namespace iParkMedusa.Services
             return await _repo.UpdateEntityAsync(transaction);
         }
 
-        public async Task<Transaction> AddTransaction(Transaction transaction, string id)
+        public async Task<Transaction> CreateTransaction(Transaction transaction, string id)
         {
-            var balance = await _repo.GetBalanceByUserIdAsync(id);
-            var NewTransaction = new Transaction()
+            switch (transaction.TransactionTypeId)
             {
-                Date = DateTime.Now,
-                Value = transaction.Value,
-                Balance = balance + transaction.Value,
-                TransactionTypeId = transaction.TransactionTypeId,
-                UserId = id
-            };
-            await _repo.AddTransaction(NewTransaction);
-            return NewTransaction;
 
+                case 2:
+                case 3:
+                    {
+                        var balance = await _repo.GetBalanceByUserIdAsync(id);
+                        var NewTransaction = new Transaction()
+                        {
+                            Date = DateTime.Now,
+                            Value = transaction.Value,
+                            Balance = balance + transaction.Value,
+                            TransactionTypeId = transaction.TransactionTypeId,
+                            UserId = id
+                        };
+                        await _repo.AddEntityAsync(NewTransaction);
+                        return NewTransaction;
+
+
+                    }
+
+                case 1:
+                    {
+                        var balance = await _repo.GetBalanceByUserIdAsync(id);
+                        var NewTransaction = new Transaction()
+                        {
+                            Date = DateTime.Now,
+                            Value = transaction.Value * -1,
+                            Balance = balance - transaction.Value,
+                            TransactionTypeId = transaction.TransactionTypeId,
+                            UserId = id
+                        };
+                        await _repo.AddEntityAsync(NewTransaction);
+                        return NewTransaction;
+                    }
+                default: return null;
+            }
         }
             public async Task<List<Transaction>> GetTransactionsByUserId(string userId)
         {

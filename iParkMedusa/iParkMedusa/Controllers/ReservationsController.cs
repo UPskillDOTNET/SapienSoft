@@ -20,12 +20,14 @@ namespace iParkMedusa.Controllers
         private readonly ReservationService _service;
         private readonly IParkingLotService _parkingLotService;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly TransactionService _transactionService;
 
-        public ReservationsController(ReservationService service, IParkingLotService parkingLotService, UserManager<ApplicationUser> userManager)
+        public ReservationsController(ReservationService service, IParkingLotService parkingLotService, UserManager<ApplicationUser> userManager, TransactionService transactionService)
         {
             _service = service;
             _parkingLotService = parkingLotService;
             _userManager = userManager;
+            _transactionService = transactionService;
         }
 
         // GET: api/Reservations
@@ -139,6 +141,12 @@ namespace iParkMedusa.Controllers
                     if (await _service.UserHasBalance(user, newReservation.Value))
                     {
                         newReservation = _service.GenerateQrCode(newReservation);
+                        var transaction = new Transaction()
+                        {
+                            Value = newReservation.Value,
+                            TransactionTypeId = 1
+                        };
+                        await _transactionService.CreateTransaction(transaction, userId);
                         await _service.AddReservation(newReservation);
                         return Ok(newReservation);
                     }

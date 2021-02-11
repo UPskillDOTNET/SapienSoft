@@ -112,7 +112,7 @@ namespace iParkMedusa.Controllers
             var id = user.Id;
             try
             {
-                await _service.AddTransaction(transaction, id);
+                await _service.CreateTransaction(transaction, id);
                 return CreatedAtAction("GetSlot", new { id = transaction.Id }, transaction); ;
             }
             catch (Exception e)
@@ -151,10 +151,14 @@ namespace iParkMedusa.Controllers
         [HttpPost]
         public async Task<ActionResult> AddFunds(Transaction transaction)
         {
+            //"value" : -100
+            //"TransactionTypeID": 1
+            //
+           
             var userName = _userManager.GetUserId(HttpContext.User);
             var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
             var id= user.Id;
-            var Funds = await _service.AddTransaction(transaction, id);
+            var Funds = await _service.CreateTransaction(transaction, id);
 
             return Ok( Funds.Value +" were added to user's " + userName + " wallet. New balance = " + Funds.Balance + ".");
 
@@ -177,7 +181,7 @@ namespace iParkMedusa.Controllers
                 if (response.StatusCode.Equals(200) && token != null)
                 {
                     var balance = await _service.GetBalanceByUserId(id);
-                    await _service.AddTransaction(transaction, id);
+                    await _service.CreateTransaction(transaction, id);
                     return Ok(transaction.Value + " were added to user's " + userName + " wallet. New balance = " + balance + ".");
                 }
                 return BadRequest();

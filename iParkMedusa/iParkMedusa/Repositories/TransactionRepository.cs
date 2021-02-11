@@ -41,16 +41,5 @@ namespace iParkMedusa.Repositories
                 return 0;
             }
         }
-        public async Task<int> AddTransaction (Transaction transaction)
-        {
-            _context.Add(transaction);
-            return await _context.SaveChangesAsync();
-        }
-        
-        
-        
-        
-            
-
     }
 }
