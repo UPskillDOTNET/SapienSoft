@@ -77,10 +77,11 @@ namespace iParkMedusa.Repositories
             client.DefaultRequestHeaders.Add("x-rapidapi-key", "e86d877af5msh19b8acc8a01228fp14d306jsn02e68f5b3ff1");
             client.DefaultRequestHeaders.Add("x-rapidapi-host", "noodlio-pay.p.rapidapi.com");
             //Faz Post
-            var response = await client.PostAsync(url, data);
+            Task<HttpResponseMessage> response = client.PostAsync(url, data);
             //Recebe Token
-            var Token = await response.Content.ReadAsStringAsync();
+            var Token = await response.Result.Content.ReadAsStringAsync();
             return Token;
+            
         }
         public PaymentModel CreatePaymentModel(string Token, double amount)
         {

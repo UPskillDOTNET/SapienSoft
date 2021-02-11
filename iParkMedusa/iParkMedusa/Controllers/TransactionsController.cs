@@ -174,19 +174,18 @@ namespace iParkMedusa.Controllers
             var response = await _service.PostFundsStripe(payment);
             try
             {
-                if (response.IsSuccessStatusCode)
-
-                    await _service.AddTransaction(transaction, id);
+                if (response.StatusCode.Equals(200) && token != null)
+                {
                     var balance = await _service.GetBalanceByUserId(id);
+                    await _service.AddTransaction(transaction, id);
                     return Ok(transaction.Value + " were added to user's " + userName + " wallet. New balance = " + balance + ".");
+                }
+                return BadRequest();
             }
             catch (Exception e)
             {
                 return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
             }
-
-           
-
         }
     }
 }
