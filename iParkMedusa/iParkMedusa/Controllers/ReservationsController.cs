@@ -236,7 +236,7 @@ namespace iParkMedusa.Controllers
 
         // PUT: api/Reservations/Rental/5
         [HttpPost]
-        [Route("~/api/reservations/rented")]
+        [Route("~/api/reservations/rented/{reservationId}")]
         public async Task<ActionResult> RentedReservation(int reservationId)
         {
             try
@@ -244,7 +244,20 @@ namespace iParkMedusa.Controllers
                 var userName = _userManager.GetUserId(HttpContext.User);
                 var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
                 var userId = user.Id;
-
+                var temp = await _service.GetReservationById(reservationId);
+                var OwnerTransaction = new Transaction()
+                {
+                    Value = temp.Value,
+                    TransactionTypeId = 2
+                };
+                await _transactionService.CreateTransaction(OwnerTransaction, temp.UserId);
+                var NewOwnerTransaction = new Transaction()
+                {
+                    Value = temp.Value,
+                    TransactionTypeId = 1
+                };
+                await _transactionService.CreateTransaction(NewOwnerTransaction, userId);
+                
                 var reservation = await _service.RentedReservation(reservationId, userId);
 
                 return Ok(reservation);
@@ -280,5 +293,6 @@ namespace iParkMedusa.Controllers
                 return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
             }
         }
+
     }
 }

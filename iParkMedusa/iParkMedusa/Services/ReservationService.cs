@@ -90,6 +90,7 @@ namespace iParkMedusa.Services
         public async Task<Reservation> RentedReservation(int reservationId, string userId)
         {
             var reservation = await _reservationRepo.GetReservationByIdAsync(reservationId);
+
             reservation.UserId = userId;
             reservation.AvailableToRent = false;
             reservation.Value = 0;
