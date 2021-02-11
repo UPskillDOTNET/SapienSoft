@@ -245,22 +245,34 @@ namespace iParkMedusa.Controllers
                 var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
                 var userId = user.Id;
                 var temp = await _service.GetReservationById(reservationId);
-                var OwnerTransaction = new Transaction()
+                if (temp.AvailableToRent == true )
                 {
-                    Value = temp.Value,
-                    TransactionTypeId = 2
-                };
-                await _transactionService.CreateTransaction(OwnerTransaction, temp.UserId);
-                var NewOwnerTransaction = new Transaction()
-                {
-                    Value = temp.Value,
-                    TransactionTypeId = 1
-                };
-                await _transactionService.CreateTransaction(NewOwnerTransaction, userId);
-                
-                var reservation = await _service.RentedReservation(reservationId, userId);
+                    if (userId != temp.UserId)
+                    {
+                        if (await _service.UserHasBalance(user, temp.Value))
+                        {
+                            var OwnerTransaction = new Transaction()
+                            {
+                                Value = temp.Value,
+                                TransactionTypeId = 2
+                            };
+                            await _transactionService.CreateTransaction(OwnerTransaction, temp.UserId);
+                            var NewOwnerTransaction = new Transaction()
+                            {
+                                Value = temp.Value,
+                                TransactionTypeId = 1
+                            };
+                            await _transactionService.CreateTransaction(NewOwnerTransaction, userId);
 
-                return Ok(reservation);
+                            var reservation = await _service.RentedReservation(reservationId, userId);
+
+                            return Ok(reservation);
+                        }
+                        else return BadRequest("You do not possess the required funds");
+                    }
+                    else return BadRequest("You can't rent a reservation that already belongs to you.");
+                }
+                else return BadRequest("This reservation is no longer available to sub-rent.");
             }
             catch (Exception e)
             {
