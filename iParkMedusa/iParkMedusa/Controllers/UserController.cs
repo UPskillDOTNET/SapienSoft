@@ -24,6 +24,7 @@ namespace iParkMedusa.Controllers
         }
 
         [Route("google-login")]
+        [HttpGet]
         public IActionResult GoogleLogin() 
         {
             var properties = new AuthenticationProperties { RedirectUri = Url.Action("GoogleResponse") };
@@ -32,6 +33,7 @@ namespace iParkMedusa.Controllers
         }
 
         [Route("google-response")]
+        [HttpGet]
         public async Task<IActionResult> GoogleResponse()
         {
             var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
