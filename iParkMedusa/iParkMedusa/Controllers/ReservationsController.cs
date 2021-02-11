@@ -169,40 +169,7 @@ namespace iParkMedusa.Controllers
                         _service.GenerateQrCode(newReservation);
 
                         // send email with ticket 
-                        string imageUrl = newReservation.QrCode;
-                        var webClient = new WebClient();
-                        byte[] imageBytes = webClient.DownloadData(imageUrl);
-                        MemoryStream ms = new MemoryStream(imageBytes);
-                        LinkedResource image = new LinkedResource(ms, MediaTypeNames.Image.Jpeg) { ContentId = "myimage" };
-
-                        using (MailMessage mail = new MailMessage())
-                        using (SmtpClient sender = new SmtpClient("smtp.gmail.com", 587))
-                        {
-                            sender.EnableSsl = true;
-                            sender.Credentials = new NetworkCredential("sapiensoft.upskill@gmail.com", "Sapien123!");
-                            sender.DeliveryMethod = SmtpDeliveryMethod.Network;
-
-                            String body = @"
-                                        <html>
-                                            <body>
-                                                <p> Here's your ticket QR code:</p>
-                                                <p> <img src=""cid:myimage"" /> </p>
-                                                <p> ~ The SapienSoft Team </p>
-                                            </body>
-                                        </html>
-                                        ";
-
-                            AlternateView view = AlternateView.CreateAlternateViewFromString(body, null, "text/html");
-                            view.LinkedResources.Add(image);
-
-                            mail.IsBodyHtml = true;
-                            mail.AlternateViews.Add(view);
-                            mail.From = new MailAddress("sapiensoft.upskill@gmail.com");
-                            mail.To.Add("sapiensoft.upskill@gmail.com");
-                            mail.Subject = "Reservation " + newReservation.Id + " is completed";
-
-                            sender.Send(mail);
-                        }
+                        _service.SendEmail(newReservation);
 
                         return Ok(newReservation);
                     }
