@@ -4,6 +4,7 @@ using iParkMedusa.Repositories;
 using iParkMedusa.Services;
 using iParkMedusa.Services.ParkingLot;
 using iParkMedusa.Settings;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Microsoft.Owin.Security.Google;
 using System;
 using System.Text;
 
@@ -31,6 +33,21 @@ namespace iParkMedusa
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Google Auth 
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+                    .AddCookie(options =>
+                    {
+                        options.LoginPath = "/account/google-login"; // Must be lowercase
+                    })
+                    .AddGoogle(options =>
+                    {
+                        options.ClientId = "709641791608-vv91i55b7ar74gt3hkj1kq8tqrbq0s7m.apps.googleusercontent.com";
+                        options.ClientSecret = "K8A6zzKwro1MZltAiLcP6z0t";
+                    });
+
             //Configuration from AppSettings
             services.Configure<JWT>(Configuration.GetSection("JWT"));
 
@@ -102,6 +119,7 @@ namespace iParkMedusa
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "iParkMedusa v1"));
             }
+
 
             app.UseHttpsRedirection();
 
