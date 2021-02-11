@@ -237,6 +237,7 @@ namespace iParkMedusa.Controllers
         }
 
         // PUT: api/Reservations/Rental/5
+        [Authorize]
         [HttpPost]
         [Route("~/api/reservations/rented/{reservationId}")]
         public async Task<ActionResult> RentedReservation(int reservationId)
@@ -251,17 +252,17 @@ namespace iParkMedusa.Controllers
                 {
                     if (userId != temp.UserId)
                     {
-                        if (await _service.UserHasBalance(user, temp.Value))
+                        if (await _service.UserHasBalance(user, temp.RentValue))
                         {
                             var OwnerTransaction = new Transaction()
                             {
-                                Value = temp.Value,
+                                Value = temp.RentValue,
                                 TransactionTypeId = 2
                             };
                             await _transactionService.CreateTransaction(OwnerTransaction, temp.UserId);
                             var NewOwnerTransaction = new Transaction()
                             {
-                                Value = temp.Value,
+                                Value = temp.RentValue,
                                 TransactionTypeId = 1
                             };
                             await _transactionService.CreateTransaction(NewOwnerTransaction, userId);
