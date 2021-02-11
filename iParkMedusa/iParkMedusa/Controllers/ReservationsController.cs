@@ -111,7 +111,7 @@ namespace iParkMedusa.Controllers
         // GET: api/reservations/qrcode/5
         [Authorize]
         [HttpGet]
-        [Route("~/api/Reservations/qrcode/{id}")]
+        [Route("~/api/Reservations/qrcode/{reservationId}")]
         public async Task<ActionResult<QrCodeModel>> GetQrCodeInformation(int reservationId)
         {
             return await _service.GetQrCodeInformation(reservationId);
@@ -165,6 +165,8 @@ namespace iParkMedusa.Controllers
                         };
                         await _transactionService.CreateTransaction(transaction, userId);
                         await _service.AddReservation(newReservation);
+
+                        _service.GenerateQrCode(newReservation);
 
                         // send email with ticket 
                         string imageUrl = newReservation.QrCode;

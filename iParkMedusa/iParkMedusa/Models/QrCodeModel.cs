@@ -13,7 +13,6 @@ namespace iParkMedusa.Models
         public DateTime End { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public string QrCode { get; set; }
         public string UserFirstName { get; set; }
         public string UserLastName { get; set; }
         public string ParkName { get; set; }

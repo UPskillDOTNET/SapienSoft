@@ -22,7 +22,7 @@ namespace iParkMedusa.Repositories
 
         public async Task<Reservation> GetReservationByIdAsync(int id)
         {
-            return await _context.Reservations.Where(s => s.Id.Equals(id)).Include(u => u.ApplicationUser).Include(p => p.Park).SingleOrDefaultAsync();
+            return await _context.Reservations.Where(s => s.Id == id).Include(u => u.ApplicationUser).Include(p => p.Park).FirstOrDefaultAsync();
         }
 
         public async Task<int> DeleteReservationByIdAsync(int id)

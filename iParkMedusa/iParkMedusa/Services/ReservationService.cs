@@ -41,8 +41,6 @@ namespace iParkMedusa.Services
 
         public async Task<int> AddReservation(Reservation reservation)
         {
-            
-
             return await _reservationRepo.AddEntityAsync(reservation);
         }
 
@@ -54,7 +52,7 @@ namespace iParkMedusa.Services
 
         public Reservation GenerateQrCode(Reservation reservation)
         {
-            reservation.QrCode = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://localhost:44398/api/reservations/qrcode/" + reservation.Id;
+            reservation.QrCode = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://localhost:44398/api/reservations/qrcode/" + reservation.Id;
             return reservation;
         }
 
@@ -70,7 +68,6 @@ namespace iParkMedusa.Services
                 End = reservation.End,
                 Latitude = reservation.Latitude,
                 Longitude = reservation.Longitude,
-                QrCode = reservation.QrCode,
                 UserFirstName = reservation.ApplicationUser.FirstName,
                 UserLastName = reservation.ApplicationUser.LastName,
                 ParkName = reservation.Park.Name
