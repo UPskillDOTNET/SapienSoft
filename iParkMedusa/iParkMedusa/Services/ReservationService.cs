@@ -128,5 +128,29 @@ namespace iParkMedusa.Services
                 return false;
             }
         }
+        public async Task<List<Reservation>> GetRentReservations(DateTime start, DateTime end)
+        {
+            return await _reservationRepo.GetRentReservationsAsync(start, end);
+        }
+
+
+        public ReservationDTO Reservation2ReservationDTO(Reservation reservation)
+        {
+            ReservationDTO newReservationDTO = new ReservationDTO()
+            {
+                Start = reservation.Start,
+                End = reservation.End,
+                DateCreated = reservation.DateCreated,
+                Value = reservation.RentValue,
+                ExternalId = reservation.ExternalId,
+                SlotId = reservation.SlotId,
+                Locator = reservation.Locator,
+                Latitude = reservation.Latitude,
+                Longitude = reservation.Longitude,
+                UserId = reservation.UserId,
+                
+            };
+            return newReservationDTO;
+        }
     }
 }

@@ -90,6 +90,15 @@ namespace iParkMedusa.Controllers
             try
             {
                 var listReservations = await _parkingLotService.GetAvailable(start, end);
+                var listRentReservations = await _service.GetRentReservations(start, end);
+                var listRentReservationsDTO = new List<ReservationDTO>();
+                foreach ( var item in listRentReservations)
+                {
+                     var DTO = _service.Reservation2ReservationDTO(item);
+                    listRentReservationsDTO.Add(DTO);
+                }
+                
+                listReservations.AddRange(listRentReservationsDTO);
                 return Ok(listReservations);
             }
             catch (Exception e)
