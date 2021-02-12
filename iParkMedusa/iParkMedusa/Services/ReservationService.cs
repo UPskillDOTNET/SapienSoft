@@ -154,7 +154,7 @@ namespace iParkMedusa.Services
             };
             return newReservationDTO;
         }
-        public void SendEmail(Reservation newReservation)
+        public void SendEmail(Reservation newReservation, ApplicationUser user, string parkName)
         {
             string imageUrl = newReservation.QrCode;
             var webClient = new WebClient();
@@ -174,9 +174,13 @@ namespace iParkMedusa.Services
                                             <body>
                                                 <p>Here's your ticket:</p>
                                                 <p><img src=""cid:myimage"" /></p>
-                                                <p>Name:</p>
-                                                <p>Start:"+newReservation.Start+ @"</p>
-                                                <p>End:" +newReservation.End+ @"</p>
+                                                <p>Name: "+user.FirstName+" "+user.LastName+@"</p>
+                                                <p>Park: "+parkName+@"</p>
+                                                <p>Coordinates: "+newReservation.Latitude.ToString("N6")+", "+newReservation.Longitude.ToString("N6") + @"</p>
+                                                <p>Locator: "+newReservation.Locator+@"</p>
+                                                <p>Start: "+newReservation.Start.ToShortDateString()+" "+newReservation.Start.ToShortTimeString()+@"</p>
+                                                <p>End: "+newReservation.End.ToShortDateString()+" "+newReservation.End.ToShortTimeString()+@"</p>
+                                                <p>Value: "+newReservation.Value+@" €</p>
                                                 <p> ~ The SapienSoft Team </p>
                                             </body>
                                         </html>
@@ -188,7 +192,7 @@ namespace iParkMedusa.Services
                 mail.IsBodyHtml = true;
                 mail.AlternateViews.Add(view);
                 mail.From = new MailAddress("sapiensoft.upskill@gmail.com");
-                mail.To.Add("sapiensoft.upskill@gmail.com");
+                mail.To.Add(user.Email);
                 mail.Subject = "Reservation " + newReservation.Id + " is completed";
 
                 sender.Send(mail);

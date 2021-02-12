@@ -1,7 +1,4 @@
-﻿using FluentEmail.Core;
-using FluentEmail.Razor;
-using FluentEmail.Smtp;
-using iParkMedusa.Entities;
+﻿using iParkMedusa.Entities;
 using iParkMedusa.Models;
 using iParkMedusa.Services;
 using iParkMedusa.Services.ParkingLot;
@@ -26,13 +23,15 @@ namespace iParkMedusa.Controllers
     {
         private readonly ReservationService _service;
         private readonly IParkingLotService _parkingLotService;
+        private readonly ParkService _parkService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly TransactionService _transactionService;
 
-        public ReservationsController(ReservationService service, IParkingLotService parkingLotService, UserManager<ApplicationUser> userManager, TransactionService transactionService)
+        public ReservationsController(ReservationService service, IParkingLotService parkingLotService, ParkService parkService, UserManager<ApplicationUser> userManager, TransactionService transactionService)
         {
             _service = service;
             _parkingLotService = parkingLotService;
+            _parkService = parkService;
             _userManager = userManager;
             _transactionService = transactionService;
         }
@@ -143,6 +142,7 @@ namespace iParkMedusa.Controllers
         [HttpPost("{idPark}")]
         public async Task<ActionResult<Reservation>> PostReservation(ReservationDTO reservation, int idPark)
         {
+
             if (idPark == 1)
             {
                 var reservationAPI = await _parkingLotService.PostReservation(reservation.Start, reservation.End, reservation.SlotId);
@@ -169,7 +169,8 @@ namespace iParkMedusa.Controllers
                         _service.GenerateQrCode(newReservation);
 
                         // send email with ticket 
-                        _service.SendEmail(newReservation);
+                        var Park = await _parkService.GetParkById(idPark);
+                        _service.SendEmail(newReservation, user, Park.Name);
 
                         return Ok(newReservation);
                     }
