@@ -172,8 +172,11 @@ namespace iParkMedusa.Services
                 String body = @"
                                         <html>
                                             <body>
-                                                <p> Here's your ticket QR code:</p>
-                                                <p> <img src=""cid:myimage"" /> </p>
+                                                <p>Here's your ticket:</p>
+                                                <p><img src=""cid:myimage"" /></p>
+                                                <p>Name:</p>
+                                                <p>Start:"+newReservation.Start+ @"</p>
+                                                <p>End:" +newReservation.End+ @"</p>
                                                 <p> ~ The SapienSoft Team </p>
                                             </body>
                                         </html>
