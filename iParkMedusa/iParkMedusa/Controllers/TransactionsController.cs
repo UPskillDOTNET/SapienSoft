@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using System.Text;
 using iParkMedusa.Services.PaypalService;
+using iParkMedusa.Models.PayPalModels;
+using System.Globalization;
 
 namespace iParkMedusa.Controllers
 {
@@ -169,15 +171,66 @@ namespace iParkMedusa.Controllers
             var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
             var id= user.Id;
 
-            if (await _servicePayPal.GetPayPalToken() != null)
+            //GET Client
+            HttpClient http = _servicePayPal.GetPaypalHttpClient();
+
+            //Get Token
+            PayPalTokenModel accessToken = await _servicePayPal.GetPayPalAccessTokenAsync(http);
+
+            //Get Payment
+            PayPalPaymentCreatedResponse createdPayment = await _servicePayPal.CreatePaypalPaymentAsync(http, accessToken, transaction);
+
+            var approval_url = createdPayment.links.ElementAt(1).href;
+            if (createdPayment != null)
             {
+                return Ok(approval_url+"\n Finalize o pagamento e depois chame o ~api/transactions/user/addfunds/paypal/execute?paymentID="+createdPayment.id);
+            }
+
+            else return BadRequest();
+
+
+        }
+        [Authorize(Roles = "User")]
+        [Route("~/api/transactions/user/addfunds/paypal/execute")]
+        [HttpPost]
+        public async Task<ActionResult> executeAddFundsPaypal([FromQuery] string paymentID)
+        {
+            var userName = _userManager.GetUserId(HttpContext.User);
+            var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
+            var id = user.Id;
+
+            //GET Client
+            HttpClient http = _servicePayPal.GetPaypalHttpClient();
+
+            //Get Token
+            PayPalTokenModel accessToken = await _servicePayPal.GetPayPalAccessTokenAsync(http);
+           
+            //Executa o pagamento e adiciona fundos
+            string payerID = "RCM7Q6LYJKZ9C";
+            PayPalPaymentExecutedResponse executePayment = await _servicePayPal.ExecutePaypalPaymentAsync(http, accessToken, paymentID, payerID);
+            if (executePayment != null)
+            {
+                var Value = executePayment.transactions.FirstOrDefault().amount.total;
+
+                NumberFormatInfo provider = new NumberFormatInfo();
+
+                provider.NumberDecimalSeparator = ".";
+                provider.NumberGroupSeparator = ",";
+
+                Transaction transaction = new Transaction()
+                {
+                    Value = Convert.ToDouble(Value, provider),
+                    TransactionTypeId = 2
+
+                };
                 var Funds = await _service.CreateTransaction(transaction, id);
-                return Ok(Funds.Value + " were added to user's " + userName + " wallet. New balance = " + Funds.Balance + ".");
+
+                return Ok(Funds.Value +" were added to " + userName + "'s wallet. \n New Balance = " + Funds.Balance+".");
             }
-            else
-            {
-                return BadRequest("Invalid PayPal Token.");
-            }
+
+            else return BadRequest();
+
+
         }
 
         [Authorize(Roles = "User")]
