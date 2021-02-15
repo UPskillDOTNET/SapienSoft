@@ -105,7 +105,6 @@ namespace iParkMedusa.Services.ParkingLot
                 // Insert Token
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
-
                 // Post Request
                 Task<HttpResponseMessage> response2 = client.DeleteAsync("api/reservations/" + id);
                 if (response2.Result.IsSuccessStatusCode)

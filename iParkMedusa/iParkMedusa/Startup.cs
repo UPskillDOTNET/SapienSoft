@@ -3,6 +3,7 @@ using iParkMedusa.Models;
 using iParkMedusa.Repositories;
 using iParkMedusa.Services;
 using iParkMedusa.Services.ParkingLot;
+using iParkMedusa.Services.PaypalService;
 using iParkMedusa.Settings;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -51,7 +52,9 @@ namespace iParkMedusa
             //Configuration from AppSettings
             services.Configure<JWT>(Configuration.GetSection("JWT"));
 
+            //Configure Secrets Sections
             services.Configure<ParkAPISecrets>(Configuration.GetSection("ParkAPISecrets"));
+            services.Configure<PayPalCredentials>(Configuration.GetSection("PayPalCredentials"));
 
             //User Manager Service
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
@@ -67,6 +70,9 @@ namespace iParkMedusa
             //PaymentMethods
             services.AddScoped<IPaymentMethodRepository, PaymentMethodRepository>();
             services.AddTransient<PaymentMethodService>();
+
+            //PayPalService
+            services.AddTransient<PayPalService>();
 
             //Transactions
             services.AddScoped<ITransactionRepository, TransactionRepository>();

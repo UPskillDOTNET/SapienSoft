@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using System.Text;
+using iParkMedusa.Services.PaypalService;
 
 namespace iParkMedusa.Controllers
 {
@@ -21,11 +22,13 @@ namespace iParkMedusa.Controllers
     {
         private readonly TransactionService _service;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly PayPalService _servicePayPal;
 
-        public TransactionsController(TransactionService service, UserManager<ApplicationUser> userManager)
+        public TransactionsController(TransactionService service, UserManager<ApplicationUser> userManager, PayPalService servicePayPal)
         {
             _service = service;
             _userManager = userManager;
+            _servicePayPal = servicePayPal;
         }
 
         // GET: api/Transactions
@@ -82,7 +85,6 @@ namespace iParkMedusa.Controllers
             return transactions;
         }
 
-
         // PUT: api/Transaction/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTransaction(int id, Transaction transaction)
@@ -126,13 +128,11 @@ namespace iParkMedusa.Controllers
         [Route("~/api/transactions/user/balance")]
         public async Task<ActionResult<double>> GetBalance()
         {
-
             var userName = _userManager.GetUserId(HttpContext.User);
             var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
             var loggedUserId = user.Id;
             if (loggedUserId != null)
             {
-
                 try
                 {
                     var balance = await _service.GetBalanceByUserId(loggedUserId);
@@ -146,21 +146,40 @@ namespace iParkMedusa.Controllers
             }
             else return Unauthorized();
         }
+
         [Authorize(Roles = "User")]
         [Route("~/api/transactions/user/addfunds")]
         [HttpPost]
         public async Task<ActionResult> AddFunds(Transaction transaction)
         {
-            
-           
+            var userName = _userManager.GetUserId(HttpContext.User);
+            var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
+            var id = user.Id;
+            var Funds = await _service.CreateTransaction(transaction, id);
+
+            return Ok(Funds.Value + " were added to user's " + userName + " wallet. New balance = " + Funds.Balance + ".");
+        }
+
+        [Authorize(Roles = "User")]
+        [Route("~/api/transactions/user/addfunds/paypal")]
+        [HttpPost]
+        public async Task<ActionResult> AddFundsPaypal(Transaction transaction)
+        {
             var userName = _userManager.GetUserId(HttpContext.User);
             var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
             var id= user.Id;
-            var Funds = await _service.CreateTransaction(transaction, id);
 
-            return Ok( Funds.Value +" were added to user's " + userName + " wallet. New balance = " + Funds.Balance + ".");
-
+            if (await _servicePayPal.GetPayPalToken() != null)
+            {
+                var Funds = await _service.CreateTransaction(transaction, id);
+                return Ok(Funds.Value + " were added to user's " + userName + " wallet. New balance = " + Funds.Balance + ".");
+            }
+            else
+            {
+                return BadRequest("Invalid PayPal Token.");
+            }
         }
+
         [Authorize(Roles = "User")]
         [Route("~/api/transactions/user/addfunds/stripe")]
         [HttpPost]
