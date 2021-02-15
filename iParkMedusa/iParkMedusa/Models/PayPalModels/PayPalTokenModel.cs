@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace iParkMedusa.Models
+namespace iParkMedusa.Models.PayPalModels
 {
     public class PayPalTokenModel
     {
