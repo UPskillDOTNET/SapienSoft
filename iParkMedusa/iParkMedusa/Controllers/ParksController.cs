@@ -83,7 +83,7 @@ namespace iParkMedusa.Controllers
             try
             {
                 await _service.AddPark(park);
-                return CreatedAtAction("GetSlot", new { id = park.Id }, park); ;
+                return CreatedAtAction("GetPark", new { id = park.Id }, park); ;
             }
             catch (Exception e)
             {
