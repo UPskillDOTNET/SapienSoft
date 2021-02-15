@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParkAPI", "ParkAPI\ParkAPI.csproj", "{408B4CE3-4988-4407-A0D0-AABF8419D35E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iParkMedusa", "iParkMedusa\iParkMedusa.csproj", "{AFFAB45C-6D1C-48A4-8C2E-9196D94D88CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iParkMedusa", "iParkMedusa\iParkMedusa.csproj", "{AFFAB45C-6D1C-48A4-8C2E-9196D94D88CD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaxAPI", "PaxAPI\PaxAPI.csproj", "{7C6F0CEB-FC29-471E-B006-EF73540BDCEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{AFFAB45C-6D1C-48A4-8C2E-9196D94D88CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFFAB45C-6D1C-48A4-8C2E-9196D94D88CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFFAB45C-6D1C-48A4-8C2E-9196D94D88CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C6F0CEB-FC29-471E-B006-EF73540BDCEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C6F0CEB-FC29-471E-B006-EF73540BDCEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C6F0CEB-FC29-471E-B006-EF73540BDCEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C6F0CEB-FC29-471E-B006-EF73540BDCEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

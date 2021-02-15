@@ -42,7 +42,51 @@ namespace PaxAPI.Services
             return await _reservationRepository.DeleteReservationByIdAsync(id);
         }
 
-      
+        public async Task<List<ReservationDTO>> GetAvailableSlotsToReservationDTO(DateTime start, DateTime end, string userId)
+        {
+            List<ReservationDTO> listReservationsDTO = new List<ReservationDTO>();
+            var reservations = await _reservationRepository.GetAllReservationsAsync();
+            var slots = await _slotRepository.GetSlotsByStatus("Available");
+
+            // Removes Slots that are not available
+            foreach (var item in reservations)
+            {
+                if ((item.Start <= start & item.End > start) ||
+                    (item.Start < end & item.End >= end) ||
+                    (item.Start <= start & item.End >= end) ||
+                    ((item.Start >= start & item.End <= end)))
+                {
+                    var slotToRemove = item.Slot;
+                    slots.Remove(slotToRemove);
+                }
+            }
+
+            foreach (var item in slots)
+            {
+                var value = item.PricePerHour * (end - start).TotalHours;
+
+                ReservationDTO reservationDTO = new ReservationDTO()
+                {
+                    Latitude = 35.68231894113954,
+                    Longitude = 139.74984814724567,
+                    Address = "Chiyoda City, Tokyo 100-0001",
+                    DateCreated = DateTime.Now,
+                    Start = start,
+                    End = end,
+                    SlotId = item.Id,
+                    Locator = item.Locator,
+                    ChargingOption = item.IsChargingAvailable,
+                    ValletOption = item.HasVallet,
+                    CoverOption = item.IsCovered,
+                    OutsideOption = item.IsOutside,
+                    Value = value,
+                    UserId = userId
+                };
+                listReservationsDTO.Add(reservationDTO);
+            }
+            return listReservationsDTO;
+        }
+
         public async Task<bool> IsReservationPossible(DateTime start, DateTime end, int slotId)
         {
             // Check if Reservation is possible (does not conflict with other Reservations)

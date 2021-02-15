@@ -25,7 +25,7 @@ namespace iParkMedusa.Controllers
 
         [Route("google-login")]
         [HttpGet]
-        public IActionResult GoogleLogin() 
+        public IActionResult GoogleLogin()
         {
             var properties = new AuthenticationProperties { RedirectUri = Url.Action("GoogleResponse") };
 
