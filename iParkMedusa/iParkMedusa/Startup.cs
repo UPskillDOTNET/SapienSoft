@@ -54,6 +54,7 @@ namespace iParkMedusa
 
             //Configure Secrets Sections
             services.Configure<ParkAPISecrets>(Configuration.GetSection("ParkAPISecrets"));
+            services.Configure<PaxAPISecrets>(Configuration.GetSection("PaxAPISecrets"));
             services.Configure<PayPalCredentials>(Configuration.GetSection("PayPalCredentials"));
 
             //User Manager Service
@@ -61,8 +62,12 @@ namespace iParkMedusa
             services.AddScoped<IUserService, UserService>();
 
             //ParkingLotService
-            services.AddScoped<IParkingLotService, ParkAPIService>();
+            services.AddTransient<ParkAPIService>();
+            services.AddTransient<PaxAPIService>();
 
+            //Parks
+            services.AddTransient<ParkService>();
+            services.AddScoped<IParkRepository, ParkRepository>();
 
             //PaymentMethods
             services.AddScoped<IPaymentMethodRepository, PaymentMethodRepository>();
