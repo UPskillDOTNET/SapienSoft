@@ -96,14 +96,14 @@ namespace iParkMedusa.Services.PaypalService
             return paypalPaymentCreated;
         }
 
-        public async Task<PayPalPaymentExecutedResponse> ExecutePaypalPaymentAsync(HttpClient http, PayPalTokenModel accessToken, string paymentId, string payerId)
+        public async Task<PayPalPaymentExecutedResponse> ExecutePaypalPaymentAsync(HttpClient http, PayPalTokenModel accessToken, string paymentId)
         {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"v1/payments/payment/{paymentId}/execute");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.access_token);
-
+            
             var payment = JObject.FromObject(new
             {
-                payer_id = payerId
+                payer_id = _payPalCredentials.payerID
             });
 
             request.Content = new StringContent(JsonConvert.SerializeObject(payment), Encoding.UTF8, "application/json");

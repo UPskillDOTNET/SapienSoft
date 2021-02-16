@@ -15,17 +15,20 @@ using System.Text;
 using iParkMedusa.Services.PaypalService;
 using iParkMedusa.Models.PayPalModels;
 using System.Globalization;
+using Microsoft.Extensions.Options;
+using iParkMedusa.Settings;
 
 namespace iParkMedusa.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class TransactionsController : ControllerBase
+        
     {
         private readonly TransactionService _service;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly PayPalService _servicePayPal;
-
+        
         public TransactionsController(TransactionService service, UserManager<ApplicationUser> userManager, PayPalService servicePayPal)
         {
             _service = service;
@@ -206,8 +209,8 @@ namespace iParkMedusa.Controllers
             PayPalTokenModel accessToken = await _servicePayPal.GetPayPalAccessTokenAsync(http);
            
             //Executa o pagamento e adiciona fundos
-            string payerID = "RCM7Q6LYJKZ9C";
-            PayPalPaymentExecutedResponse executePayment = await _servicePayPal.ExecutePaypalPaymentAsync(http, accessToken, paymentID, payerID);
+            
+            PayPalPaymentExecutedResponse executePayment = await _servicePayPal.ExecutePaypalPaymentAsync(http, accessToken, paymentID);
             if (executePayment != null)
             {
                 var Value = executePayment.transactions.FirstOrDefault().amount.total;
