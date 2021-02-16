@@ -257,7 +257,7 @@ namespace iParkMedusa.Controllers
                     await _service.CreateTransaction(transaction, id);
                     return Ok(transaction.Value + " were added to user's " + userName + " wallet. New balance = " + balance + ".");
                 }
-                return BadRequest();
+                return BadRequest("Payment not executed. Stripe server error");
             }
             catch (Exception e)
             {
