@@ -76,7 +76,7 @@ namespace iParkMedusa.Controllers
         [Authorize(Roles = "Administrator, Moderator, User")]
         [HttpGet]
         [Route("~/api/reservations/available")]
-        public async Task<ActionResult<IEnumerable<Reservation>>> GetAvailableSlotsToReservationDTO([FromQuery] DateTime start, [FromQuery] DateTime end)
+        public async Task<ActionResult<IEnumerable<Reservation>>> GetAvailableSlotsToReservationDTO([FromQuery] DateTime start, [FromQuery] DateTime end, [FromQuery] double latitude, [FromQuery] double longitude, [FromQuery] double distance = 5)
         {
             // Dates validation (DateTime default value "0001-01-01 00:00:00")
             if (start > end)
@@ -101,6 +101,12 @@ namespace iParkMedusa.Controllers
                 }
                 
                 listReservations.AddRange(listRentReservationsDTO);
+
+                if(latitude != 0 || longitude != 0)
+                {
+                    var newListReservations = _service.FilterReservationsByLocation(listReservations, latitude, longitude, distance);
+                    return Ok(newListReservations);
+                }
                 return Ok(listReservations);
             }
             catch (Exception e)
