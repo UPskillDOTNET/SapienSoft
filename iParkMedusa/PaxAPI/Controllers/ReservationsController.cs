@@ -103,6 +103,47 @@ namespace PaxAPI.Controllers
 
         }
 
+
+        // GET: api/Reservations/ChargingOption=true
+        [Authorize(Roles = "Administrator, Moderator, User")]
+        [HttpGet]
+        [Route("~/api/reservations/e-available")]
+        public async Task<ActionResult<IEnumerable<ReservationDTO>>> GetAvailableSlotsWithCharging([FromQuery] DateTime start, [FromQuery] DateTime end, [FromQuery] bool charginOption)
+        {
+            // Dates validation (DateTime default value "0001-01-01 00:00:00")
+            if (start > end)
+            {
+                return BadRequest($"DateTime 'end' ({end}) must be greater than DateTime 'start' ({start}).");
+            }
+            else if (start < DateTime.Now)
+            {
+                return BadRequest($"DateTime 'start' ({start}) must happen in the future.");
+            }
+
+            // Get active User
+            var userName = _userManager.GetUserId(HttpContext.User);
+            var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
+            var userId = user.Id;
+
+            if (user != null)
+            {
+                try
+                {
+                    var listReservationsDTO = await _service.GetAvailableSlotsToReservationDTO(start, end, userId);
+                    var listReservationsWithCharging = listReservationsDTO.Where(x => x.ChargingOption == true);
+
+
+                    return Ok(listReservationsWithCharging);
+                }
+                catch (Exception e)
+                {
+                    return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
+                }
+            }
+            return BadRequest(new { message = "User cannot be found. Please contact Support." });
+
+        }
+
         // PUT: api/Reservations/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutReservation(int id, Reservation reservation)
