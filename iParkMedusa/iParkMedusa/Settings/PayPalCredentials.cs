@@ -10,5 +10,7 @@ namespace iParkMedusa.Settings
         public string Account { get; set; }
         public string ClientID { get; set; }
         public string Secret { get; set; }
+        public string payerID { get; set; }
+
     }
 }
