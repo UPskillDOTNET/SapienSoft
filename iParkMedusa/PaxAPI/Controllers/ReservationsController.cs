@@ -87,15 +87,20 @@ namespace PaxAPI.Controllers
             var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
             var userId = user.Id;
 
-            try
+            if (user != null) 
             {
-                var listReservationsDTO = await _service.GetAvailableSlotsToReservationDTO(start, end, userId);
-                return Ok(listReservationsDTO);
+                try
+                {
+                    var listReservationsDTO = await _service.GetAvailableSlotsToReservationDTO(start, end, userId);
+                    return Ok(listReservationsDTO);
+                }
+                catch (Exception e)
+                {
+                    return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
+                }
             }
-            catch (Exception e)
-            {
-                return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
-            }
+            return BadRequest(new { message = "User cannot be found. Please contact Support."});
+
         }
 
         // PUT: api/Reservations/5

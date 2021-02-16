@@ -73,7 +73,7 @@ namespace iParkMedusa.Controllers
         }
 
         // GET: api/Reservations/Available?start=...&end=...
-        // [Authorize(Roles = "Administrator, Moderator, User")]
+        [Authorize(Roles = "Administrator, Moderator, User")]
         [HttpGet]
         [Route("~/api/reservations/available")]
         public async Task<ActionResult<IEnumerable<Reservation>>> GetAvailableSlotsToReservationDTO([FromQuery] DateTime start, [FromQuery] DateTime end)
