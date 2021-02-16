@@ -169,7 +169,7 @@ namespace iParkMedusa.Controllers
                         await _transactionService.CreateTransaction(transaction, userId);
                         await _service.AddReservation(newReservation);
 
-                        _service.GenerateQrCode(newReservation);
+                        //_service.GenerateQrCode(newReservation);
 
                         // send email with ticket 
                         var Park = await _parkService.GetParkById(idPark);
@@ -327,6 +327,32 @@ namespace iParkMedusa.Controllers
             {
                 return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
             }
+        }
+        [Authorize]
+        [Route("~/api/reservations/resend/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> ReSendEmail( int Id)
+        {
+            var userName = _userManager.GetUserId(HttpContext.User);
+            var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
+            var userId = user.Id;
+            var reservation = await _service.GetReservationById(Id);
+            if (reservation != null)
+            {
+                if (reservation.UserId == userId)
+                {
+                    if (reservation.End > DateTime.Now)
+                    {
+                        _service.SendEmail(reservation, user, reservation.Park.Name);
+
+                        return Ok("E-mail has been re-sent to user " + user.UserName);
+
+                    }
+                    else return BadRequest("The reservation has ended.");
+                }
+                else return BadRequest("This reservation does not belong to the logged user.");
+            }
+            else return BadRequest("Reservation does not exist");
         }
 
     }
