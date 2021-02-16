@@ -150,7 +150,8 @@ namespace iParkMedusa.Services
                 Latitude = reservation.Latitude,
                 Longitude = reservation.Longitude,
                 UserId = reservation.UserId,
-                
+                ParkName = reservation.Park.Name
+
             };
             return newReservationDTO;
         }

@@ -10,6 +10,7 @@ namespace PaxAPI.Entities
         public double Value { get; set; }
         public int SlotId { get; set; }
         public string Locator { get; set; }
+        public string ParkName { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public string Address { get; set; }

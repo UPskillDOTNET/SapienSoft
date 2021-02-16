@@ -3,6 +3,7 @@ using ParkAPI.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ParkAPI.Constants;
 
 namespace ParkAPI.Services
 {
@@ -67,14 +68,15 @@ namespace ParkAPI.Services
 
                 ReservationDTO reservationDTO = new ReservationDTO()
                 {
+                    ParkName = Globals.ParkName,
+                    Latitude = item.Latitude,
+                    Longitude = item.Longitude,
                     Start = start,
                     End = end,
                     DateCreated = DateTime.Now,
                     Value = value,
                     SlotId = item.Id,
                     Locator = item.Locator,
-                    Latitude = item.Latitude,
-                    Longitude = item.Longitude,
                     UserId = userId
                 };
                 listReservationsDTO.Add(reservationDTO);
@@ -117,14 +119,15 @@ namespace ParkAPI.Services
             var id = reservation.Id;
             ReservationDTO reservationDTO = new ReservationDTO()
             {
+                ParkName = Globals.ParkName,
+                Latitude = slot.Latitude,
+                Longitude = slot.Longitude,
                 Start = start,
                 End = end,
                 DateCreated = DateTime.Now,
                 Value = (end - start).TotalHours * slot.PricePerHour,
                 SlotId = slotId,
                 Locator = slot.Locator,
-                Latitude = slot.Latitude,
-                Longitude = slot.Longitude,
                 UserId = userId,
                 ExternalId = reservation.Id
             };

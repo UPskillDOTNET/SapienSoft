@@ -3,6 +3,7 @@ using PaxAPI.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using PaxAPI.Constants;
 
 namespace PaxAPI.Services
 {
@@ -67,9 +68,10 @@ namespace PaxAPI.Services
 
                 ReservationDTO reservationDTO = new ReservationDTO()
                 {
-                    Latitude = 35.68231894113954,
-                    Longitude = 139.74984814724567,
-                    Address = "Chiyoda City, Tokyo 100-0001",
+                    ParkName = Globals.ParkName,
+                    Latitude = Globals.Latitude,
+                    Longitude = Globals.Longitude,
+                    Address = Globals.Address,
                     DateCreated = DateTime.Now,
                     Start = start,
                     End = end,
@@ -123,9 +125,10 @@ namespace PaxAPI.Services
             ReservationDTO reservationDTO = new ReservationDTO()
             {
 
-                Latitude = 35.68231894113954,
-                Longitude = 139.74984814724567,
-                Address = "Chiyoda City, Tokyo 100-0001",
+                ParkName = Globals.ParkName,
+                Latitude = Globals.Latitude,
+                Longitude = Globals.Longitude,
+                Address = Globals.Address,
                 DateCreated = DateTime.Now,
                 Start = start,
                 End = end,
