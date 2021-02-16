@@ -1,0 +1,2576 @@
+{
+	"info": {
+		"_postman_id": "ba33b1e3-8d73-4e85-a944-094b98a99f13",
+		"name": "iParkMedusa",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ParkAPI",
+			"item": [
+				{
+					"name": "Tests",
+					"item": [
+						{
+							"name": "Users",
+							"item": [
+								{
+									"name": "Register User",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"FirstName\": \"SapienSoft\",\r\n    \"LastName\": \"Lda.\",\r\n    \"UserName\": \"SapienSoft\",\r\n    \"Email\": \"sapiensoft@sapiensoft.com\",\r\n    \"Password\": \"SapienSoft123!\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:44365/api/User/register",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"User",
+												"register"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Token User",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"    var responseData = JSON.parse(responseBody);\r",
+													"    pm.collectionVariables.set(\"userToken\", responseData.token);\r",
+													"});\r",
+													"pm.test(\"Body matches string\", function () {\r",
+													"    pm.expect(pm.response.text()).to.include(\"token\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"Email\": \"sapiensoft@sapiensoft.com\",\r\n    \"Password\": \"SapienSoft123!\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:44365/api/User/token",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"User",
+												"token"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Token Admin",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"    var responseData = JSON.parse(responseBody);\r",
+													"    pm.collectionVariables.set(\"adminToken\", responseData.token);\r",
+													"});\r",
+													"pm.test(\"Body matches string\", function () {\r",
+													"    pm.expect(pm.response.text()).to.include(\"token\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"Email\": \"admin@publicpark.com\",\r\n    \"Password\": \"Admin123!\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:44365/api/User/token",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"User",
+												"token"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "AddRole User (invalid)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"pm.test(\"Body matches string\", function () {\r",
+													"    pm.expect(pm.response.text()).to.include(\"token\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"Email\": \"sapiensoft@sapiensoft.com\",\r\n    \"Role\": \"Moderator\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:44365/api/User/addrole",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"User",
+												"addrole"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "AddRole User (valid)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"pm.test(\"Body matches string\", function () {\r",
+													"    pm.expect(pm.response.text()).to.include(\"token\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{adminToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"Email\": \"sapiensoft@sapiensoft.com\",\r\n    \"Role\": \"Moderator\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:44365/api/User/addrole",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"User",
+												"addrole"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Slots",
+							"item": [
+								{
+									"name": "Get Slots",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{adminToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://localhost:44365/api/slots",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"slots"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Slot (id)",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{adminToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://localhost:44365/api/slots/2",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"slots",
+												"2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Change Slot",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{adminToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"id\": 2,\r\n    \"locator\": \"A02\",\r\n    \"latitude\": 41.17649696678654,\r\n    \"longitude\": -8.605555050231363,\r\n    \"pricePerHour\": 1,\r\n    \"statusId\": 2\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:44365/api/slots/2",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"slots",
+												"2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create Slot",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{adminToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"locator\": \"A06\",\r\n    \"latitude\": 41.17649696678654,\r\n    \"longitude\": -8.605555050231363,\r\n    \"pricePerHour\": 1,\r\n    \"statusId\": 1\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:44365/api/slots",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"slots"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Remove Slot",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{adminToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"locator\": \"A02\",\r\n    \"latitude\": 41.17649696678654,\r\n    \"longitude\": -8.605555050231363,\r\n    \"pricePerHour\": 1,\r\n    \"statusId\": 2\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:44365/api/slots/6",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"slots",
+												"6"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Reservations",
+							"item": [
+								{
+									"name": "Get Reservations",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{userToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://localhost:44365/api/reservations",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"reservations"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Available",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{userToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://localhost:44365/api/reservations/available?start=2021-05-01T12:00:00&end=2021-05-03T12:00:00",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"reservations",
+												"available"
+											],
+											"query": [
+												{
+													"key": "start",
+													"value": "2021-05-01T12:00:00"
+												},
+												{
+													"key": "end",
+													"value": "2021-05-03T12:00:00"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Book Reservation",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{userToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"start\": \"2021-12-03T12:00:00\",\r\n    \"end\": \"2021-12-04T12:00:00\",\r\n    \"slotId\": 2\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:44365/api/reservations/booking",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"reservations",
+												"booking"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Available Copy",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{userToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://localhost:44365/api/reservations",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"reservations"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "PaxAPI",
+			"item": [
+				{
+					"name": "Tests",
+					"item": [
+						{
+							"name": "Users",
+							"item": [
+								{
+									"name": "Register User",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"FirstName\": \"SapienSoft\",\r\n    \"LastName\": \"Lda.\",\r\n    \"UserName\": \"SapienSoft\",\r\n    \"Email\": \"sapiensoft@sapiensoft.com\",\r\n    \"Password\": \"SapienSoft123!\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:44365/api/User/register",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"User",
+												"register"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Token User",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"    var responseData = JSON.parse(responseBody);\r",
+													"    pm.collectionVariables.set(\"userToken\", responseData.token);\r",
+													"});\r",
+													"pm.test(\"Body matches string\", function () {\r",
+													"    pm.expect(pm.response.text()).to.include(\"token\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"Email\": \"sapiensoft@sapiensoft.com\",\r\n    \"Password\": \"SapienSoft123!\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:44365/api/User/token",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"User",
+												"token"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Token Admin",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"    var responseData = JSON.parse(responseBody);\r",
+													"    pm.collectionVariables.set(\"adminToken\", responseData.token);\r",
+													"});\r",
+													"pm.test(\"Body matches string\", function () {\r",
+													"    pm.expect(pm.response.text()).to.include(\"token\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"Email\": \"admin@publicpark.com\",\r\n    \"Password\": \"Admin123!\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:44365/api/User/token",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"User",
+												"token"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "AddRole User (invalid)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"pm.test(\"Body matches string\", function () {\r",
+													"    pm.expect(pm.response.text()).to.include(\"token\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"Email\": \"sapiensoft@sapiensoft.com\",\r\n    \"Role\": \"Moderator\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:44365/api/User/addrole",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"User",
+												"addrole"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "AddRole User (valid)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"pm.test(\"Body matches string\", function () {\r",
+													"    pm.expect(pm.response.text()).to.include(\"token\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{adminToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"Email\": \"sapiensoft@sapiensoft.com\",\r\n    \"Role\": \"Moderator\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:44365/api/User/addrole",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"User",
+												"addrole"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Slots",
+							"item": [
+								{
+									"name": "Get Slots",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{adminToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://localhost:44365/api/slots",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"slots"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Slot (id)",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{adminToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://localhost:44365/api/slots/2",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"slots",
+												"2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Change Slot",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{adminToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"id\": 2,\r\n    \"locator\": \"A02\",\r\n    \"latitude\": 41.17649696678654,\r\n    \"longitude\": -8.605555050231363,\r\n    \"pricePerHour\": 1,\r\n    \"statusId\": 2\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:44365/api/slots/2",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"slots",
+												"2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create Slot",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{adminToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"locator\": \"A06\",\r\n    \"latitude\": 41.17649696678654,\r\n    \"longitude\": -8.605555050231363,\r\n    \"pricePerHour\": 1,\r\n    \"statusId\": 1\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:44365/api/slots",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"slots"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Remove Slot",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{adminToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"locator\": \"A02\",\r\n    \"latitude\": 41.17649696678654,\r\n    \"longitude\": -8.605555050231363,\r\n    \"pricePerHour\": 1,\r\n    \"statusId\": 2\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:44365/api/slots/6",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"slots",
+												"6"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Reservations",
+							"item": [
+								{
+									"name": "Get Reservations",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{userToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://localhost:44365/api/reservations",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"reservations"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Available",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{userToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://localhost:44365/api/reservations/available?start=2021-05-01T12:00:00&end=2021-05-03T12:00:00",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"reservations",
+												"available"
+											],
+											"query": [
+												{
+													"key": "start",
+													"value": "2021-05-01T12:00:00"
+												},
+												{
+													"key": "end",
+													"value": "2021-05-03T12:00:00"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Book Reservation",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{userToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"start\": \"2021-12-03T12:00:00\",\r\n    \"end\": \"2021-12-04T12:00:00\",\r\n    \"slotId\": 2\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:44365/api/reservations/booking",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"reservations",
+												"booking"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Available Copy",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{userToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://localhost:44365/api/reservations",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "44365",
+											"path": [
+												"api",
+												"reservations"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "iParkMedusa",
+			"item": [
+				{
+					"name": "Testes",
+					"item": [
+						{
+							"name": "Register User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"FirstName\": \"Alexandre\",\r\n    \"LastName\": \"Alves\",\r\n    \"UserName\": \"aalves\",\r\n    \"Email\": \"aalves@gmail.com\",\r\n    \"Password\": \"Alex123!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:44398/api/User/register",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"User",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Token User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var responseData = JSON.parse(responseBody);\r",
+											"    pm.collectionVariables.set(\"medusaUserToken\", responseData.token);\r",
+											"});\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"token\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Email\": \"aalves@gmail.com\",\r\n    \"Password\": \"Alex123!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:44398/api/User/token",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"User",
+										"token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Token Admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var responseData = JSON.parse(responseBody);\r",
+											"    pm.collectionVariables.set(\"medusaAdminToken\", responseData.token);\r",
+											"});\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"token\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Email\": \"admin@sapiensoft.com\",\r\n    \"Password\": \"Admin123!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:44398/api/User/token",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"User",
+										"token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Parks (no credentials, unauthorized 401)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:44398/api/Parks",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"Parks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Parks (user token, forbiden 403)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{medusaUserToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:44398/api/Parks",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"Parks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Parks (admin token, ok 200)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{medusaAdminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:44398/api/Parks",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"Parks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Park id=99 (nonexistent, not found 404)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{medusaAdminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:44398/api/Parks/99",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"Parks",
+										"99"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Park id=2 (exists, ok 200)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"name\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{medusaAdminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:44398/api/Parks/1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"Parks",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Change Park Name (ok 200)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"PaxPark\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{medusaAdminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 2,\r\n    \"name\": \"PaxPark\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:44398/api/Parks/2",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"Parks",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Confirm Park Name Change",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"PaxPark\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{medusaAdminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:44398/api/Parks/2",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"Parks",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Park (201 created)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"    var responseData = JSON.parse(responseBody);\r",
+											"    pm.collectionVariables.set(\"medusaParkId\", responseData.id);\r",
+											"});\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"Park3\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{medusaAdminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Park3\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:44398/api/Parks",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"Parks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Confirm Created Park (ok 200)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"Park3\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{medusaAdminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:44398/api/Parks/{{medusaParkId}}",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"Parks",
+										"{{medusaParkId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Park (no content 204)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(204);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{medusaAdminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:44398/api/Parks/{{medusaParkId}}",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"Parks",
+										"{{medusaParkId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Confirm Deleted Park (no content 204)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{medusaAdminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:44398/api/Parks/{{medusaParkId}}",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"Parks",
+										"{{medusaParkId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Available (",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{userToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:44365/api/reservations/available?start=2021-05-01T12:00:00&end=2021-05-03T12:00:00",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44365",
+									"path": [
+										"api",
+										"reservations",
+										"available"
+									],
+									"query": [
+										{
+											"key": "start",
+											"value": "2021-05-01T12:00:00"
+										},
+										{
+											"key": "end",
+											"value": "2021-05-03T12:00:00"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "Register User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"FirstName\": \"Alexandre\",\r\n    \"LastName\": \"Alves\",\r\n    \"UserName\": \"aalves\",\r\n    \"Email\": \"aalves@gmail.com\",\r\n    \"Password\": \"Alex123!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:44398/api/User/register",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"User",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Token User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var responseData = JSON.parse(responseBody);\r",
+											"    pm.collectionVariables.set(\"userToken\", responseData.token);\r",
+											"});\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"token\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Email\": \"aalves@gmail.com\",\r\n    \"Password\": \"Alex123!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:44398/api/User/token",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"User",
+										"token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Token Admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var responseData = JSON.parse(responseBody);\r",
+											"    pm.collectionVariables.set(\"userToken\", responseData.token);\r",
+											"});\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"token\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Email\": \"admin@sapiensoft.com\",\r\n    \"Password\": \"Admin123!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:44398/api/User/token",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"User",
+										"token"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Reservations",
+					"item": [
+						{
+							"name": "Reservations",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var responseData = JSON.parse(responseBody);\r",
+											"    pm.collectionVariables.set(\"userToken\", responseData.token);\r",
+											"});\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"token\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhYWx2ZXMiLCJqdGkiOiJkY2Y3ZjhjOS0yMjhjLTQ1OTEtYTJkMC00YmYzOGRkYjQ4NWIiLCJlbWFpbCI6ImFhbHZlc0BnbWFpbC5jb20iLCJ1aWQiOiI1ZjNjZDQyZS0wZjVhLTRiMDktYTU0ZC1iOWQ5Zjg3NmQ2NmMiLCJyb2xlcyI6IlVzZXIiLCJleHAiOjE2MTI4Nzg2NjIsImlzcyI6IlNlY3VyZUFwaSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.op73AMGjFxukD7-NWuUSd7mfHfF4DNqObKUdM3FIsqQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:44398/api/reservations/available?start=2021-05-01T12:00:00&end=2021-05-03T12:00:00",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"reservations",
+										"available"
+									],
+									"query": [
+										{
+											"key": "start",
+											"value": "2021-05-01T12:00:00"
+										},
+										{
+											"key": "end",
+											"value": "2021-05-03T12:00:00"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Available",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var responseData = JSON.parse(responseBody);\r",
+											"    pm.collectionVariables.set(\"userToken\", responseData.token);\r",
+											"});\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"token\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhYWx2ZXMiLCJqdGkiOiJkY2Y3ZjhjOS0yMjhjLTQ1OTEtYTJkMC00YmYzOGRkYjQ4NWIiLCJlbWFpbCI6ImFhbHZlc0BnbWFpbC5jb20iLCJ1aWQiOiI1ZjNjZDQyZS0wZjVhLTRiMDktYTU0ZC1iOWQ5Zjg3NmQ2NmMiLCJyb2xlcyI6IlVzZXIiLCJleHAiOjE2MTI4Nzg2NjIsImlzcyI6IlNlY3VyZUFwaSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.op73AMGjFxukD7-NWuUSd7mfHfF4DNqObKUdM3FIsqQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:44398/api/reservations/available?start=2021-05-01T12:00:00&end=2021-05-03T12:00:00",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"reservations",
+										"available"
+									],
+									"query": [
+										{
+											"key": "start",
+											"value": "2021-05-01T12:00:00"
+										},
+										{
+											"key": "end",
+											"value": "2021-05-03T12:00:00"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Available QrCode",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var responseData = JSON.parse(responseBody);\r",
+											"    pm.collectionVariables.set(\"userToken\", responseData.token);\r",
+											"});\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"token\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImp0aSI6Ijk2NTMwMzg4LTgyZWUtNDVjMC1iYTJiLWYxM2IxZmMwMjk2YiIsImVtYWlsIjoiYWRtaW5AcHVibGljcGFyay5jb20iLCJ1aWQiOiI2MGE4NDk1ZC0wMjkyLTRmZDMtYTE3OC0xOTE4N2YxYmRlNzkiLCJyb2xlcyI6IkFkbWluaXN0cmF0b3IiLCJleHAiOjE2MTI4ODY5MTAsImlzcyI6IlNlY3VyZUFwaSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.2nbD_1e1Ml2qI1fTdjw3U-WIZdaoGDXlRO_efyqKEKw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"start\": \"2021-05-04T12:00:00\",\r\n    \"end\": \"2021-05-07T12:00:00\",\r\n    \"slotId\": 3\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:44398/api/reservations/1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"reservations",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Make Reservation",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var responseData = JSON.parse(responseBody);\r",
+											"    pm.collectionVariables.set(\"userToken\", responseData.token);\r",
+											"});\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"token\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImp0aSI6Ijk2NTMwMzg4LTgyZWUtNDVjMC1iYTJiLWYxM2IxZmMwMjk2YiIsImVtYWlsIjoiYWRtaW5AcHVibGljcGFyay5jb20iLCJ1aWQiOiI2MGE4NDk1ZC0wMjkyLTRmZDMtYTE3OC0xOTE4N2YxYmRlNzkiLCJyb2xlcyI6IkFkbWluaXN0cmF0b3IiLCJleHAiOjE2MTI4ODY5MTAsImlzcyI6IlNlY3VyZUFwaSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.2nbD_1e1Ml2qI1fTdjw3U-WIZdaoGDXlRO_efyqKEKw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"start\": \"2021-05-04T12:00:00\",\r\n    \"end\": \"2021-05-07T12:00:00\",\r\n    \"slotId\": 3\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:44398/api/reservations/1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"reservations",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Transactions",
+					"item": [
+						{
+							"name": "Add Funds",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var responseData = JSON.parse(responseBody);\r",
+											"    pm.collectionVariables.set(\"userToken\", responseData.token);\r",
+											"});\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"token\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImp0aSI6Ijk2NTMwMzg4LTgyZWUtNDVjMC1iYTJiLWYxM2IxZmMwMjk2YiIsImVtYWlsIjoiYWRtaW5AcHVibGljcGFyay5jb20iLCJ1aWQiOiI2MGE4NDk1ZC0wMjkyLTRmZDMtYTE3OC0xOTE4N2YxYmRlNzkiLCJyb2xlcyI6IkFkbWluaXN0cmF0b3IiLCJleHAiOjE2MTI4ODY5MTAsImlzcyI6IlNlY3VyZUFwaSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.2nbD_1e1Ml2qI1fTdjw3U-WIZdaoGDXlRO_efyqKEKw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"value\": 100,\r\n    \"TransactionTypeId\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:44398/api/transactions/addfunds",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"transactions",
+										"addfunds"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Parks",
+					"item": [
+						{
+							"name": "List Parks (user token, forbiden 403) Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhYWx2ZXMiLCJqdGkiOiI3ZDU3YmRmMS01MzVmLTQ3NjgtYjhiOC1iZDE1ZmFhYmU0MDIiLCJlbWFpbCI6ImFhbHZlc0BnbWFpbC5jb20iLCJ1aWQiOiJkZTliZGUxZC0wNDVkLTRjOWMtOGNjZi0yNjMxMzgxZjZjMDYiLCJyb2xlcyI6IlVzZXIiLCJleHAiOjE2MTM0MzM1MDMsImlzcyI6IlNlY3VyZUFwaSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.infudGakcbBaJs-IYb2rCqYfG_lFdI6t8y9slWnRfHI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:44398/api/Parks",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"Parks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Parks (admin token, ok 200) Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImp0aSI6IjBmYzlkMTdiLWZhMmUtNDAzYy05MzE1LWExNmI1ZTc3NTkxZSIsImVtYWlsIjoiYWRtaW5Ac2FwaWVuc29mdC5jb20iLCJ1aWQiOiIxMDAwNjk2Ny0wZjU2LTQ1YjQtYjEzZC1hYjhiZWFjYmQ3ZTMiLCJyb2xlcyI6IkFkbWluaXN0cmF0b3IiLCJleHAiOjE2MTM0MzM1MjgsImlzcyI6IlNlY3VyZUFwaSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.p7-yfwMw3W4LJ5W1d_AVN-CQmqL9eMXIgnj3P852Jhw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:44398/api/Parks",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"Parks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Parks (no credentials, unauthorized 401) Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:44398/api/Parks",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44398",
+									"path": [
+										"api",
+										"Parks"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Token Paypal",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "EN_u18EtCvjHR_VQW6GDkFBNvE-NlB42d9cWBXdSHhPnMmjMyWZv5p0a--5REPAUCffUg3wrtr1_juKl",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "AdHMbag4-vXb0HoFb2IxaQ5QsWjK7RwcraS0kbZu6TRvOZjkiax15pj_HMJ28UKSJigt6u4PF09QwnrN",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://api-m.sandbox.paypal.com/v1/oauth2/token",
+					"protocol": "https",
+					"host": [
+						"api-m",
+						"sandbox",
+						"paypal",
+						"com"
+					],
+					"path": [
+						"v1",
+						"oauth2",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "urlPark",
+			"value": "https://localhost:44365/"
+		},
+		{
+			"key": "userToken",
+			"value": ""
+		},
+		{
+			"key": "adminToken",
+			"value": ""
+		},
+		{
+			"key": "urlMedusa",
+			"value": "https://localhost:44398/"
+		},
+		{
+			"key": "medusaUserToken",
+			"value": ""
+		},
+		{
+			"key": "medusaAdminToken",
+			"value": ""
+		},
+		{
+			"key": "medusaParkId",
+			"value": ""
+		}
+	]
+}
