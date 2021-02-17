@@ -190,9 +190,23 @@ namespace iParkMedusa.Controllers
             }
 
             else return BadRequest();
-
-
         }
+
+        [Authorize(Roles = "User")]
+        [Route("~/api/transactions/user/addfunds/multibanco")]
+        [HttpPost]
+        public async Task<ActionResult<RefMultibancoModel>> AddFundsMultibanco(Transaction transaction)
+        {
+            Random rd = new Random();
+            int referencia = rd.Next(111111111, 999999999);
+            RefMultibancoModel refMultibancoModel = new RefMultibancoModel()
+            {
+                Referencia = referencia,
+                Valor = transaction.Value
+            };
+            return Ok(refMultibancoModel);
+        }
+
         [Authorize(Roles = "User")]
         [Route("~/api/transactions/user/addfunds/paypal/execute")]
         [HttpPost]
