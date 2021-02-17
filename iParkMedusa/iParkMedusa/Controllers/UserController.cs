@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,36 +19,12 @@ namespace iParkMedusa.Controllers
     {
 
         private readonly IUserService _userService;
-        public UserController(IUserService userService)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public UserController(IUserService userService, UserManager<ApplicationUser> userManager)
         {
             _userService = userService;
-        }
-
-        [Route("google-login")]
-        [HttpGet]
-        public IActionResult GoogleLogin()
-        {
-            var properties = new AuthenticationProperties { RedirectUri = Url.Action("GoogleResponse") };
-
-            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
-        }
-
-        [Route("google-response")]
-        [HttpGet]
-        public async Task<IActionResult> GoogleResponse()
-        {
-            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-            var claims = result.Principal.Identities.FirstOrDefault()
-                .Claims.Select(claim => new
-                {
-                    claim.Issuer,
-                    claim.OriginalIssuer,
-                    claim.Type,
-                    claim.Value
-                });
-
-            return (JsonResult)claims;
+            _userManager = userManager;
         }
 
         [HttpPost("register")]
@@ -70,6 +47,22 @@ namespace iParkMedusa.Controllers
         {
             var result = await _userService.AddRoleAsync(model);
             return Ok(result);
+        }
+
+        // Added to allow for Password Changes
+        [Authorize(Roles = "Administrator, Moderator, User")]
+        [HttpPatch("password")]
+        public async Task<IActionResult> ChangePasswordAsync(ChangePasswordModel model)
+        {
+            var userName = _userManager.GetUserId(HttpContext.User);
+            var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
+
+            if (User.IsInRole("Administrator") || (User.IsInRole("User") && user.Email == model.Email))
+            {
+                var result = await _userService.ChangePasswordAsync(model);
+                return Ok(result);
+            }
+            return Unauthorized("No, no, no...");
         }
     }
 }

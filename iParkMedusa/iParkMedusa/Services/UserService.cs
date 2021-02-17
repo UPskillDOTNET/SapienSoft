@@ -125,5 +125,35 @@ namespace iParkMedusa.Services
             return $"Role {model.Role} not found.";
         }
 
+        // Additional methods for Users
+        public async Task<AuthenticationModel> ChangePasswordAsync(ChangePasswordModel model)
+        {
+            var authenticationModel = new AuthenticationModel();
+            var user = _userManager.Users.FirstOrDefault(u => u.Email == model.Email);
+
+            if (user == null)
+            {
+                authenticationModel.IsAuthenticated = false;
+                authenticationModel.Message = $"No Accounts Registered with {model.Email}.";
+                return authenticationModel;
+            }
+
+            if (await _userManager.CheckPasswordAsync(user, model.CurrentPassword))
+            {
+                authenticationModel.IsAuthenticated = true;
+                JwtSecurityToken jwtSecurityToken = await CreateJwtToken(user);
+                authenticationModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+                authenticationModel.Email = user.Email;
+                authenticationModel.UserName = user.UserName;
+                var rolesList = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
+                authenticationModel.Roles = rolesList.ToList();
+                await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+                authenticationModel.Message = $"Password changed with success for account {model.Email}.";
+                return authenticationModel;
+            }
+            authenticationModel.IsAuthenticated = false;
+            authenticationModel.Message = $"Incorrect credentials for user {user.Email}.";
+            return authenticationModel;
+        }
     }
 }
