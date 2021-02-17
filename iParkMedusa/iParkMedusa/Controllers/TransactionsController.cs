@@ -199,11 +199,16 @@ namespace iParkMedusa.Controllers
         {
             Random rd = new Random();
             int referencia = rd.Next(111111111, 999999999);
+
             RefMultibancoModel refMultibancoModel = new RefMultibancoModel()
             {
                 Referencia = referencia,
                 Valor = transaction.Value
             };
+            
+            // Não existe validação do pagamento!
+            await AddFunds(transaction);
+
             return Ok(refMultibancoModel);
         }
 
