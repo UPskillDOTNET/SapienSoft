@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace iParkMedusa.Controllers
 {
-    [Authorize(Roles = "Administrator, Moderator")]
+    // [Authorize(Roles = "Administrator, Moderator")]
     [Route("api/[controller]")]
     [ApiController]
     public class ParksController : ControllerBase
