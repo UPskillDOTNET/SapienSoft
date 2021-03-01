@@ -159,6 +159,54 @@ namespace MammothWeb.Controllers
             return View(park);
         }
 
+        public async Task<ActionResult> Delete(string id)
+        {
+
+            if (id == null)
+            {
+                return BadRequest("Not found");
+            }
+            Park park = null;
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44398/api/parks/");
+                var result = await client.GetAsync(id);
+
+                if (result.IsSuccessStatusCode)
+                {
+                    park = await result.Content.ReadAsAsync<Park>();
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Server error try after some time.");
+                }
+            }
+            return View(park);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+
+        public async Task<ActionResult> DeleteConfirmed(string id)
+        {
+
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("https://localhost:44398/api/");
+                    var response = await client.DeleteAsync($"parks/{id}");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("Index", "Parks");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Server error try after some time.");
+                    }
+                }
+            
+            return View();
+        }
+
 
     }
 }
