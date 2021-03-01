@@ -27,7 +27,9 @@ namespace SuperMammoth
         {
             services.AddControllersWithViews();
 
+            services.AddMemoryCache();
             services.AddSession();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -52,17 +54,17 @@ namespace SuperMammoth
                 app.UseHsts();
             }
 
-            app.UseSession();
-
             app.UseHttpsRedirection();
             
             app.UseStaticFiles();
 
+            app.UseSession();
+
             app.UseRouting();
 
-            app.UseCookiePolicy();
+            //app.UseCookiePolicy();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

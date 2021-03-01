@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@using SuperMammoth.Globals;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -24,23 +28,37 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        @if (ViewBag.Role == "" || ViewBag.Role == null)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Register">Register</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
-                            </li>
-                        }
-                        @if (ViewBag.Role == "Administrator" || ViewBag.Role == "User")
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Transactions" asp-action="Index">Transactions</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Logout">Logout</a>
-                            </li>
+                        @{
+                            var userSession = HttpContextAccessor.HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
+                            if (userSession != null)
+                            {
+                                if (userSession.Roles.Contains("Administrator"))
+                                {
+
+                                }
+                                if (userSession.Roles.Contains("User"))
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Transactions" asp-action="Index">Transactions</a>
+                                    </li>
+
+                                }
+                                if (userSession.Roles.Contains("User") || userSession.Roles.Contains("Administrator"))
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Logout">Logout</a>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Register">Register</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
+                                </li>
+                            }
                         }
                     </ul>
                 </div>
