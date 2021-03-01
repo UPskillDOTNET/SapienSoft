@@ -98,13 +98,13 @@ namespace MammothWeb.Controllers
             int paymentMethod = 1;
                 
             //Dependendo do metodo, retorn uma view apropriada
-            if(paymentMethod==1)
+           /* if(paymentMethod==1)
             {
                 return View(PayPal);
-            }
+            }*/
 
                 return View();
-            }
+            
         }
 
         // POST: TransactionsController/Create
