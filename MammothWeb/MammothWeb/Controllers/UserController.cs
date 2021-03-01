@@ -1,13 +1,9 @@
-﻿using MammothWeb.Globals;
-using MammothWeb.Models;
+﻿using MammothWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
 
 namespace MammothWeb.Controllers
 {
@@ -15,7 +11,11 @@ namespace MammothWeb.Controllers
     {
         public IActionResult Register()
         {
-
+            var token = Request.Cookies["token"];
+            if (token == null)
+                ViewBag.Token = false;
+            else
+                ViewBag.Token = true;
             return View(new RegisterModel());
         }
 
@@ -44,7 +44,11 @@ namespace MammothWeb.Controllers
 
         public IActionResult Login()
         {
-
+            var token = Request.Cookies["token"];
+            if (token == null)
+                ViewBag.Token = false;
+            else
+                ViewBag.Token = true;
             return View(new LoginModel());
         }
 
@@ -53,33 +57,40 @@ namespace MammothWeb.Controllers
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("https://localhost:44398/api/");
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                var postTask = client.PostAsJsonAsync("user/token", loginModel);
-                postTask.Wait();
-                var result = postTask.Result;
-                if (result.IsSuccessStatusCode)
+                try
                 {
-                    var content = result.Content.ReadFromJsonAsync<AuthenticationModel>();
-                    content.Wait();
-                    if (content.Result.Token != null)
+                    client.BaseAddress = new Uri("https://localhost:44398/api/");
+                    client.DefaultRequestHeaders.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                    var postTask = client.PostAsJsonAsync("user/token", loginModel);
+                    postTask.Wait();
+                    var result = postTask.Result;
+                    if (result.IsSuccessStatusCode)
                     {
-                        CookieOptions cookieOptions = new CookieOptions();
-                        cookieOptions.Expires = DateTime.Now.AddHours(1);
-                        Response.Cookies.Append("token", content.Result.Token, cookieOptions);
-                        TempData["message"] = "Login successful";
-                        return RedirectToAction("Index", "Home");
+                        var content = result.Content.ReadFromJsonAsync<AuthenticationModel>();
+                        content.Wait();
+                        if (content.Result.Token != null)
+                        {
+                            CookieOptions cookieOptions = new CookieOptions();
+                            cookieOptions.Expires = DateTime.Now.AddHours(1);
+                            Response.Cookies.Append("token", content.Result.Token, cookieOptions);
+                            TempData["message"] = "Login successful";
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else
+                        {
+                            TempData["message"] = "Login failed";
+                            return RedirectToAction("Index", "Home");
+                        }
                     }
-                    else
-                    {
-                        TempData["message"] = "Login failed";
-                        return RedirectToAction("Index", "Home");
-                    } 
+                } catch
+                {
+                    TempData["message"] = "Server connection failed";
+                    return RedirectToAction("Index", "Home");
                 }
             }
             //ModelState.AddModelError(string.Empty, "Server Error. Please contact administrator.");
-            TempData["message"] = "Server error.";
+            TempData["message"] = "Pega lá mais um erro.";
             return View(loginModel);
         }
 
@@ -89,6 +100,12 @@ namespace MammothWeb.Controllers
             cookieOptions.Expires = DateTime.Now.AddHours(-1);
             Response.Cookies.Append("token", "", cookieOptions);
             return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult Profile()
+        {
+            
+            return View();
         }
     }
 }
