@@ -67,67 +67,40 @@ namespace MammothWeb.Controllers
             }
         }
 
-        // GET: ParksController/Create
         public ActionResult Create()
         {
             return View();
         }
 
+
         // POST: ParksController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Park park)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: ParksController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44398/api/");
+                var response = client.PostAsJsonAsync("parks", park);
+                response.Wait();
 
-        // POST: ParksController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
+                var result = response.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var read = result.Content.ReadAsAsync<Park>();
+                    read.Wait();
+                    park = read.Result;
+                }
+                else
+                {
+                    //erro
+                    park = null;
+                    ModelState.AddModelError(string.Empty, "Server error occured");
+                }
+                return RedirectToAction("Index", "Parks");
             }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: ParksController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
 
-        // POST: ParksController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }
