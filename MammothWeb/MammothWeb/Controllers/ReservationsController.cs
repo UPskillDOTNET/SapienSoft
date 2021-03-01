@@ -1,10 +1,13 @@
-﻿using MammothWeb.Models;
+﻿using MammothWeb.Globals;
+using MammothWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace MammothWeb.Controllers
@@ -14,42 +17,56 @@ namespace MammothWeb.Controllers
         // GET: ReservationsController
         public ActionResult Index()
         {
-            try
+            IEnumerable<Reservation> reservation = null;
+            using (var client = new HttpClient())
             {
-                IEnumerable<Reservation> reservation = null;
-                using (var client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri("https://localhost:44398/api/");
-                    var response = client.GetAsync("reservations");
-                    response.Wait();
+                client.BaseAddress = new Uri("https://localhost:44398/api/");
+                var response = client.GetAsync("reservations");
+                response.Wait();
 
-                    var result = response.Result;
-                    if (result.IsSuccessStatusCode)
-                    {
-                        var read = result.Content.ReadAsAsync<IList<Reservation>>();
-                        read.Wait();
-                        reservation = read.Result;
-                    }
-                    else
-                    {
-                        //erro
-                        reservation = Enumerable.Empty<Reservation>();
-                        ModelState.AddModelError(string.Empty, "Server error occured");
-                    }
-                    return View(reservation);
+                var result = response.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var read = result.Content.ReadAsAsync<IList<Reservation>>();
+                    read.Wait();
+                    reservation = read.Result;
                 }
-            }
-            catch
-            {
-                TempData["message"] = "Server connection failed";
-                return RedirectToAction("Index", "Home");
+                else
+                {
+                    //erro
+                    reservation = Enumerable.Empty<Reservation>();
+                    ModelState.AddModelError(string.Empty, "Server error occured");
+                }
+                return View(reservation);
             }
         }
 
         // GET: ReservationsController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            Reservation reservation = new Reservation();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44398/api/reservations/");
+                var response = client.GetAsync(id.ToString());
+                response.Wait();
+
+                var result = response.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var read = result.Content.ReadAsAsync<Reservation>();
+                    read.Wait();
+                    reservation = read.Result;
+                }
+                else
+                {
+                    //erro
+                    reservation = null;
+                    ModelState.AddModelError(string.Empty, "Server error occured");
+                }
+                return View(reservation);
+            }
         }
 
         // GET: ReservationsController/Create
@@ -61,15 +78,28 @@ namespace MammothWeb.Controllers
         // POST: ReservationsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Reservation reservation, int idPark)
         {
-            try
+            using (var client = new HttpClient())
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
+                client.BaseAddress = new Uri("https://localhost:44398/api/");
+                var response = client.PostAsJsonAsync("reservations", reservation);
+                response.Wait();
+
+                var result = response.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var read = result.Content.ReadAsAsync<Reservation>();
+                    read.Wait();
+                    reservation = read.Result;
+                }
+                else
+                {
+                    //erro
+                    reservation = null;
+                    ModelState.AddModelError(string.Empty, "Server error occured");
+                }
+                return RedirectToAction("Index", "Reservations");
             }
         }
 
@@ -100,19 +130,52 @@ namespace MammothWeb.Controllers
             return View();
         }
 
-        // POST: ReservationsController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(string id)
         {
-            try
+
+            if (id == null)
             {
-                return RedirectToAction(nameof(Index));
+                return BadRequest("Not found");
             }
-            catch
+            Reservation reservation = null;
+            using (var client = new HttpClient())
             {
-                return View();
+                client.BaseAddress = new Uri("https://localhost:44398/api/parks/");
+                var result = await client.GetAsync(id);
+
+                if (result.IsSuccessStatusCode)
+                {
+                    reservation = await result.Content.ReadAsAsync<Reservation>();
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Server error try after some time.");
+                }
             }
+            return View(reservation);
+        }
+
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteConfirmed(string id)
+        {
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44398/api/");
+                var response = await client.DeleteAsync($"reservations/{id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index", "Reservations");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Server error try after some time.");
+                }
+            }
+
+            return View();
         }
     }
 }
