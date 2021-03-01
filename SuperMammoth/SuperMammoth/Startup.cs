@@ -25,12 +25,10 @@ namespace SuperMammoth
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
-
             services.AddControllersWithViews();
 
             services.AddSession();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.HttpOnly = HttpOnlyPolicy.Always; // prevents access from JS
