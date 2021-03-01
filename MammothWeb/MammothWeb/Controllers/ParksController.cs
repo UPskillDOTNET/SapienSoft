@@ -1,15 +1,19 @@
-﻿using MammothWeb.Models;
+﻿using Intuit.Ipp.Data;
+using MammothWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace MammothWeb.Controllers
 
 {
+
+
     public class ParksController : Controller
     {
         // GET: ParksController
@@ -100,7 +104,61 @@ namespace MammothWeb.Controllers
                 return RedirectToAction("Index", "Parks");
             }
 
-
         }
+
+
+        public async Task<ActionResult> Edit(string id)
+        {            
+
+            if (id == null)
+            {
+                return BadRequest("Not found");
+            }
+            Park park = null;
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44398/api/parks/");
+                var result = await client.GetAsync(id.ToString());
+
+                if (result.IsSuccessStatusCode)
+                {
+                    park = await result.Content.ReadAsAsync<Park>();
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Server error try after some time.");
+                }
+            }
+            return View(park);
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public async Task<ActionResult> Edit([Bind("Id", "Name")] Park park)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("https://localhost:44398/api/");
+                    var response = await client.PutAsJsonAsync($"parks/{park.Id}", park);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("Index", "Parks");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Server error try after some time.");
+                    }
+                }
+                return RedirectToAction("Index", "Parks");
+            }
+            return View(park);
+        }
+
+
     }
 }
