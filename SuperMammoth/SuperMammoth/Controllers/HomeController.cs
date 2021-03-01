@@ -20,40 +20,12 @@ namespace SuperMammoth.Controllers
         }
 
         public IActionResult Index()
-        {
-            // Check for session and retrieve role
-            var userSession = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
-            if (userSession == null)
-            {
-                ViewBag.Role = "";
-            }
-            else
-            {
-                if (userSession.Roles.Contains("Administrator") == true)
-                    ViewBag.Role = "Administrator";
-                else if (userSession.Roles.Contains("User") == true)
-                    ViewBag.Role = "User";
-            }
-               
+        { 
             return View();
         }
 
         public IActionResult Privacy()
         {
-            // Check for session and retrieve role
-            var userSession = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
-            if (userSession == null)
-            {
-                ViewBag.Role = "";
-            }
-            else
-            {
-                if (userSession.Roles.Contains("Administrator") == true)
-                    ViewBag.Role = "Administrator";
-                else if (userSession.Roles.Contains("User") == true)
-                    ViewBag.Role = "User";
-            }
-
             return View();
         }
 
