@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 namespace iParkMedusa.Controllers
@@ -63,6 +64,19 @@ namespace iParkMedusa.Controllers
                 return Ok(result);
             }
             return Unauthorized("No, no, no...");
+        }
+
+        [Authorize(Roles = "Administrator, Moderator, User")]
+        [HttpGet("role")]
+        public IActionResult GetUserRole()
+        {
+            var userName = _userManager.GetUserId(HttpContext.User);
+            var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
+            if (User.IsInRole("Administrator"))
+                return Ok("Administrator");
+            else if (User.IsInRole("User"))
+                return Ok("User");
+            return Ok("");
         }
     }
 }

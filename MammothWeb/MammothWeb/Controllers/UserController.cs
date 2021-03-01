@@ -34,7 +34,7 @@ namespace MammothWeb.Controllers
                 {
                     var content = result.Content.ReadAsStringAsync();
                     content.Wait();
-                    string message = content.Result;
+                    TempData["message"] = "New user registered";
                     return RedirectToAction("Index", "Home");
                 }
             }

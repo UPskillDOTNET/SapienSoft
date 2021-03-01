@@ -5,6 +5,8 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    <!-- Check for token -->
     @if (ViewBag.Token == false)
     {
         <p>User not logged!</p>
@@ -13,6 +15,23 @@
     {
         <p>User logged!</p>
     }
+
+    <!-- Check for role -->
+    @if (TempData["role"] == null)
+    {
+        <p>Role = No user</p>
+    }
+
+    @if ((string)TempData["role"] == "\"Administrator\"")
+    {
+        <p>Role = Admin</p>
+    }
+
+    @if ((string)TempData["role"] == "\"User\"")
+    {
+        <p>Role = User</p>
+    }
+
     @if (TempData["message"] != null)
     {
         <div class="alert alert-info alert-dismissible" role="alert">
