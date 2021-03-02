@@ -34,7 +34,7 @@ namespace SuperMammoth.Controllers
                 {
                     var content = result.Content.ReadAsStringAsync();
                     content.Wait();
-                    TempData["message"] = "New user registered";
+                    TempData["message"] = "Registation successful!";
                     return RedirectToAction("Index", "Home");
                 }
             }
