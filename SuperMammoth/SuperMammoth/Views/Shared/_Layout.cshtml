@@ -43,6 +43,9 @@
                                     <li class="nav-item">
                                         <a class="nav-link text-dark" asp-area="" asp-controller="Transactions" asp-action="Index">Transactions</a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="Create">Reservations</a>
+                                    </li>
                                 }
                                 if (userSession.Roles.Contains("User") || userSession.Roles.Contains("Administrator"))
                                 {
