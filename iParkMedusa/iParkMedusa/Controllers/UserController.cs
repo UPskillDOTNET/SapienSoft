@@ -67,17 +67,12 @@ namespace iParkMedusa.Controllers
         }
 
         [Authorize(Roles = "Administrator, Moderator, User")]
-        [HttpGet("role")]
-        public IActionResult GetUserRole()
+        [HttpGet("info")]
+        public IActionResult GetUserInfo()
         {
             var userName = _userManager.GetUserId(HttpContext.User);
             var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
-            if (User.IsInRole("Administrator"))
-                return Ok("Administrator");
-            else if (User.IsInRole("User"))
-                return Ok("User");
-            return Ok("");
+            return Ok(user);
         }
-
     }
 }
