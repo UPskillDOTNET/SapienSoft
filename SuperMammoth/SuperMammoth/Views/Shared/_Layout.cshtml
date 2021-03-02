@@ -30,7 +30,7 @@
                         </li>
                         @{
                             var userSession = HttpContextAccessor.HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
-                            if (userSession != null)
+                            if (userSession != null && userSession.Roles != null)
                             {
                                 if (userSession.Roles.Contains("Administrator"))
                                 {
