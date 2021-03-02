@@ -67,7 +67,7 @@ namespace SuperMammoth.Controllers
                         var authenticationModel = content.Result;
                         HttpContext.Session.SetObjectAsJson("UserSession", authenticationModel);
                         
-                        TempData["message"] = "Login successful";
+                        TempData["message"] = authenticationModel.Message;
                         return RedirectToAction("Index", "Home");
                     }
                     else
