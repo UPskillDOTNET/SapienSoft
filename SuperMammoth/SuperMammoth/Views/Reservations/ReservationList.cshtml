@@ -1,11 +1,11 @@
-﻿@model IEnumerable<SuperMammoth.Models.Reservation>
+﻿@model IEnumerable<SuperMammoth.Models.ReservationModel>
 
 @{
-    ViewData["Title"] = "ChooseDate";
+    ViewData["Title"] = "ReservationList";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>ChooseDate</h1>
+<h1>ReservationList</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -14,16 +14,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.DateCreated)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Start)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.End)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ParkName)
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Value)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SlotId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Locator)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Latitude)
@@ -32,16 +38,13 @@
                 @Html.DisplayNameFor(model => model.Longitude)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Value)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Locator)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SlotId)
+                @Html.DisplayNameFor(model => model.ParkName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExternalId)
             </th>
             <th></th>
         </tr>
@@ -50,16 +53,22 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.DateCreated)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Start)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.End)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ParkName)
+                @Html.DisplayFor(modelItem => item.DateCreated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Value)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SlotId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Locator)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Latitude)
@@ -68,16 +77,13 @@
                 @Html.DisplayFor(modelItem => item.Longitude)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Value)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Locator)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SlotId)
+                @Html.DisplayFor(modelItem => item.ParkName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExternalId)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |

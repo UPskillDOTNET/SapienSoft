@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SuperMammoth.Globals;
 using SuperMammoth.Models;
 using System;
 using System.Collections.Generic;
@@ -17,32 +18,47 @@ namespace SuperMammoth.Controllers
             return View();
         }
 
-        public ActionResult ChooseDate(DateTime start, DateTime end)
+        [HttpPost]
+        public ActionResult Create(ReservationModel reservationModel)
         {
-            IEnumerable<Reservation> reservation = null;
+
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("https://localhost:44398/api/Reservations/Available?");
-                var response = client.GetAsync($"start={start}&end={end}");
+                IEnumerable<ReservationModel> reservation = new List<ReservationModel>();
+                client.BaseAddress = new Uri("https://localhost:44398/api/");
+
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                //Token
+                var userSession = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
+                var token = userSession.Token;
+
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                var response = client.GetAsync($"reservations/available?start={reservationModel.Start.ToString("o")}&end={reservationModel.End.ToString("o")}&latitude={reservationModel.Latitude}&longitude={reservationModel.Longitude}");
                 response.Wait();
 
                 var result = response.Result;
                 if (result.IsSuccessStatusCode)
                 {
-                    var read = result.Content.ReadAsAsync<IList<Reservation>>();
+                    var read = result.Content.ReadAsAsync<IList<ReservationModel>>();
                     read.Wait();
                     reservation = read.Result;
                 }
                 else
                 {
                     //erro
-                    reservation = Enumerable.Empty<Reservation>();
+                    reservation = Enumerable.Empty<ReservationModel>();
                     ModelState.AddModelError(string.Empty, "Server error occured");
                 }
-                return View(reservation);
+                return View("ReservationList", reservation);
             }
         }
 
-        
+        public ActionResult ReservationList(List<ReservationModel> reservation)
+        {
+            return View(reservation);
+        }
+
+
     }
 }
