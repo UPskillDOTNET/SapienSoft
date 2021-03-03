@@ -247,7 +247,7 @@ namespace iParkMedusa.Controllers
 
                 };
                 var Funds = await _service.CreateTransaction(transaction, id);
-                return RedirectToRoute("https://localhost:44355/Transactions");
+                return Redirect("https://localhost:44355/Transactions");
             }
 
             else return BadRequest();

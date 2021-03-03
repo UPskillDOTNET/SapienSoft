@@ -228,7 +228,7 @@ namespace SuperMammoth.Controllers
 
                 //Lets get our user info 
 
-                var response = client.GetAsync("user/GetById");
+                var response = client.GetAsync("user/info");
                 response.Wait();
 
                 var result = response.Result;
