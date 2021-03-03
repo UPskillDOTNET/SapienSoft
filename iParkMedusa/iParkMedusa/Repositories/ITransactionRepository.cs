@@ -10,6 +10,7 @@ namespace iParkMedusa.Repositories
 {
     public interface ITransactionRepository : IBaseRepository<Transaction>
     {
+        Task<List<Transaction>> GetTransactionsAsync();
         Task<Transaction> GetTransactionByIdAsync(int id);
         Task<List<Transaction>> GetTransactionsByUserId(string userId);
         Task<double> GetBalanceByUserIdAsync(string userId);

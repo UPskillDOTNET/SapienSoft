@@ -19,9 +19,9 @@ namespace iParkMedusa.Services
             _repo = repo;
         }
 
-        public async Task<IEnumerable<Transaction>> FindAll()
+        public async Task<IEnumerable<Transaction>> GetTransactions()
         {
-            return await _repo.FindAllAsync();
+            return await _repo.GetTransactionsAsync();
         }
 
         public async Task<Transaction> GetTransactionById(int id)

@@ -18,7 +18,10 @@ namespace iParkMedusa.Repositories
         {
             
         }
-
+        public async Task<List<Transaction>> GetTransactionsAsync()
+        {
+            return await _context.Transactions.Include(t => t.TransactionType).ToListAsync();
+        }
         public async Task<Transaction> GetTransactionByIdAsync(int id)
         {
             return await _context.Transactions.Where(s => s.Id.Equals(id)).Include(t => t.TransactionType).FirstOrDefaultAsync();

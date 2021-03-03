@@ -43,7 +43,7 @@ namespace iParkMedusa.Controllers
         {
             try
             {
-                var transactions = await _service.FindAll();
+                var transactions = await _service.GetTransactions();
                 return Ok(transactions);
             }
             catch (Exception e)
@@ -152,7 +152,7 @@ namespace iParkMedusa.Controllers
             else return Unauthorized();
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles="Administrator, User")]
         [Route("~/api/transactions/user/addfunds")]
         [HttpPost]
         public async Task<ActionResult> AddFunds(Transaction transaction)
@@ -160,9 +160,10 @@ namespace iParkMedusa.Controllers
             var userName = _userManager.GetUserId(HttpContext.User);
             var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
             var id = user.Id;
+            transaction.TransactionTypeId = 2;
             var Funds = await _service.CreateTransaction(transaction, id);
 
-            return Ok(Funds.Value + " were added to user's " + userName + " wallet. New balance = " + Funds.Balance + ".");
+            return Ok();
         }
 
         [Authorize(Roles = "User")]
@@ -183,10 +184,10 @@ namespace iParkMedusa.Controllers
             //Get Payment
             PayPalPaymentCreatedResponse createdPayment = await _servicePayPal.CreatePaypalPaymentAsync(http, accessToken, transaction);
 
-            var approval_url = createdPayment.links.ElementAt(1).href;
             if (createdPayment != null)
             {
-                return Ok(approval_url+"\n Finalize o pagamento e depois chame o ~api/transactions/user/addfunds/paypal/execute?paymentID="+createdPayment.id);
+                string url = createdPayment.links.ElementAt(1).href.ToString();
+                return Ok(createdPayment);
             }
 
             else return BadRequest();
@@ -215,7 +216,7 @@ namespace iParkMedusa.Controllers
         [Authorize(Roles = "User")]
         [Route("~/api/transactions/user/addfunds/paypal/execute")]
         [HttpPost]
-        public async Task<ActionResult> executeAddFundsPaypal([FromQuery] string paymentID)
+        public async Task<ActionResult> executeAddFundsPaypal([FromQuery] string paymentId, [FromQuery] string token, [FromQuery] string PayerID )
         {
             var userName = _userManager.GetUserId(HttpContext.User);
             var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
@@ -229,7 +230,7 @@ namespace iParkMedusa.Controllers
            
             //Executa o pagamento e adiciona fundos
             
-            PayPalPaymentExecutedResponse executePayment = await _servicePayPal.ExecutePaypalPaymentAsync(http, accessToken, paymentID);
+            PayPalPaymentExecutedResponse executePayment = await _servicePayPal.ExecutePaypalPaymentAsync(http, accessToken, paymentId);
             if (executePayment != null)
             {
                 var Value = executePayment.transactions.FirstOrDefault().amount.total;
@@ -246,8 +247,7 @@ namespace iParkMedusa.Controllers
 
                 };
                 var Funds = await _service.CreateTransaction(transaction, id);
-
-                return Ok(Funds.Value +" were added to " + userName + "'s wallet. \n New Balance = " + Funds.Balance+".");
+                return RedirectToRoute("https://localhost:44355/Transactions");
             }
 
             else return BadRequest();

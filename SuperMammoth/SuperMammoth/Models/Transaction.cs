@@ -16,6 +16,6 @@ namespace SuperMammoth.Models
         public int TransactionTypeId { get; set; }
         [ForeignKey("TransactionTypeId")]
         public TransactionType TransactionType { get; set; }
-
+        public string UserId { get; set; }
     }
 }

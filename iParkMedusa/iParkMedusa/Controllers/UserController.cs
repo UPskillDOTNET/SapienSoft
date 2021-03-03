@@ -78,6 +78,13 @@ namespace iParkMedusa.Controllers
                 return Ok("User");
             return Ok("");
         }
+        [HttpGet("GetById")]
+        public IActionResult GetById()
+        {
+            var userName = _userManager.GetUserId(HttpContext.User);
+            var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
+            return Ok(user);
 
+        }
     }
 }
