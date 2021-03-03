@@ -22,17 +22,19 @@ namespace iParkMedusa.Controllers
     public class ReservationsController : ControllerBase
     {
         private readonly ReservationService _service;
-        private readonly ParkAPIService _parkAPIService;
-        private readonly PaxAPIService _paxAPIService;
+        //private readonly ParkAPIService _parkAPIService;
+        //private readonly PaxAPIService _paxAPIService;
+        private readonly ParkingLotService _parkingLotService;
         private readonly ParkService _parkService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly TransactionService _transactionService;
 
-        public ReservationsController(ReservationService service, ParkAPIService parkAPIService, PaxAPIService paxAPIService, ParkService parkService, UserManager<ApplicationUser> userManager, TransactionService transactionService)
+        public ReservationsController(ReservationService service, ParkingLotService parkingLotService, ParkService parkService, UserManager<ApplicationUser> userManager, TransactionService transactionService)
         {
             _service = service;
-            _parkAPIService = parkAPIService;
-            _paxAPIService = paxAPIService;
+            _parkingLotService = parkingLotService;
+            //_parkAPIService = parkAPIService;
+            //_paxAPIService = paxAPIService;
             _parkService = parkService;
             _userManager = userManager;
             _transactionService = transactionService;
@@ -90,8 +92,7 @@ namespace iParkMedusa.Controllers
 
             try
             {
-                var listReservations = await _parkAPIService.GetAvailable(start, end); // GetAvailable from ParkAPI
-                listReservations.AddRange(await _paxAPIService.GetAvailable(start, end)); // Add from PaxAPI
+                var listReservations = await _parkingLotService.GetAvailable(start, end); // GetAvailable from ParkAPI
                 var listRentReservations = await _service.GetRentReservations(start, end); // Add the Rent reservations
                 var listRentReservationsDTO = new List<ReservationDTO>();
                 foreach ( var item in listRentReservations)
@@ -149,12 +150,10 @@ namespace iParkMedusa.Controllers
         // POST: api/Reservations/1
         [Authorize(Roles ="Administrator, Moderator, User")]
         [HttpPost("{idPark}")]
-        public async Task<ActionResult<Reservation>> PostReservation(ReservationDTO reservation, int idPark)
+        public async Task<ActionResult<Reservation>> PostReservation(ReservationDTO reservation, [FromQuery] int idPark)
         {
-
-            if (idPark == 1)
-            {
-                var reservationAPI = await _parkAPIService.PostReservation(reservation.Start, reservation.End, reservation.SlotId);
+            var park = await _parkService.GetParkById(idPark);
+            var reservationAPI = await _parkingLotService.PostReservation(reservation.Start, reservation.End, park.Uri, reservation.SlotId);
 
                 if (reservationAPI != null)
                 {
@@ -178,62 +177,17 @@ namespace iParkMedusa.Controllers
                         //_service.GenerateQrCode(newReservation);
 
                         // send email with ticket 
-                        var Park = await _parkService.GetParkById(idPark);
-                        _service.SendEmail(newReservation, user, Park.Name);
+                        _service.SendEmail(newReservation, user, park.Name);
 
                         return Ok(newReservation);
                     }
                     else
                     {
-                        await _parkAPIService.CancelReservation(reservationAPI.ExternalId);
+                        await _parkingLotService.CancelReservation(park, reservationAPI.ExternalId);
                         return StatusCode(402);
                     }
                 }
                 return BadRequest();
-            }
-            else if (idPark == 2)
-            {
-                var reservationAPI = await _paxAPIService.PostReservation(reservation.Start, reservation.End, reservation.SlotId);
-
-                if (reservationAPI != null)
-                {
-                    var userName = _userManager.GetUserId(HttpContext.User);
-                    var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
-                    var userId = user.Id;
-
-                    var newReservation = _service.ReservationDTO2Reservation(reservationAPI, idPark, userId);
-
-                    if (await _service.UserHasBalance(user, newReservation.Value))
-                    {
-                        newReservation = _service.GenerateQrCode(newReservation);
-                        var transaction = new Transaction()
-                        {
-                            Value = newReservation.Value,
-                            TransactionTypeId = 1
-                        };
-                        await _transactionService.CreateTransaction(transaction, userId);
-                        await _service.AddReservation(newReservation);
-
-                        _service.GenerateQrCode(newReservation);
-
-                        // send email with ticket 
-                        var Park = await _parkService.GetParkById(idPark);
-                        _service.SendEmail(newReservation, user, Park.Name);
-
-                        return Ok(newReservation);
-                    }
-                    else
-                    {
-                        await _paxAPIService.CancelReservation(reservationAPI.ExternalId);
-                        return StatusCode(402);
-                    }
-                }
-                return BadRequest();
-            }
-            else
-            {
-                return BadRequest();
-            }
         }
 
         // PUT: api/Reservations/Rent/5
@@ -303,7 +257,7 @@ namespace iParkMedusa.Controllers
 
         // DELETE: api/Reservations/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteReservation(int id, [FromQuery]int parkId)
+        public async Task<IActionResult> DeleteReservation(int id, Park park)
         {
             try
             {
@@ -316,16 +270,7 @@ namespace iParkMedusa.Controllers
                 };
 
                 await _transactionService.CreateTransaction(transaction, reservation.UserId);
-
-                if (parkId == 1) 
-                {
-                    await _parkAPIService.CancelReservation(reservation.ExternalId);
-                }
-                else if (parkId == 2)
-                {
-                    await _paxAPIService.CancelReservation(reservation.ExternalId);
-                }
-
+                await _parkingLotService.CancelReservation(park, reservation.ExternalId);
                 await _service.DeleteReservationbyId(id);
                 return NoContent();
             }

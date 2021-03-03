@@ -31,8 +31,8 @@ namespace iParkMedusa.Contexts
                 new TransactionType { Id = 2, Name = "Credit - Added Funds" },
                 new TransactionType { Id = 3, Name = "Credit - Cancelation" });
             builder.Entity<Park>().HasData(
-                new Park { Id = 1, Name = "Park1" },
-                new Park { Id = 2, Name = "Park2" });
+                new Park { Id = 1, Name = "Park", Uri = "https://localhost:44365/" },
+                new Park { Id = 2, Name = "Pax", Uri = "https://localhost:44355/" });
             builder.Entity<PaymentMethod>().HasData(
                 new PaymentMethod { Id = 1, Name = "Paypal" },
                 new PaymentMethod { Id = 2, Name = "Bank Transfer" },

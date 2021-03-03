@@ -12,8 +12,8 @@ namespace iParkMedusa.Services.ParkingLot
 
         Task<List<ReservationDTO>> GetAvailable(DateTime start, DateTime end);
 
-        Task<ReservationDTO> PostReservation(DateTime start, DateTime end, int slotId);
+        Task<ReservationDTO> PostReservation(DateTime start, DateTime end, string uri, int slotId);
 
-        Task<string> CancelReservation(int id);
+        Task<string> CancelReservation(Park park, int id);
     }
 }
