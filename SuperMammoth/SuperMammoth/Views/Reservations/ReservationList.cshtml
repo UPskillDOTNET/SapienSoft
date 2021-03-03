@@ -5,10 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>ReservationList</h1>
+<h1>Available Reservations</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">New Search</a>
 </p>
 <table class="table">
     <thead>
@@ -20,31 +20,15 @@
                 @Html.DisplayNameFor(model => model.End)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateCreated)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Value)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SlotId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Locator)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Latitude)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Longitude)
-            </th>
+
+
             <th>
                 @Html.DisplayNameFor(model => model.ParkName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ExternalId)
             </th>
             <th></th>
         </tr>
@@ -58,37 +42,20 @@
             <td>
                 @Html.DisplayFor(modelItem => item.End)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateCreated)
-            </td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.Value)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SlotId)
-            </td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.Locator)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Latitude)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Longitude)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.ParkName)
             </td>
+
             <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExternalId)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) 
             </td>
         </tr>
 }
