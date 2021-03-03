@@ -92,7 +92,7 @@ namespace iParkMedusa.Controllers
 
             try
             {
-                var listReservations = await _parkingLotService.GetAvailable(start, end); // GetAvailable from ParkAPI
+                var listAvailableReservations = await _parkingLotService.GetAvailable(start, end); // GetAvailable from ParkAPI
                 var listRentReservations = await _service.GetRentReservations(start, end); // Add the Rent reservations
                 var listRentReservationsDTO = new List<ReservationDTO>();
                 foreach ( var item in listRentReservations)
@@ -101,14 +101,14 @@ namespace iParkMedusa.Controllers
                     listRentReservationsDTO.Add(DTO);
                 }
                 
-                listReservations.AddRange(listRentReservationsDTO);
+                listAvailableReservations.AddRange(listRentReservationsDTO);
 
                 if(latitude != 0 || longitude != 0)
                 {
-                    var newListReservations = _service.FilterReservationsByLocation(listReservations, latitude, longitude, distance);
+                    var newListReservations = _service.FilterReservationsByLocation(listAvailableReservations, latitude, longitude, distance);
                     return Ok(newListReservations);
                 }
-                return Ok(listReservations);
+                return Ok(listAvailableReservations);
             }
             catch (Exception e)
             {
