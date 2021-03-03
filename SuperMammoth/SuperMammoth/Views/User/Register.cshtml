@@ -40,7 +40,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="PaymentMethodId" class="control-label"></label>
-                <input asp-for="PaymentMethodId" class="form-control" />
+                <select asp-for="PaymentMethodId" class="form-control">
+                    <option value="1">Credit</option>
+                    <option value="2">Debit</option>
+                    <option value="3">Paypal</option>
+                    <option value="4">Check</option>
+                </select>
                 <span asp-validation-for="PaymentMethodId" class="text-danger"></span>
             </div>
             <input type="checkbox" id="GDPR" name="GDPR" required>
