@@ -26,17 +26,15 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy&Terms</a>
                         </li>
                         @{
                             var userSession = HttpContextAccessor.HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
-                            if (userSession != null)
+                            if (userSession != null && userSession.Roles != null)
                             {
                                 if (userSession.Roles.Contains("Administrator"))
                                 {
-                                    <li>
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Transactions" asp-action="AdminIndex">Transactions</a>
-                                    </li>
+
                                 }
                                 if (userSession.Roles.Contains("User"))
                                 {
@@ -46,9 +44,13 @@
                                     <li>
                                         <a class="nav-link text-dark" asp-area="" asp-controller="Transactions" asp-action="Index">Transactions</a>
                                     </li>
+
                                 }
                                 if (userSession.Roles.Contains("User") || userSession.Roles.Contains("Administrator"))
                                 {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Profile"><font color="blue">Welcome @userSession.UserName!</font></a>
+                                    </li>
                                     <li class="nav-item">
                                         <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Logout">Logout</a>
                                     </li>

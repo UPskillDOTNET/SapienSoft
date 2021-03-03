@@ -34,7 +34,7 @@ namespace SuperMammoth.Controllers
                 {
                     var content = result.Content.ReadAsStringAsync();
                     content.Wait();
-                    TempData["message"] = "New user registered";
+                    TempData["message"] = "Registation successful!";
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -67,12 +67,51 @@ namespace SuperMammoth.Controllers
                         var authenticationModel = content.Result;
                         HttpContext.Session.SetObjectAsJson("UserSession", authenticationModel);
                         
-                        TempData["message"] = "Login successful";
+                        TempData["message"] = authenticationModel.Message;
                         return RedirectToAction("Index", "Home");
                     }
                     else
                     {
                         TempData["message"] = "Login failed!";
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+                catch
+                {
+                    TempData["message"] = "Server connection failed";
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+        }
+
+        public IActionResult Profile()
+        {
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    client.BaseAddress = new Uri("https://localhost:44398/api/");
+                    client.DefaultRequestHeaders.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                    var userSession = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
+                    var token = userSession.Token;
+                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                    // token
+
+                    var postTask = client.GetAsync("user/info");
+                    postTask.Wait();
+                    var result = postTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var content = result.Content.ReadFromJsonAsync<RegisterModel>();
+                        content.Wait();
+                        var userModel = content.Result;
+                        return View(userModel);
+                    }
+                    else
+                    {
+                        TempData["message"] = "Error!";
                         return RedirectToAction("Index", "Home");
                     }
                 }

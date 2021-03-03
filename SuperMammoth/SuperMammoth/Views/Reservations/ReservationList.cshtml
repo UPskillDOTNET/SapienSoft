@@ -1,0 +1,63 @@
+﻿@model IEnumerable<SuperMammoth.Models.ReservationModel>
+
+@{
+    ViewData["Title"] = "ReservationList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Available Reservations</h1>
+
+<p>
+    <a asp-action="Create">New Search</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Start)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.End)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Value)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Locator)
+            </th>
+
+
+            <th>
+                @Html.DisplayNameFor(model => model.ParkName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Start)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.End)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Value)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Locator)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParkName)
+            </td>
+
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) 
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

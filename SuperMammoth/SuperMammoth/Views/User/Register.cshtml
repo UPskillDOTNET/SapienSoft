@@ -40,11 +40,18 @@
             </div>
             <div class="form-group">
                 <label asp-for="PaymentMethodId" class="control-label"></label>
-                <input asp-for="PaymentMethodId" class="form-control" />
+                <select asp-for="PaymentMethodId" class="form-control">
+                    <option value="1">Credit</option>
+                    <option value="2">Debit</option>
+                    <option value="3">Paypal</option>
+                    <option value="4">Check</option>
+                </select>
                 <span asp-validation-for="PaymentMethodId" class="text-danger"></span>
             </div>
+            <input type="checkbox" id="GDPR" name="GDPR" required>
+            <label for="GDPR"> I agree with Mammoth's <a href="https://localhost:44355/Home/Privacy" target="_blank">Privacy Policy, Terms and Conditions</a></label><br>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Submit" class="btn btn-primary" />
             </div>
         </form>
     </div>
