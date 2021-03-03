@@ -49,22 +49,31 @@ namespace iParkMedusa.Services.ParkingLot
 
                     TokenRequestModel trm = new TokenRequestModel() { Email = _parkingLotSecrets.Email, Password = _parkingLotSecrets.Password };
 
-                    Task<HttpResponseMessage> response = client.PostAsJsonAsync("api/user/token", trm);
-                    var authenticationModel = await response.Result.Content.ReadFromJsonAsync<AuthenticationModel>();
-                    var token = authenticationModel.Token;
-
-                    var url = "api/reservations/available?start=" +
-                        start.ToString("yyyy-MM-dd") + "T" + start.ToString("HH:mm:ss") + "&end=" +
-                        end.ToString("yyyy-MM-dd") + "T" + end.ToString("HH:mm:ss");
-
-                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-                    response = client.GetAsync(url);
-                    var content = await response.Result.Content.ReadAsStringAsync();
-                    var list = JsonConvert.DeserializeObject<List<ReservationDTO>>(content);
-                    foreach (var item in list)
+                    try
                     {
-                        availableList.Add(item);
-                    } 
+                        Task<HttpResponseMessage> response = client.PostAsJsonAsync("api/user/token", trm);
+                        var authenticationModel = await response.Result.Content.ReadFromJsonAsync<AuthenticationModel>();
+                        var token = authenticationModel.Token;
+
+                        var url = "api/reservations/available?start=" +
+                            start.ToString("yyyy-MM-dd") + "T" + start.ToString("HH:mm:ss") + "&end=" +
+                            end.ToString("yyyy-MM-dd") + "T" + end.ToString("HH:mm:ss");
+
+                        client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                        response = client.GetAsync(url);
+                        var content = await response.Result.Content.ReadAsStringAsync();
+                        var list = JsonConvert.DeserializeObject<List<ReservationDTO>>(content);
+                        foreach (var item in list)
+                        {
+                            availableList.Add(item);
+                        }
+                    }
+                    catch
+                    {
+                        continue;
+                    }
+                    
+                    
                 }
             }
             return availableList;
