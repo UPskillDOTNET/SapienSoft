@@ -25,7 +25,7 @@ namespace SuperMammoth.Controllers
             using (var client = new HttpClient())
             {
                 IEnumerable<ReservationModel> reservation = new List<ReservationModel>();
-                client.BaseAddress = new Uri("https://localhost:44398/api/");
+                client.BaseAddress = new Uri("https://localhost:44398/api/"); // MedusaAPI
 
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
@@ -34,7 +34,7 @@ namespace SuperMammoth.Controllers
                 var token = userSession.Token;
 
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-                var response = client.GetAsync($"reservations/available?start={reservationModel.Start.ToString("o")}&end={reservationModel.End.ToString("o")}&latitude={reservationModel.Latitude}&longitude={reservationModel.Longitude}");
+                var response = client.GetAsync($"reservations/available?start={reservationModel.Start.ToString("o")}&end={reservationModel.End.ToString("o")}"); // &latitude={reservationModel.Latitude}&longitude={reservationModel.Longitude}
                 response.Wait();
 
                 var result = response.Result;
