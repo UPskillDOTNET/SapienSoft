@@ -1,0 +1,194 @@
+@startuml
+Class TransactionController{
+- _service = TransactionService
+- _userManager = UserManager
+- _servicePaypal = PayPalService
+GetTransactions()
+GetTransaction()
+GetTransactionByUserId()
+PutTransaction()
+PostTransaction()
+GetBalance()
+AddFunds()
+AddFundsPayPal()
+AddFundsMultibanco()
+executeAddFundsPayPal()
+AddFundsStripe()
+}
+
+Class TransactionService{
+- _repo = TransactionRepository
+GetTransactions()
+GetTransactionById()
+UpdateTransaction()
+CreateTransaction()
+GetTransactionByUserId()
+GetBalanceByUserId()
+GetStripeModel()
+GetStripeToken()
+CreatePaymentModel()
+PostFundsStripe()
+}
+Interface ITransactionRepository {
+GetTransactionAsync()
+GetTransactionByIdAsync()
+GetTransactionByUserId()
+GetBalanceByUserIdAsync()
+}
+
+Class TransactionRepository{
+- context = ApplicationDbContext
+GetTransactionsAsync()
+GetTransactionByIdAsync()
+GetTransactionsByUserId()
+GetBalanceByUserIdAsync()
+}
+
+ entity Transaction{
+- Id
+-Date
+-Value
+-Balance
+-TransactionTypeId
+-TransactionType
+-UserId
+-User
+}
+
+ entity TransactionType{
+-Id
+-Name
+}
+
+Class PayPalService {
+- _payPalCredentials = PayPalCredentials
+GetPaypalHttpClient()
+GetPalPalAccessTokenAsync()
+CreatePaypalPaymentAsync()
+ExecutePaypalPaymentAsync()
+}
+
+ entity PayPalPaymentCreatedResponse{
+/'-id
+-intent
+-state
+-payer
+-transactions
+-create_time
+-links
+-Payer
+-payment_method
+-Transaction
+-amount
+-related_resources
+-Amount
+-total
+-currency
+-Link
+-href
+-rel
+-method'/
+}
+
+ entity PayPalPaymentExecutedResponse{
+/'-id
+-intent
+-state
+-cart
+-payer
+-transactions
+-create_time
+-links
+-Payer
+-payment_method
+-status
+-payer_info
+-Payer_Info
+-email
+-first_name
+-last_name
+-payer_id
+-shipping_address
+-country_code
+-billing_address
+-Shipping_Address
+-recipient_name
+-line1
+-city
+-state
+-postal_code
+-country_code
+-Billing_Address
+-line1
+-line2
+-city
+-state
+-postal_code
+-country_code
+-Transaction
+-ammount
+-payee
+-item_list
+-related_resources
+-Ammount
+-total
+-currency
+-details
+-Details
+-subtotal
+-Payee
+-merchant_id
+-email
+-Item_List
+-shipping_address
+-Shipping_Address1
+-recipient_name
+-line1
+-city
+-state
+-postal_code
+-country_code
+-Related_Resources
+-sale
+-Sale
+-id
+-state
+-amount
+-payment_mode
+-protection_eligibility
+-protection_eligibility_type
+-transaction_fee
+-parent_payment
+-create_time
+-update_time
+-links
+-Transaction_Fee
+-value
+-currency
+-Link
+-href
+-rel
+-method'/
+}
+
+ entity PayPalTokenModel{
+/'-scope
+-access_token
+-token_type
+-app_id
+-expires_in
+-nonce'/
+}
+
+
+
+TransactionRepository -- Transaction
+Transaction -- TransactionType
+PayPalService -- PayPalPaymentCreatedResponse
+PayPalService -- PayPalPaymentExecutedResponse
+PayPalService -- PayPalTokenModel
+PayPalService - TransactionController
+TransactionController - TransactionService
+TransactionService - ITransactionRepository
+ITransactionRepository - TransactionRepository
+@enduml

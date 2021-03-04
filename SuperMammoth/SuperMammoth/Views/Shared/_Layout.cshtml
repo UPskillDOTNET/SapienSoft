@@ -34,7 +34,9 @@
                             {
                                 if (userSession.Roles.Contains("Administrator"))
                                 {
-
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="Charts"><font color="blue">Dashboard</font></a>
+                                    </li>
                                 }
                                 if (userSession.Roles.Contains("User"))
                                 {
