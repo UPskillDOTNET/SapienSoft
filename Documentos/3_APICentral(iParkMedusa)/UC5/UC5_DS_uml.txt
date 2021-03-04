@@ -1,18 +1,76 @@
 @startuml
-Actor User
-User -> Interface: Inicia Pedido
+skinparam {
+ActorBorderColor Blue
+ParticipantBorderColor Blue
+ParticipantBackgroundColor #ECECEC
+ParticipantFontName Impact
+ParticipantFontSize 15
+ParticipantFontColor black
+ActorBackgroundColor #ECECEC
+ActorFontSize 17
+ActorFontName Aapex
+DatabaseBackgroundColor #ECECEC
+DatabaseBorderColor Blue
+}
+
+skinparam sequence {
+LifeLineBorderColor Blue
+LifeLineBackgroundColor #ECECEC
+BoxBorderColor Blue
+ArrowColor Blue
+}
+
+actor User as U
+participant Interface as I
 box API
-Interface -> ReservationsController: Pedido HttpDelete
-ReservationsController -> ReservationService: DeleteReservation(int id)
-ReservationsController -> ReservationService : DeleteReservationById(id)
-ReservationService -> ReservationRepository: DeleteReservationByIdAsync(id)
-database DbContext
-ReservationRepository -> DbContext: Remove(reservation)
-ReservationRepository -> DbContext: SaveChangesAsync()
-DbContext--> ReservationRepository: <ActionResult>
-ReservationRepository --> ReservationService: <ActionResult>
-ReservationService --> ReservationsController: <string>
+participant ":ReservationsController" as RC
+participant ":ReservationService" as RS
+participant ":TransactionService" as TS
+participant "transaction:Transaction" as T
+participant ":TransactionRepository" as TR
+participant ":ReservationRepository" as RR
+database DbContext as DB
 end box
-ReservationsController --> Interface: <string>
-Interface --> User: <string>
+
+activate U
+activate I
+U -> I: Inicia Pedido
+I --> U: Envia mensagem a \n assegurar-se da \n intenção do User
+U -> I: Confirma
+box API
+I -> RC: Pedido HttpDelete
+activate RC
+RC -> RS : DeleteReservationById(id)
+activate RS
+RS -> RR: DeleteReservationByIdAsync(id)
+activate RR
+RR -> DB: Remove(reservation)
+activate DB
+RR -> DB: SaveChangesAsync()
+DB --> RR: <ActionResult>
+deactivate DB
+RR --> RS: <ActionResult>
+deactivate RR
+RS --> RC: STATUS 200 OK
+deactivate RS
+RC -> T**: transaction=new Transaction()
+RC -> TS: CreateTransaction(transaction, userid)
+activate TS
+TS -> TR: CreateTransaction(transaction, userid)
+activate TR
+TR -> TR: GetBalanceByUserId(userid)
+TR -> DB: GetBalanceByUserIdAsync()
+activate DB
+DB --> TR: balance
+TR -> DB: AddEntityAsync(transaction)
+DB --> TR: Status 200 OK
+deactivate DB
+TR --> TS: Status 200 OK
+deactivate TR
+TS --> RC: Status 200 OK
+deactivate TS
+RC --> I: <string>
+end box
+deactivate RC
+I --> U: <string>
 @enduml
