@@ -1,18 +1,61 @@
 @startuml
-Actor User
-User -> Interface: Inicia Pedido
+skinparam {
+ActorBorderColor Blue
+ParticipantBorderColor Blue
+ParticipantBackgroundColor #ECECEC
+ParticipantFontName Impact
+ParticipantFontSize 15
+ParticipantFontColor black
+ActorBackgroundColor #ECECEC
+ActorFontSize 17
+ActorFontName Aapex
+DatabaseBackgroundColor #ECECEC
+DatabaseBorderColor Blue
+}
+
+skinparam sequence {
+LifeLineBorderColor Blue
+LifeLineBackgroundColor #ECECEC
+BoxBorderColor Blue
+ArrowColor Blue
+}
+
+actor User as U
+participant Interface as I
 box API
-Interface -> ReservationsController: Pedido HttpPost
-ReservationsController -> ReservationService: AddReservation(reservation)
-ReservationsController -> ReservationService : SaveChangesAsync()
-ReservationService -> ReservationRepository: AddEntityAsync(reservation)
-ReservationService -> ReservationRepository : SaveChangesAsync()
-database DbContext
-ReservationRepository -> DbContext: SaveChangesAsync()
-DbContext--> ReservationRepository: <ActionResult>
-ReservationRepository --> ReservationService: <ActionResult>
-ReservationService --> ReservationsController: <string>
+participant ":ReservationsController" as RC
+participant ":ReservationService" as RS
+participant "reservation:Reservation" as R
+participant ":ReservationRepository" as RR
+database DbContext as DB
 end box
-ReservationsController --> Interface: <string>
-Interface --> User: <string>
+
+activate U
+activate I
+I --> U: **1** devolve lista de \n reservas possíveis (**UC3**)
+U -> I: **2** seleciona a reserva \n pretendida
+I --> U: **3** mostra detalhes e \n solicita confirmação
+U -> I: **4** confirma
+box API
+I -> RC: **5** Pedido HttpPost
+activate RC
+RC -> RS: **6** PostReservation()
+activate RS
+RS -> R**: **7** reservation = new Reservation()
+RS -> RR: **8** AddEntityAsync(reservation)
+activate RR
+RR -> DB: **9** SaveChangesAsync()
+activate DB
+DB --> RR: **10** <ActionResult>
+deactivate DB
+RR --> RS: **11** <ActionResult>
+deactivate RR
+RS --> RC: **12** Status 200 OK
+deactivate RS
+RC --> I: **13** Status 200 OK
+deactivate RC
+end box
+I --> U: **14** envia mensagem de \n sucesso da operação
+deactivate U
+deactivate I
 @enduml
