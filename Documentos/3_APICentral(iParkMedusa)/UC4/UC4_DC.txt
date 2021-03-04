@@ -1,0 +1,69 @@
+@startuml
+skinparam class {
+BackgroundColor #ECECEC
+ArrowColor Blue
+BorderColor Blue
+}
+
+class Reservation{
+- Id
+- ExternalId
+- Start
+- End
+- DateCreated
+- Value
+- SlotId
+- Locator
+- Latitude
+- Longitude
+- QrCode
+- AvailableToRent
+- RentValue
+- UserId
+- ParkId
+}
+
+class ReservationsController{
+_service = service
+_parkingLotService
+_parkService
+_userManager
+_transactionService
+GetReservations()
+GetReservationById()
+GetAvailableSlotsToReservationDTO()
+GetQrCodeInformation()
+PutReservation()
+PostReservation()
+RentReservation()
+RentedReservation()
+DeleteReservation()
+ReSendEmail()
+}
+
+class ReservationService {
+_reservationRepository
+_slotRepository
+GetAllReservations()
+GetReservationByIdAsync()
+UpdateEntityAsync()
+AddEntityAsync()
+DeleteReservationByIdAsync()
+GetAvailableSlotsToReservationDTO()
+}
+
+class ReservationRepository{
+_context
+FindAllAsync()
+AddEntityAsync()
+UpdateEntityAsync()
+GetAllReservationsAsync()
+GetReservationByIdAsync()
+GetReservationsBySlotId()
+DeleteReservationByIdAsync()
+}
+
+
+ReservationsController -- ReservationService : > 
+ReservationService -right- ReservationRepository : >
+@enduml
