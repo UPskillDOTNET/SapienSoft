@@ -1,0 +1,47 @@
+@startuml
+skinparam class {
+BackgroundColor #ECECEC
+ArrowColor Blue
+BorderColor Blue
+}
+
+class ApplicationUser{
+- FirstName
+- LastName
+- UserName
+- Email
+- Password
+}
+
+class UserController{
+_userService
+_userManager;
+RegisterAsync()
+GetTokenAsync()
+AddRoleAsync()
+ChangePasswordAsync()
+}
+
+class UserService {
+_userManager
+_roleManager
+_jwt
+RegisterAsync()
+GetTokenAsync()
+CreateJwtToken()
+AddRoleAsync()
+}
+
+class UserManager{
+_context
+FindByEmailAsync()
+CreateAsync()
+AddToRoleAsync()
+GetRolesAsync()
+GetClaimsAsync()
+}
+
+
+UserController -- UserService : > 
+UserService -right- UserManager : >
+@enduml
