@@ -75,7 +75,7 @@ namespace iParkMedusa.Services
                 default: return null;
             }
         }
-            public async Task<List<Transaction>> GetTransactionsByUserId(string userId)
+        public async Task<List<Transaction>> GetTransactionsByUserId(string userId)
         {
             return await _repo.GetTransactionsByUserId(userId);
         }

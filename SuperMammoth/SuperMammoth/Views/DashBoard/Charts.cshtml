@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewData["Title"] = "Charts";
+}
+
+<h1>Charts</h1>
+
+<div id="chartContainer"></div>
+
+@{
+    var transList = Html.Raw(ViewBag.transList);
+    var i = transList.Count();
+    string[] x = new string[i];
+    double[] y = new double[i];
+    int c = 0;
+    foreach (Transaction item in transList)
+    {
+        foreach (Transaction item2 in transList)
+        {
+            var ValueAsString = transList.Where(item.UserId == item2.UserId).Select(item2.Value).ToString();
+            var converter = Double.Parse(ValueAsString);
+            x[c] = item.UserId;
+            y[c] += converter;
+        }
+        c++;
+    }
+    var myChart = new Chart(width: 600, height: 400)
+       .AddTitle("Chart Title")
+       .AddSeries(
+           name: "Transaction Value per User",
+           xValue: x[i],
+           yValues: y[i])
+       .Write();
+}
