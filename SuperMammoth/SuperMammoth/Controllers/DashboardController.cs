@@ -14,7 +14,7 @@ namespace SuperMammoth.Controllers
         // GET: Charts
         public ActionResult Charts()
         {
-            List<Transaction> transList = null;
+            IQueryable<Transaction> transList = null;
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://localhost:44398/api/");
@@ -24,9 +24,10 @@ namespace SuperMammoth.Controllers
                 var result = response.Result;
                 if (result.IsSuccessStatusCode)
                 {
-                    var read = result.Content.ReadAsAsync<List<Transaction>>();
+                    var read = result.Content.ReadAsAsync<IQueryable<Transaction>>();
                     read.Wait();
                     transList = read.Result;
+                    
                 }
                 else
                 {
