@@ -104,7 +104,6 @@ namespace SuperMammoth.Controllers
                         return View();
                     }                    
                 }
-                return BadRequest("No park was found. Contact support");
             }
             return BadRequest("No park was found. Contact support");
         }

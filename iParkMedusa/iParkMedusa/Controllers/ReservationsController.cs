@@ -150,7 +150,7 @@ namespace iParkMedusa.Controllers
         // POST: api/Reservations/1
         [Authorize(Roles ="Administrator, Moderator, User")]
         [HttpPost("{idPark}")]
-        public async Task<ActionResult<Reservation>> PostReservation(ReservationDTO reservation, [FromQuery] int idPark)
+        public async Task<ActionResult<Reservation>> PostReservation(ReservationDTO reservation, int idPark)
         {
             var park = await _parkService.GetParkById(idPark);
             var reservationAPI = await _parkingLotService.PostReservation(reservation.Start, reservation.End, park.Uri, reservation.SlotId);

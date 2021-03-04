@@ -131,7 +131,7 @@ namespace SuperMammoth.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<ActionResult> Edit([Bind("Id", "Name")] Park park)
+        public async Task<ActionResult> Edit([Bind("Id", "Name", "Uri")] Park park)
         {
             if (ModelState.IsValid)
             {

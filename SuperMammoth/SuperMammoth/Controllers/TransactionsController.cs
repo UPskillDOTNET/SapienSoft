@@ -94,7 +94,7 @@ namespace SuperMammoth.Controllers
                         transaction = transaction.OrderBy(t => t.Date);
                         break;
                 }
-                int pageSize = 5;
+                int pageSize = 10;
                 return View(PaginatedList<Transaction>.CreateAsync(transaction, pageNumber ?? 1, pageSize));
                 
             }
