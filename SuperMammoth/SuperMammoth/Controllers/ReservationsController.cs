@@ -59,33 +59,81 @@ namespace SuperMammoth.Controllers
             return View(reservation);
         }
 
-        public ActionResult Details(int id)
+        public ActionResult Details(ReservationModel reservation)
         {
-            ReservationModel reservation = new ReservationModel();
+                return View(reservation);
+        }
 
+        public ActionResult MakeReservation(ReservationModel reservationModel)
+        {
+            IEnumerable<Park> parks = GetParks();
+            int parkId;
+            foreach (Park p in parks)
+            {
+                if (p.Name == reservationModel.ParkName)
+                {
+                    parkId = p.Id;
+
+                    using (var client = new HttpClient())
+                    {
+
+                        client.BaseAddress = new Uri("https://localhost:44398/api/reservations/"); // MedusaAPI
+
+                        client.DefaultRequestHeaders.Clear();
+                        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                        //Token
+                        var userSession = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
+                        var token = userSession.Token;
+
+                        client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                        var response = client.PostAsJsonAsync(parkId.ToString(), reservationModel);
+                        response.Wait();
+
+                        var result = response.Result;
+                        if (result.IsSuccessStatusCode)
+                        {
+                            var read = result.Content.ReadAsAsync<ReservationModel>();
+                            read.Wait();
+                            var reservation = read.Result;
+                        }
+                        else
+                        {
+                            //erro
+                            ModelState.AddModelError(string.Empty, "Server error occured");
+                        }
+                        return View();
+                    }                    
+                }
+                return BadRequest("No park was found. Contact support");
+            }
+            return BadRequest("No park was found. Contact support");
+        }
+
+        public IEnumerable<Park> GetParks()
+        {
+            IEnumerable<Park> parks = null;
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("https://localhost:44398/api/reservations/");
-                var response = client.GetAsync(id.ToString());
+                client.BaseAddress = new Uri("https://localhost:44398/api/");
+                var response = client.GetAsync("parks");
                 response.Wait();
 
                 var result = response.Result;
                 if (result.IsSuccessStatusCode)
                 {
-                    var read = result.Content.ReadAsAsync<ReservationModel>();
+                    var read = result.Content.ReadAsAsync<IList<Park>>();
                     read.Wait();
-                    reservation = read.Result;
+                    parks = read.Result;
                 }
                 else
                 {
                     //erro
-                    reservation = null;
+                    parks = Enumerable.Empty<Park>();
                     ModelState.AddModelError(string.Empty, "Server error occured");
                 }
-                return View(reservation);
+                return parks;
             }
         }
-
 
     }
 }
