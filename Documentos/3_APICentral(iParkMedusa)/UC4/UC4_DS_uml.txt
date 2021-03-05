@@ -25,7 +25,9 @@ participant Interface as I
 box API
 participant ":ReservationsController" as RC
 participant ":ReservationService" as RS
-participant "reservation:Reservation" as R
+participant ":TransactionService" as TS
+participant "transaction:Transaction" as T
+participant ":TransactionRepository" as TR
 participant ":ReservationRepository" as RR
 database DbContext as DB
 end box
@@ -52,10 +54,24 @@ RR --> RS: **11** <ActionResult>
 deactivate RR
 RS --> RC: **12** Status 200 OK
 deactivate RS
-RC --> I: **13** Status 200 OK
-deactivate RC
+RC -> T**: **13** transaction=new Transaction()
+RC -> TS: **14** CreateTransaction(transaction, userid)
+activate TS
+TS -> TR: **15** CreateTransaction(transaction, userid)
+activate TR
+TR -> TR: **16** GetBalanceByUserId(userid)
+TR -> DB: **17** GetBalanceByUserIdAsync()
+activate DB
+DB --> TR: **18** balance
+TR -> DB: **19** AddEntityAsync(transaction)
+DB --> TR: **20** Status 200 OK
+deactivate DB
+TR --> TS: **20** Status 200 OK
+deactivate TR
+TS --> RC: **21** Status 200 OK
+deactivate TS
+RC --> I: **22** Status 200 OK
 end box
-I --> U: **14** envia mensagem de \n sucesso da operação
-deactivate U
-deactivate I
+deactivate RC
+I --> U: **23** Envia mensagem \n de sucesso
 @enduml

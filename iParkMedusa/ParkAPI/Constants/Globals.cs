@@ -7,6 +7,6 @@ namespace ParkAPI.Constants
 {
     public class Globals
     {
-        public static string ParkName { get; } = "Public Park";
+        public static string ParkName { get; } = "Park";
     }
 }
