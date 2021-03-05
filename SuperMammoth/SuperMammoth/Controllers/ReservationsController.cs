@@ -134,5 +134,44 @@ namespace SuperMammoth.Controllers
             }
         }
 
+        public ActionResult<IEnumerable<ReservationModel>> GetReservationByUser()
+        {
+            using (var client = new HttpClient())
+            {
+                IEnumerable<ReservationModel> userReservations = new List<ReservationModel>();
+                client.BaseAddress = new Uri("https://localhost:44398/api/reservations/user/"); // MedusaAPI
+
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                //Token
+                var userSession = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
+                var token = userSession.Token;
+
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                var response = client.GetAsync("byid");
+                response.Wait();
+
+                var result = response.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var read = result.Content.ReadAsAsync<IList<ReservationModel>>();
+                    read.Wait();
+                    userReservations = read.Result;
+                }
+                else
+                {
+                    //erro
+                    userReservations = Enumerable.Empty<ReservationModel>();
+                    ModelState.AddModelError(string.Empty, "Server error occured");
+                }
+                return View("UserReservations", userReservations);
+            }
+        }
+
+        public ActionResult UserReservations(List<ReservationModel> reservation)
+        {
+            return View(reservation);
+        }
+
     }
 }
