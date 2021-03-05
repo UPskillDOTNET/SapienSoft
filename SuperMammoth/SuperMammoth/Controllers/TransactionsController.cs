@@ -138,6 +138,20 @@ namespace SuperMammoth.Controllers
                     var read = result.Content.ReadFromJsonAsync<IList<Transaction>>();
                     read.Wait();
                     transaction = read.Result;
+                    foreach(var item in transaction)
+                    {
+                        var userId = item.UserId;
+                        var response2 = client.GetAsync("users/ById/"+ userId);
+                        response2.Wait();
+                        var result2 = response2.Result;
+                        if(result2.IsSuccessStatusCode)
+                        {
+                            var read2 = result2.Content.ReadAsStringAsync();
+                            string userName = read2.Result;
+                            item.UserId = userName;
+
+                        }
+                    }
                 }
                 else
                 {
@@ -169,7 +183,7 @@ namespace SuperMammoth.Controllers
                 switch (sortOrder)
                 {
                     case "date_desc":
-                        transaction = transaction.OrderByDescending(t => t.Date);
+                        transaction = transaction.OrderBy(t => t.Date);
                         break;
                     case "TransType":
                         transaction = transaction.OrderBy(t => t.TransactionTypeId);
@@ -178,10 +192,10 @@ namespace SuperMammoth.Controllers
                         transaction = transaction.OrderByDescending(t => t.TransactionTypeId);
                         break;
                     default:
-                        transaction = transaction.OrderBy(t => t.Date);
+                        transaction = transaction.OrderByDescending(t => t.Date);
                         break;
                 }
-                int pageSize = 5;
+                int pageSize = 10;
                 return View(PaginatedList<Transaction>.CreateAsync(transaction, pageNumber ?? 1, pageSize));
 
             }
@@ -253,7 +267,7 @@ namespace SuperMammoth.Controllers
                     if (response.Result.IsSuccessStatusCode)
                     {
                         response.Wait();
-                        return RedirectToAction("Index", "Transactions");
+                        return RedirectToAction("AdminIndex", "Transactions");
                     }
                     else return BadRequest("Problems comunicating with Medusa1");
                 }

@@ -37,6 +37,9 @@
             <th>
                 <a asp-action="AdminIndex" asp-route-sortOrder="@ViewData["TransactionTypeIdSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Transaction type</a>
             </th>
+            <th>
+                <a asp-action="AdminIndex"  asp-route-currentFilter="@ViewData["CurrentFilter"]">User Name</a>
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -48,7 +51,18 @@
                     @Html.Raw(item.Date.ToString("dd/MM/yyyy"))
                 </td>
                 <td>
-                    @Html.Raw(item.Value.ToString("C"))
+                    @switch (item.TransactionTypeId)
+                    {
+                        case 1:
+                            <span style="color:red;">@Html.Raw(item.Value.ToString("C"))</span>
+                            break;
+                        case 2:
+                            <span style="color:green;">@Html.Raw(item.Value.ToString("C"))</span>
+                            break;
+                        case 3:
+                            <span style="color:yellow;">@Html.Raw(item.Value.ToString("C"))</span>
+                            break;
+                    }
                 </td>
                 <td>
                     @Html.Raw(item.Balance.ToString("C"))
@@ -68,6 +82,9 @@
                     }
                 </td>
                 <td>
+                    @{ 
+
+                    }
                     @Html.DisplayFor(modelItem => item.UserId)
                 </td>
 
