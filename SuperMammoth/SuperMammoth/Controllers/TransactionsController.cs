@@ -162,7 +162,7 @@ namespace SuperMammoth.Controllers
 
 
                 ViewData["DateSortParm"] = String.IsNullOrEmpty(sortOrder) ? "date_desc" : "";
-                ViewData["TransactionTypeIdSortParm"] = sortOrder == "TransType" ? "TransType_desc" : "TransType";
+                ViewData["UserSortParm"] = sortOrder == "user" ? "user_desc" : "user";
                 ViewData["CurrentFilter"] = searchString;
                 ViewData["CurrentSort"] = sortOrder;
 
@@ -185,11 +185,11 @@ namespace SuperMammoth.Controllers
                     case "date_desc":
                         transaction = transaction.OrderBy(t => t.Date);
                         break;
-                    case "TransType":
-                        transaction = transaction.OrderBy(t => t.TransactionTypeId);
+                    case "user":
+                        transaction = transaction.OrderBy(t => t.UserId);
                         break;
-                    case "TransType_desc":
-                        transaction = transaction.OrderByDescending(t => t.TransactionTypeId);
+                    case "user_desc":
+                        transaction = transaction.OrderByDescending(t => t.UserId);
                         break;
                     default:
                         transaction = transaction.OrderByDescending(t => t.Date);
