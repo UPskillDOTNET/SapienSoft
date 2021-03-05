@@ -306,5 +306,29 @@ namespace iParkMedusa.Controllers
             else return BadRequest("Reservation does not exist");
         }
 
+        [HttpGet]
+        [Route("~/api/reservations/user/byid")]
+        public async Task<ActionResult<List<Reservation>>> GetReservationsByUser()
+        {
+            var userName = _userManager.GetUserId(HttpContext.User);
+            var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
+            var id = user.Id;
+
+            try
+            {
+                List<Reservation> reservations = await _service.GetReservationsByUserId(id);
+                if (reservations == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(reservations);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
+            }
+        }
+
     }
 }

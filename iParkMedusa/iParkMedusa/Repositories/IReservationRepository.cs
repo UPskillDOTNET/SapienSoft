@@ -12,5 +12,6 @@ namespace iParkMedusa.Repositories
         Task<Reservation> GetReservationByIdAsync(int id);
         Task<int> DeleteReservationByIdAsync(int id);
         Task<List<Reservation>> GetRentReservationsAsync(DateTime start, DateTime end);
+        Task<List<Reservation>> GetReservationsByUserIdAsync(string userId);
     }
 }

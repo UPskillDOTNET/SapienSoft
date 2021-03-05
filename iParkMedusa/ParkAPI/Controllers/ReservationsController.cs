@@ -160,8 +160,8 @@ namespace ParkAPI.Controllers
             }
         }
 
-            // DELETE: api/Reservations/5
-            [HttpDelete("{id}")]
+        // DELETE: api/Reservations/5
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReservation(int id)
         {
             try
@@ -173,6 +173,7 @@ namespace ParkAPI.Controllers
             {
                 return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
             }
-        }
+        }              
+
     }
 }

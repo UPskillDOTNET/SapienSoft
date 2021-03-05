@@ -217,5 +217,10 @@ namespace iParkMedusa.Services
             }
             return newListReservation;
         }
+
+        public async Task<List<Reservation>> GetReservationsByUserId(string id)
+        {
+            return await _reservationRepo.GetReservationsByUserIdAsync(id);
+        }
     }
 }
