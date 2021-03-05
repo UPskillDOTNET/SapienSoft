@@ -84,7 +84,7 @@ namespace SuperMammoth.Controllers
                 switch (sortOrder)
                 {
                     case "date_desc":
-                        transaction = transaction.OrderByDescending(t => t.Date);
+                        transaction = transaction.OrderBy(t => t.Date);
                         break;
                     case "TransType":
                         transaction = transaction.OrderBy(t => t.TransactionTypeId);
@@ -93,7 +93,7 @@ namespace SuperMammoth.Controllers
                         transaction = transaction.OrderByDescending(t => t.TransactionTypeId);
                         break;
                     default:
-                        transaction = transaction.OrderBy(t => t.Date);
+                        transaction = transaction.OrderByDescending(t => t.Date);
                         break;
                 }
                 int pageSize = 10;
