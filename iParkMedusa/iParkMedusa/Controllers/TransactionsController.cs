@@ -216,7 +216,7 @@ namespace iParkMedusa.Controllers
         [Authorize(Roles = "User")]
         [Route("~/api/transactions/user/addfunds/paypal/execute")]
         [HttpPost]
-        public async Task<ActionResult> executeAddFundsPaypal([FromQuery] string paymentId, [FromQuery] string token, [FromQuery] string PayerID )
+        public async Task<ActionResult> executeAddFundsPaypal([FromQuery] string paymentId )
         {
             var userName = _userManager.GetUserId(HttpContext.User);
             var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
@@ -247,7 +247,7 @@ namespace iParkMedusa.Controllers
 
                 };
                 var Funds = await _service.CreateTransaction(transaction, id);
-                return Redirect("https://localhost:44355/Transactions");
+                return Ok();
             }
 
             else return BadRequest();

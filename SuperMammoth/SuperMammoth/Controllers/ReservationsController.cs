@@ -59,6 +59,33 @@ namespace SuperMammoth.Controllers
             return View(reservation);
         }
 
+        public ActionResult Details(int id)
+        {
+            ReservationModel reservation = new ReservationModel();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44398/api/reservations/");
+                var response = client.GetAsync(id.ToString());
+                response.Wait();
+
+                var result = response.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var read = result.Content.ReadAsAsync<ReservationModel>();
+                    read.Wait();
+                    reservation = read.Result;
+                }
+                else
+                {
+                    //erro
+                    reservation = null;
+                    ModelState.AddModelError(string.Empty, "Server error occured");
+                }
+                return View(reservation);
+            }
+        }
+
 
     }
 }

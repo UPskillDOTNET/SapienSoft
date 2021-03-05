@@ -15,7 +15,9 @@ namespace SuperMammoth.Controllers
 {
     public class TransactionsController : Controller
     {
-        public PayPalPaymentCreatedResponse created;
+       
+        public PayPalPaymentCreatedResponse created { get; set; }
+        
         // GET: TransactionsController
         public ActionResult Index(string sortOrder, string searchString, string currentFilter, int? pageNumber)
         {
@@ -201,7 +203,7 @@ namespace SuperMammoth.Controllers
 
         [HttpPost]
 
-        public IActionResult Redirect( Transaction transaction)
+        public IActionResult Create( Transaction transaction)
         {
             var userSession = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
             if (userSession == null)
@@ -245,8 +247,8 @@ namespace SuperMammoth.Controllers
 
 
                 var PM = currentUser.PaymentMethodId.ToString();
-               /* if (ViewBag.Role == "Administrator")
-                {*/
+               if (ViewBag.Role == "Administrator")
+                {
                     response = client.PostAsJsonAsync("transactions/user/addfunds", transaction);
                     if (response.Result.IsSuccessStatusCode)
                     {
@@ -254,7 +256,7 @@ namespace SuperMammoth.Controllers
                         return RedirectToAction("Index", "Transactions");
                     }
                     else return BadRequest("Problems comunicating with Medusa1");
-               /* }
+                }
                 else if (PM == "1")
                 {
 
@@ -263,9 +265,9 @@ namespace SuperMammoth.Controllers
                     {
                         var temp = response.Result.Content.ReadFromJsonAsync<PayPalPaymentCreatedResponse>();
                         temp.Wait();
-                        created = temp.Result;
-                        
-                        return Redirect(created.links.ElementAt(1).href);
+                        PayPalPaymentCreatedResponse created = temp.Result;
+                        TempData["data"]= created.id.ToString();     
+                        return Redirect(created.links.ElementAt(1).href.ToString());
                         
                     }
                     else return BadRequest("Problems comunicating with Medusa2");
@@ -275,16 +277,19 @@ namespace SuperMammoth.Controllers
                 {
                     ModelState.AddModelError(string.Empty, "Sorry, this payment method is not implemented yet.");
                 }
-                return View();*/
+                return View();
             } 
         }
-        
 
- 
+       
 
-        public IActionResult Execute( PayPalPaymentCreatedResponse created)
+
+
+        [HttpPost]
+
+        public IActionResult Execute()
         {
-
+            string temp = TempData["data"] as string;
             var userSession = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
             if (userSession == null)
             {
@@ -297,8 +302,8 @@ namespace SuperMammoth.Controllers
                 else if (userSession.Roles.Contains("User") == true)
                     ViewBag.Role = "User";
             }
-            RegisterModel currentUser = null;
-
+           
+            
 
             var cookieContainer = new CookieContainer();
             using (var handler = new HttpClientHandler() { CookieContainer = cookieContainer })
@@ -308,42 +313,16 @@ namespace SuperMammoth.Controllers
                 client.BaseAddress = new Uri("https://localhost:44398/api/");
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + userSession.Token);
 
-                //Lets get our user info 
+                
 
-                var response = client.GetAsync("user/GetById");
-                response.Wait();
-
-                var result = response.Result;
-                if (result.IsSuccessStatusCode)
+                var response = client.PostAsJsonAsync("transactions/user/addfunds/paypal/execute?paymentId=" + temp, "");
+                if (response.Result.IsSuccessStatusCode)
                 {
-                    var read = result.Content.ReadFromJsonAsync<RegisterModel>();
-                    read.Wait();
-                    currentUser = read.Result;
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Server error occured");
-                }
-
-
-                var PM = currentUser.PaymentMethodId.ToString();
-                if (PM == "1")
-                {
-
-                    response = client.PostAsJsonAsync("transactions/user/addfunds/paypal/execute?paymentId=PayId=", created.id);
-                    if (response.Result.IsSuccessStatusCode)
-                    {
-                        return View();
-
-                    }
-                    else return BadRequest("Problems comunicating with Medusa2");
+                    return RedirectToAction("Index"); ;
 
                 }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Sorry, this payment method is not implemented yet.");
-                }
-                return View();
+                else return BadRequest("Problems comunicating with Medusa2");
+
             }
 
             }
