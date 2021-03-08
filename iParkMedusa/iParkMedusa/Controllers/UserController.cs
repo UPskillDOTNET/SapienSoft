@@ -74,5 +74,15 @@ namespace iParkMedusa.Controllers
             var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
             return Ok(user);
         }
+
+        [Authorize(Roles = "Administrator")]
+        [Route("~/api/users/ById/{id}")]
+        [HttpGet]
+        public IActionResult GetUserById(string id)
+        {
+            var user = _userManager.Users.FirstOrDefault(u => u.Id == id);
+            string userName= user.UserName;
+            return Ok(userName);
+        }
     }
 }

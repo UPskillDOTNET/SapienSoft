@@ -1,0 +1,58 @@
+@startuml
+skinparam class {
+BackgroundColor #ECECEC
+ArrowColor Blue
+BorderColor Blue
+}
+
+
+Class UserController{
+- _service = UserService
+- _userManager = Usermanager<Entity>
+RegisterAsync()
+GetTokenAsync()
+AddRoleAsync()
+ChangePasswordAsync()
+GetUserInfo()
+}
+
+Interface IUserService{
+RegisterAsync()
+GetTokenAsync()
+AddRoleAsync()
+ChangePasswordAsync()
+}
+
+Class UserService{
+- _userManager = UserManager<Entity>
+- _roleManager = RoleManager<Entity>
+- _jwt = JWT
+RegisterAsync()
+GetTokenAsync()
+CreateJwtToken()
+AddRoleAsync()
+ChangePasswordAsync()
+}
+
+Entity AuthenticationModel{
+- Message
+- IsAuthenticated
+- UserName
+- Email
+- Roles
+- Token
+}
+
+class UserManager{
+_context
+FindByEmailAsync()
+CreateAsync()
+AddToRoleAsync()
+GetRolesAsync()
+GetClaimsAsync()
+}
+
+UserController -> IUserService 
+IUserService --> UserService
+UserManager -> UserService
+@enduml

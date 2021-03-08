@@ -1,28 +1,56 @@
-﻿@model SuperMammoth.Models.PayPal.PayPalPaymentCreatedResponse
+﻿
+@model SuperMammoth.Models.PayPal.PayPalPaymentCreatedResponse
+@using SuperMammoth.Globals;
+@using SuperMammoth.Models;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
 
 @{
     ViewData["Title"] = "Execute";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+   
 }
 
-<h1>Execute</h1>
 
-<h4>PayPalPaymentCreatedResponse</h4>
+<h4>Add Funds</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Execute">
+        <form asp-action="Executed">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-           
+
+
+            <div>
+               <a href="/Transactions/Redirection" target="_blank">Teste</a>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Execute" class="btn btn-primary" />
             </div>
+
         </form>
     </div>
 </div>
+@{
+    var userSession = HttpContextAccessor.HttpContext.Session.GetObjectFromJson<AuthenticationModel>
+    ("UserSession");
+    if (userSession != null)
+    {
+        if (userSession.Roles.Contains("Administrator"))
+        {
+            <div>
+                <a asp-action="AdminIndex">Back to List</a>
+            </div>
+        }
+        else
+        {
+            <div>
+                <a asp-action="Index">Back to List</a>
+            </div>
+        }
+    }
+}
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

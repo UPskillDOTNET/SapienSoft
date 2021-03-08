@@ -4,8 +4,60 @@ BackgroundColor #ECECEC
 ArrowColor Blue
 BorderColor Blue
 }
+Class TransactionsService{
+- _repo = TransactionRepository
+GetTransactions()
+GetTransactionById()
+UpdateTransaction()
+CreateTransaction()
+GetTransactionByUserId()
+GetBalanceByUserId()
+GetStripeModel()
+GetStripeToken()
+CreatePaymentModel()
+PostFundsStripe()
+}
+Interface ITransactionsRepository {
+GetTransactionAsync()
+GetTransactionByIdAsync()
+GetTransactionByUserId()
+GetBalanceByUserIdAsync()
+}
+class ParkService{
+_repo = IParkRepository
+FindAll()
+GetParkById()
+UpdatePark()
+AddPark()
+DeletePark()
+}
+Interface IParkRepository{
+GetParkByIdAsync()
+DeleteParkByIdAsync()
+}
+Class TransactionsRepository{
+- context = ApplicationDbContext
+GetTransactionsAsync()
+GetTransactionByIdAsync()
+GetTransactionsByUserId()
+GetBalanceByUserIdAsync()
+}
+ entity Transaction{
+- Id
+-Date
+-Value
+-Balance
+-TransactionTypeId
+-TransactionType
+-UserId
+-User
+}
 
-class Reservation{
+ entity TransactionType{
+-Id
+-Name
+}
+Entity Reservation{
 - Id
 - ExternalId
 - Start
@@ -23,14 +75,59 @@ class Reservation{
 - ParkId
 }
 
+class ParkingLotService{
+_parkingLotSecrets = ParkingLotSecrets
+_repo = IParkRepository
+GetAvaiable()
+PostReservation()
+CancelReservation()
+}
+Interface IParkingLotService{
+GetAvaiable()
+PostReservation()
+CancelReservation()
+}
+
+
+Interface IParkRepository{
+GetParkByIdAsync()
+DeleteParkByIdAsync()
+}
+
+Class ParkRepository{
+_context = ApplicationDbContext
+GetAllParksAsync()
+GetParkByIdAsync()
+DeleteParkByIdAsync()
+}
+
+
+Class UserManager{}
+
+
+
+Entity ReservationDTO{
+- Start
+- End
+- DateCreated
+- Value
+- SlotId
+- Locator
+- Latitude
+- Longitude
+- ParkName
+- UserId
+- ExternalId
+}
+
 class ReservationsController{
-_service = service
-_parkingLotService
-_parkService
-_userManager
-_transactionService
+_service = ReservationService
+_parkingLotService = ParkingLotService
+_parkService = ParkService
+_userManager = UserManager<Entity>
+_transactionService = TransactionService
 GetReservations()
-GetReservationById()
+GetReservation()
 GetAvailableSlotsToReservationDTO()
 GetQrCodeInformation()
 PutReservation()
@@ -42,21 +139,34 @@ ReSendEmail()
 }
 
 class ReservationService {
-_reservationRepository
-_slotRepository
+_reservationRepo = IReservationRepository
+_transactionRepo = ITransactionRepository
 GetAllReservations()
+GetReservationById()
+UpdateReservation()
+AddReservation()
+DeleteReservationById()
+GenerateQrCode()
+GetQrCodeInformation()
+RentReservation()
+RentedReservation()
+ReservationDTO2Reservation()
+UserHasBalance()
+GetRentReservations()
+Reservation2ReservationDTO()
+SendEmail()
+FilterReservationByLocation()
+}
+
+Interface ReservationRepository{
+GetAllReservationsAsync()
 GetReservationByIdAsync()
-UpdateEntityAsync()
-AddEntityAsync()
-DeleteReservationByIdAsync()
-GetAvailableSlotsToReservationDTO()
+DeleteReservationsbyIdAsync()
+GetRentReservationsAsync()
 }
 
 class ReservationRepository{
-_context
-FindAllAsync()
-AddEntityAsync()
-UpdateEntityAsync()
+_context = ApplicationDbContext
 GetAllReservationsAsync()
 GetReservationByIdAsync()
 GetReservationsBySlotId()
@@ -64,6 +174,20 @@ DeleteReservationByIdAsync()
 }
 
 
-ReservationsController -- ReservationService : > 
-ReservationService -right- ReservationRepository : >
+ReservationsController -> ReservationService
+ReservationService -> ReservationRepository
+ReservationsController --> IParkingLotService
+IParkingLotService -> ParkingLotService
+ParkingLotService -->IParkRepository
+IParkRepository -> ParkRepository
+ReservationsController --> ParkService
+ParkService --> IParkRepository
+
+TransactionsService <-- ReservationsController
+
+TransactionsService -> ITransactionsRepository
+ITransactionsRepository -> TransactionsRepository
+
+UserManager <- ReservationsController
+ITransactionsRepository <-- ReservationService
 @enduml

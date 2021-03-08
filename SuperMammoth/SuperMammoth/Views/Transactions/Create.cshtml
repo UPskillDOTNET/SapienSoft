@@ -5,50 +5,74 @@
 @{
     ViewData["Title"] = "Add Funds";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 
 
 <h4>Add Funds</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Redirect">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Value" class="control-label"></label>
-                <input asp-for="Value" class="form-control" name="Value" />
-                <span asp-validation-for="Value" class="text-danger"></span>
-            </div>
-            
-            <div class="form-group">
-                <input type="submit" value="Open PayPal" class="btn btn-primary")"/>
-            </div>
 
-        </form>
-    </div>
-</div>
-@{ 
+@{
     var userSession = HttpContextAccessor.HttpContext.Session.GetObjectFromJson<AuthenticationModel>
     ("UserSession");
     if (userSession != null)
     {
         if (userSession.Roles.Contains("Administrator"))
         {
-        <div>
-            <a asp-action="AdminIndex">Back to List</a>
-        </div>
-        }
-        else
-        {
-            <div>
-            <a asp-action="Index">Back to List</a>
-            </div>
-            }
-        }
-    }
+            <div class="row">
+                <div class="col-md-4">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Value" class="control-label"></label>
+                            <input asp-for="Value" class="form-control" name="Value" />
+                            <span asp-validation-for="Value" class="text-danger"></span>
+                        </div>
 
-   
+                        <div class="form-group">
+                            <input type="submit" value="Add Funds" class="btn btn-primary")" />
+                        </div>
+                    </form>
+                    </div>
+                </div>
+                    <div>
+                        <a asp-action="AdminIndex">Back to List</a>
+                    </div>
+                    }
+                    else
+                    {
+                    <div class="row">
+                        <div class="col-md-4">
+                            <form asp-action="Create">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="Value" class="control-label"></label>
+                                    <input asp-for="Value" class="form-control" name="Value" />
+                                    <span asp-validation-for="Value" class="text-danger"></span>
+                                </div>
 
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+                                <div class="form-group">
+                                    <input type="submit" value="Open PayPal" class="btn btn-primary" formtarget="_blank" )" />
+                                </div>
+                            </form>
+                            <form asp-action="Execute">
+                                <div class="form-group">
+                                    <input type="submit" value="ExecutePayment" class="btn btn-primary" )" />
+                                </div>
+
+
+                            </form>
+                        </div>
+                    </div>
+                    <div>
+                        <a asp-action="Index">Back to List</a>
+                    </div>
+                    }
+                    }
+                    }
+
+
+
+                    @section Scripts {
+                        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+                    }
