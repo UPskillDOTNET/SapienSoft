@@ -43,8 +43,11 @@ namespace iParkMedusa.Services
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, Authorization.default_role.ToString());
+                    return $"User Registered with username {user.UserName}";
                 }
-                return $"User Registered with username {user.UserName}";
+                else
+                    return $"Invalid model.";
+
             }
             else
             {
