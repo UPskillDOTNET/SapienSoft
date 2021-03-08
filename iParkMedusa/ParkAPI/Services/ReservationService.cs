@@ -64,7 +64,7 @@ namespace ParkAPI.Services
 
             foreach (var item in slots)
             {
-                var value = item.PricePerHour * (end-start).TotalHours;
+                var value = Math.Round(item.PricePerHour * (end-start).TotalHours, 2);
 
                 ReservationDTO reservationDTO = new ReservationDTO()
                 {
@@ -110,7 +110,7 @@ namespace ParkAPI.Services
                 Start = start,
                 End = end,
                 DateCreated = DateTime.Now,
-                Value = (end - start).TotalHours * slot.PricePerHour,
+                Value = Math.Round(((end - start).TotalHours * slot.PricePerHour), 2),
                 SlotId = slotId,
                 UserId = userId
             };
@@ -125,7 +125,7 @@ namespace ParkAPI.Services
                 Start = start,
                 End = end,
                 DateCreated = DateTime.Now,
-                Value = (end - start).TotalHours * slot.PricePerHour,
+                Value = Math.Round(((end - start).TotalHours * slot.PricePerHour), 2),
                 SlotId = slotId,
                 Locator = slot.Locator,
                 UserId = userId,

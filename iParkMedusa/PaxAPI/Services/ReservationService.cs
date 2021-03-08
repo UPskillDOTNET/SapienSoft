@@ -64,7 +64,7 @@ namespace PaxAPI.Services
 
             foreach (var item in slots)
             {
-                var value = item.PricePerHour * (end - start).TotalHours;
+                var value = Math.Round((item.PricePerHour * (end - start).TotalHours), 2);
 
                 ReservationDTO reservationDTO = new ReservationDTO()
                 {
@@ -115,7 +115,7 @@ namespace PaxAPI.Services
                 Start = start,
                 End = end,
                 DateCreated = DateTime.Now,
-                Value = (end - start).TotalHours * slot.PricePerHour,
+                Value = Math.Round(((end - start).TotalHours * slot.PricePerHour),2),
                 SlotId = slotId,
                 UserId = userId
             };
@@ -138,7 +138,7 @@ namespace PaxAPI.Services
                 ValletOption = slot.HasVallet,
                 CoverOption = slot.IsCovered,
                 OutsideOption = slot.IsOutside,
-                Value = (end - start).TotalHours * slot.PricePerHour,
+                Value = Math.Round(((end - start).TotalHours * slot.PricePerHour), 2),
                 UserId = userId,
                 ExternalId = reservation.Id
             };
