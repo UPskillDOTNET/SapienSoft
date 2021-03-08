@@ -1,0 +1,1 @@
+export const medusaURL = 'http://192.168.1.80:42100/api/';
