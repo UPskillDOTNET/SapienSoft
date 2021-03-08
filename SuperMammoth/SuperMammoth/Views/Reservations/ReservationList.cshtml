@@ -44,7 +44,7 @@
             </td>
 
             <td>
-                @Html.DisplayFor(modelItem => item.Value)
+                @Html.Raw(item.Value.ToString("C"))
             </td>
 
             <td>
