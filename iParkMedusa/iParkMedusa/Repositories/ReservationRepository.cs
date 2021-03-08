@@ -39,7 +39,7 @@ namespace iParkMedusa.Repositories
 
         public async Task<List<Reservation>> GetReservationsByUserIdAsync(string userId)
         {
-            return await _context.Reservations.Where(s => s.UserId == userId).ToListAsync();
+            return await _context.Reservations.Where(s => s.UserId == userId).Include(u => u.Park).ToListAsync();
         }
     }
 }

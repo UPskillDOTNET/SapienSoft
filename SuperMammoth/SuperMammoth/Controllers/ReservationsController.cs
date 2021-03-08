@@ -19,12 +19,12 @@ namespace SuperMammoth.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(ReservationModel reservationModel)
+        public ActionResult Create(ReservationDTOModel reservationModel)
         {
 
             using (var client = new HttpClient())
             {
-                IEnumerable<ReservationModel> reservation = new List<ReservationModel>();
+                IEnumerable<ReservationDTOModel> reservation = new List<ReservationDTOModel>();
                 client.BaseAddress = new Uri("https://localhost:44398/api/"); // MedusaAPI
 
                 client.DefaultRequestHeaders.Clear();
@@ -40,31 +40,31 @@ namespace SuperMammoth.Controllers
                 var result = response.Result;
                 if (result.IsSuccessStatusCode)
                 {
-                    var read = result.Content.ReadAsAsync<IList<ReservationModel>>();
+                    var read = result.Content.ReadAsAsync<IList<ReservationDTOModel>>();
                     read.Wait();
                     reservation = read.Result;
                 }
                 else
                 {
                     //erro
-                    reservation = Enumerable.Empty<ReservationModel>();
+                    reservation = Enumerable.Empty<ReservationDTOModel>();
                     ModelState.AddModelError(string.Empty, "Server error occured");
                 }
                 return View("ReservationList", reservation);
             }
         }
 
-        public ActionResult ReservationList(List<ReservationModel> reservation)
+        public ActionResult ReservationList(List<ReservationDTOModel> reservation)
         {
             return View(reservation);
         }
 
-        public ActionResult Details(ReservationModel reservation)
+        public ActionResult Details(ReservationDTOModel reservation)
         {
                 return View(reservation);
         }
 
-        public ActionResult MakeReservation(ReservationModel reservationModel)
+        public ActionResult MakeReservation(ReservationDTOModel reservationModel)
         {
             IEnumerable<Park> parks = GetParks();
             int parkId;
@@ -172,6 +172,48 @@ namespace SuperMammoth.Controllers
         {
             return View(reservation);
         }
+        public ActionResult ConfirmAvailableToRent(ReservationModel reservation)
+        {
+            return View("MakeAvailableToRent", reservation);
+        }
+        
+        public ActionResult MakeAvailableToRent(ReservationModel reservation)
+        {
+            
+                using (var client = new HttpClient())
+                    {
 
+                        client.BaseAddress = new Uri("https://localhost:44398/api/reservations/"); // MedusaAPI
+
+                        client.DefaultRequestHeaders.Clear();
+                        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                        //Token
+                        var userSession = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
+                        var token = userSession.Token;
+
+                        client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                        var response = client.PostAsJsonAsync("rent?id="+ reservation.Id +"&rentValue =" + reservation.RentValue, "");
+                        response.Wait();
+
+                        var result = response.Result;
+                        if (result.IsSuccessStatusCode)
+                        {
+                            var read = result.Content.ReadAsAsync<ReservationModel>();
+                            read.Wait();
+                            var newreservation = read.Result;
+                             return View("Details", newreservation);
+                }
+                        else
+                        {
+                            //erro
+                            ModelState.AddModelError(string.Empty, "Server error occured");
+                            return View();
+                        }
+                        
+                    }
+            
+           
+        
+    }
     }
 }
