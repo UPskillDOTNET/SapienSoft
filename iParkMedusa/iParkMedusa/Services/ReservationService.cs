@@ -206,8 +206,6 @@ namespace iParkMedusa.Services
             // distancia = raiz quadrada (X_long-X_lat)^2+(Y_long-Y_lat)^2
             var newListReservation = new List<ReservationDTO>();
             
-
-            
             foreach (var item in listReservation)
             {
                 if ( Math.Sqrt(Math.Pow(item.Latitude - positionLatitude, 2) + Math.Pow(item.Longitude - positionLongitude, 2) ) < distance * 0.01 / 1.1)

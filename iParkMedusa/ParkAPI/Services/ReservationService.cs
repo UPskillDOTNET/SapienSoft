@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ParkAPI.Constants;
+using System.Globalization;
 
 namespace ParkAPI.Services
 {
@@ -64,7 +65,10 @@ namespace ParkAPI.Services
 
             foreach (var item in slots)
             {
-                var value = Math.Round(item.PricePerHour * (end-start).TotalHours, 2);
+                NumberFormatInfo provider = new NumberFormatInfo();
+                provider.NumberDecimalSeparator = ".";
+                provider.NumberGroupSeparator = ",";
+                var value = Convert.ToDouble(Math.Round((item.PricePerHour * (end - start).TotalHours), 2), provider);
 
                 ReservationDTO reservationDTO = new ReservationDTO()
                 {
@@ -104,13 +108,15 @@ namespace ParkAPI.Services
         public async Task<ReservationDTO> CreateNewReservation(DateTime start, DateTime end, int slotId, string userId)
         {
             var slot = await _slotRepository.GetSlotByIdAsync(slotId);
-
+            NumberFormatInfo provider = new NumberFormatInfo();
+            provider.NumberDecimalSeparator = ".";
+            provider.NumberGroupSeparator = ",";
             Reservation reservation = new Reservation()
             {
                 Start = start,
                 End = end,
                 DateCreated = DateTime.Now,
-                Value = Math.Round(((end - start).TotalHours * slot.PricePerHour), 2),
+                Value = Convert.ToDouble(Math.Round(((end - start).TotalHours * slot.PricePerHour), 2), provider),
                 SlotId = slotId,
                 UserId = userId
             };
@@ -125,7 +131,7 @@ namespace ParkAPI.Services
                 Start = start,
                 End = end,
                 DateCreated = DateTime.Now,
-                Value = Math.Round(((end - start).TotalHours * slot.PricePerHour), 2),
+                Value = Convert.ToDouble(Math.Round(((end - start).TotalHours * slot.PricePerHour), 2), provider),
                 SlotId = slotId,
                 Locator = slot.Locator,
                 UserId = userId,
