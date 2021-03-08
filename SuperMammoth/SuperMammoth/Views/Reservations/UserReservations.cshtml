@@ -67,9 +67,10 @@
                 @Html.Raw(item.AvailableToRent.ToString())
                 @if (item.AvailableToRent == false)
                 {
-                    @Html.ActionLink("Make Available To Rent", "ConfirmAvailableToRent", item) 
-                    
-}
+                    @Html.ActionLink("Make Available To Rent", "makeAvailableToRent", new { Id = item.Id }) 
+                }
+
+
             </td>
         </tr>
 }

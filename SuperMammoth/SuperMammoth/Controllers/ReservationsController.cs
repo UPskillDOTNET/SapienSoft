@@ -172,11 +172,30 @@ namespace SuperMammoth.Controllers
         {
             return View(reservation);
         }
-        public ActionResult ConfirmAvailableToRent(ReservationModel reservation)
+        public async Task<ActionResult> MakeAvailableToRent(string id)
         {
-            return View("MakeAvailableToRent", reservation);
+            if (id == null)
+            {
+                return BadRequest("Not found");
+            }
+            ReservationModel reservation = null;
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44398/api/reservations/");
+                var result = await client.GetAsync(id.ToString());
+
+                if (result.IsSuccessStatusCode)
+                {
+                    reservation = await result.Content.ReadAsAsync<ReservationModel>();
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Server error try after some time.");
+                }
+            }
+            return View(reservation);
         }
-        
+        [HttpPost]
         public ActionResult MakeAvailableToRent(ReservationModel reservation)
         {
             
@@ -192,7 +211,7 @@ namespace SuperMammoth.Controllers
                         var token = userSession.Token;
 
                         client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-                        var response = client.PostAsJsonAsync("rent?id="+ reservation.Id +"&rentValue =" + reservation.RentValue, "");
+                        var response = client.PutAsJsonAsync("rent?id="+ reservation.Id +"&rentValue =" + reservation.RentValue, "");
                         response.Wait();
 
                         var result = response.Result;
@@ -201,7 +220,7 @@ namespace SuperMammoth.Controllers
                             var read = result.Content.ReadAsAsync<ReservationModel>();
                             read.Wait();
                             var newreservation = read.Result;
-                             return View("Details", newreservation);
+                             return View("ReservationList");
                 }
                         else
                         {
