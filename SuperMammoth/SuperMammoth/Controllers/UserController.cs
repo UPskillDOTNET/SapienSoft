@@ -194,8 +194,8 @@ namespace SuperMammoth.Controllers
                         {
                     TempData["message"] = "Error!";
                     return RedirectToAction("Index", "Home");
-                }
-                    }
+                         }
+                   }
                
             }
         public IActionResult ChangePassword()
