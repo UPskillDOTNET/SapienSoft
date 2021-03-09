@@ -1,18 +1,18 @@
-﻿@model SuperMammoth.Models.ReservationDTOModel
+﻿@model SuperMammoth.Models.ReservationModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Search Sub-Rental";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Create</h1>
 
-<h4>Search for available reservations</h4>
-@Html.ActionLink("Search Sub-rental", "SubRentalList", "Reservations")
+<h4>Search for available sub-rental reservations</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="SubRentalList">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Start" class="control-label"></label>

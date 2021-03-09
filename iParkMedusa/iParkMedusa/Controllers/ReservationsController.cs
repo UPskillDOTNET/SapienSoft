@@ -78,7 +78,7 @@ namespace iParkMedusa.Controllers
         [Authorize(Roles = "Administrator, Moderator, User")]
         [HttpGet]
         [Route("~/api/reservations/available")]
-        public async Task<ActionResult<IEnumerable<Reservation>>> GetAvailableSlotsToReservationDTO([FromQuery] DateTime start, [FromQuery] DateTime end, [FromQuery] double latitude, [FromQuery] double longitude, [FromQuery] double distance = 5)
+        public async Task<ActionResult<IEnumerable<ReservationDTO>>> GetAvailableSlotsToReservationDTO([FromQuery] DateTime start, [FromQuery] DateTime end, [FromQuery] double latitude, [FromQuery] double longitude, [FromQuery] double distance = 5)
         {
             // Dates validation (DateTime default value "0001-01-01 00:00:00")
             if (start > end)
@@ -109,6 +109,34 @@ namespace iParkMedusa.Controllers
                     return Ok(newListReservations);
                 }
                 return Ok(listAvailableReservations);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = "Something went wrong. Contact Support.", error = e.Message });
+            }
+        }
+        [Authorize(Roles = "Administrator, Moderator, User")]
+        [HttpGet]
+        [Route("~/api/reservations/available/rent")]
+        public async Task<ActionResult<IEnumerable<Reservation>>> GetSubRentAvailableSlotsToReservation([FromQuery] DateTime start, [FromQuery] DateTime end, [FromQuery] double latitude, [FromQuery] double longitude, [FromQuery] double distance = 5)
+        {
+            // Dates validation (DateTime default value "0001-01-01 00:00:00")
+            if (start > end)
+            {
+                return BadRequest($"DateTime 'end' ({end}) must be greater than DateTime 'start' ({start}).");
+            }
+            else if (start < DateTime.Now)
+            {
+                return BadRequest($"DateTime 'start' ({start}) must happen in the future.");
+            }
+
+            try
+            {
+                var listRentReservations = await _service.GetRentReservations(start, end); // Add the Rent reservations
+                
+                
+                
+                return Ok(listRentReservations);
             }
             catch (Exception e)
             {

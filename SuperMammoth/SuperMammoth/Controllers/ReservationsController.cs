@@ -61,10 +61,82 @@ namespace SuperMammoth.Controllers
 
         public ActionResult Details(ReservationDTOModel reservation)
         {
-                return View(reservation);
+            return View(reservation);
+        }
+        public ActionResult SubRentalList()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult SubRentalList(ReservationModel reservation)
+        {
+            using (var client = new HttpClient())
+            {
+                IEnumerable<ReservationModel> reservationList = new List<ReservationModel>();
+                client.BaseAddress = new Uri("https://localhost:44398/api/"); // MedusaAPI
+
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                //Token
+                var userSession = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
+                var token = userSession.Token;
+
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                var response = client.GetAsync($"reservations/available/rent?start={reservation.Start.ToString("o")}&end={reservation.End.ToString("o")}"); // &latitude={reservationModel.Latitude}&longitude={reservationModel.Longitude}
+                response.Wait();
+
+                var result = response.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var read = result.Content.ReadAsAsync<IList<ReservationModel>>();
+                    read.Wait();
+                    reservationList = read.Result;
+                }
+                else
+                {
+                    //erro
+                    reservationList = Enumerable.Empty<ReservationModel>();
+                    ModelState.AddModelError(string.Empty, "Server error occured");
+                }
+                return View("SubRentList", reservationList);
+            }
         }
 
-        public ActionResult MakeReservation(ReservationDTOModel reservationModel)
+        public ActionResult SubRent(ReservationModel reservation)
+        {
+            using (var client = new HttpClient())
+            {
+
+                client.BaseAddress = new Uri("https://localhost:44398/api/reservations/"); // MedusaAPI
+
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                //Token
+                var userSession = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
+                var token = userSession.Token;
+
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                var response = client.PostAsJsonAsync("rented/" + reservation.Id, "");
+                response.Wait();
+
+                var result = response.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var read = result.Content.ReadAsAsync<ReservationModel>();
+                    read.Wait();
+                    var NewReservation = read.Result;
+                    return RedirectToAction("ReservationDetails", NewReservation);
+                }
+                else
+                {
+                    //erro
+                    ModelState.AddModelError(string.Empty, "Server error occured");
+                    return View();
+                }
+
+            }
+        }
+            public ActionResult MakeReservation(ReservationDTOModel reservationModel)
         {
                 IEnumerable<Park> parks = GetParks();
                 int parkId;

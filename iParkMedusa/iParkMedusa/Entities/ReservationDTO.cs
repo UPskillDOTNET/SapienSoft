@@ -15,6 +15,7 @@ namespace iParkMedusa.Entities
         public string ParkName { get; set; }
         public string UserId { get; set; }
         public int ExternalId { get; set; }
+        public bool AvailableToRent { get; set; }
 
     }
 }
