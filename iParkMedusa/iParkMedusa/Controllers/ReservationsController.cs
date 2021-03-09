@@ -259,7 +259,7 @@ namespace iParkMedusa.Controllers
 
         // DELETE: api/Reservations/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteReservation(int id, Park park)
+        public async Task<IActionResult> DeleteReservation(int id)
         {
             try
             {
@@ -272,7 +272,7 @@ namespace iParkMedusa.Controllers
                 };
 
                 await _transactionService.CreateTransaction(transaction, reservation.UserId);
-                await _parkingLotService.CancelReservation(park, reservation.ExternalId);
+                await _parkingLotService.CancelReservation(reservation.Park, reservation.ExternalId);
                 await _service.DeleteReservationbyId(id);
                 return NoContent();
             }

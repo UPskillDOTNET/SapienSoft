@@ -292,5 +292,48 @@ namespace SuperMammoth.Controllers
 
             }
         }
+
+        public ActionResult Delete(ReservationModel reservation)
+        {
+            return View(reservation);
+        }
+
+
+        [HttpPost, ActionName("Delete")]
+        public ActionResult CancelReservation(int id)
+        {
+
+            using (var client = new HttpClient())
+            {
+
+                client.BaseAddress = new Uri("https://localhost:44398/api/reservations/"); // MedusaAPI
+
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                //Token
+                var userSession = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
+                var token = userSession.Token;
+
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                var response = client.DeleteAsync(id.ToString());
+                response.Wait();
+
+                var result = response.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    //erro
+                    ModelState.AddModelError(string.Empty, "Server error occured");
+                    return View();
+                }
+
+            }
+
+
+
+        }
     }
 }
