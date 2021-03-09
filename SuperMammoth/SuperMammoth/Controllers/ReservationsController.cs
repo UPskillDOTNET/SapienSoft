@@ -167,13 +167,15 @@ namespace SuperMammoth.Controllers
                                 var read = result.Content.ReadAsAsync<ReservationModel>();
                                 read.Wait();
                                 var reservation = read.Result;
+                                return View();
                             }
                             else
                             {
                                 //erro
                                 ModelState.AddModelError(string.Empty, "Server error occured");
+                                return View("AddFunds");
                             }
-                            return View();
+                            
                         }
                     }
                 }
