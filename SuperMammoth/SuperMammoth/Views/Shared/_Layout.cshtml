@@ -14,8 +14,8 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/mammoth-logo.png" width="200" /></a>
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SuperMammoth</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -28,31 +28,46 @@
                             {
                                 if (userSession.Roles.Contains("Administrator"))
                                 {
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="Charts"><font color="blue">Dashboard</font></a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Parks" asp-action="Index">Manage Parks</a>
-                                    </li>
-                                    <li>
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Transactions" asp-action="AdminIndex">Transactions</a>
-                                    </li>
+
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Dashboard
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" asp-controller="Parks" asp-action="Index">Manage Parks</a>
+                                            <a class="dropdown-item" asp-controller="Transactions" asp-action="AdminIndex">Manage Transactions</a>
+                                        </div>
+                                    </div>
                                 }
                                 if (userSession.Roles.Contains("User"))
                                 {
                                     <li>
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="Create">Reservations</a>
-                                    </li>
-                                    <li>
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Transactions" asp-action="Index">Transactions</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="Create">Make a Reservation</a>
                                     </li>
 
                                 }
                                 if (userSession.Roles.Contains("User") || userSession.Roles.Contains("Administrator"))
                                 {
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Profile"><font color="blue">Welcome @userSession.UserName!</font></a>
-                                    </li>
+                                    if (userSession.Roles.Contains("Administrator"))
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Profile"><font color="blue">Welcome @userSession.UserName!</font></a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Welcome @userSession.UserName!
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" asp-controller="User" asp-action="Profile">My Profile</a>
+                                                <a class="dropdown-item" asp-controller="Transactions" asp-action="Index">My Transactions</a>
+                                            </div>
+                                        </div>
+                                    }
+
                                     <li class="nav-item">
                                         <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Logout">Logout</a>
                                     </li>
@@ -61,11 +76,13 @@
                             else
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Register">Register</a>
+                                    <a class="btn btn-outline-primary" style="margin-right:9px" asp-area="" asp-controller="User" asp-action="Login">Login</a>
                                 </li>
+
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
+                                    <a class="btn btn-success" asp-area="" asp-controller="User" asp-action="Register">Register</a>
                                 </li>
+
                             }
                         }
                     </ul>
