@@ -96,7 +96,9 @@
 
     <div>
         @Html.ActionLink("Sub-Rent Reservation", "MakeAvailableToRent", new { /* id = Model.PrimaryKey */ }) |
-        @Html.ActionLink("Cancel Reservation", "Edit", new { /* id = Model.PrimaryKey */ }) |
+        @if (Model.Start > DateTime.Now)
+        {@Html.ActionLink("Cancel Reservation", "Delete", Model) }
+        |
         @Html.ActionLink("Re-send E-mail", "ReSend", new { id = Model.Id }) |
         <a asp-action="UserReservations">Back to List</a>
     </div>
