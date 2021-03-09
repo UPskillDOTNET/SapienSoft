@@ -21,7 +21,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav flex-grow-1 justify-content-end">
                         @{
                             var userSession = HttpContextAccessor.HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
                             if (userSession != null && userSession.Roles != null)
@@ -75,6 +75,7 @@
                             }
                             else
                             {
+                                
                                 <li class="nav-item">
                                     <a class="btn btn-outline-primary" style="margin-right:9px" asp-area="" asp-controller="User" asp-action="Login">Login</a>
                                 </li>
@@ -82,6 +83,7 @@
                                 <li class="nav-item">
                                     <a class="btn btn-success" asp-area="" asp-controller="User" asp-action="Register">Register</a>
                                 </li>
+                                
 
                             }
                         }
