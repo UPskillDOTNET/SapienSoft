@@ -66,45 +66,46 @@ namespace SuperMammoth.Controllers
 
         public ActionResult MakeReservation(ReservationDTOModel reservationModel)
         {
-            IEnumerable<Park> parks = GetParks();
-            int parkId;
-            foreach (Park p in parks)
-            {
-                if (p.Name == reservationModel.ParkName)
+                IEnumerable<Park> parks = GetParks();
+                int parkId;
+                foreach (Park p in parks)
                 {
-                    parkId = p.Id;
-
-                    using (var client = new HttpClient())
+                    if (p.Name == reservationModel.ParkName)
                     {
+                        parkId = p.Id;
 
-                        client.BaseAddress = new Uri("https://localhost:44398/api/reservations/"); // MedusaAPI
-
-                        client.DefaultRequestHeaders.Clear();
-                        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                        //Token
-                        var userSession = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
-                        var token = userSession.Token;
-
-                        client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-                        var response = client.PostAsJsonAsync(parkId.ToString(), reservationModel);
-                        response.Wait();
-
-                        var result = response.Result;
-                        if (result.IsSuccessStatusCode)
+                        using (var client = new HttpClient())
                         {
-                            var read = result.Content.ReadAsAsync<ReservationModel>();
-                            read.Wait();
-                            var reservation = read.Result;
+
+                            client.BaseAddress = new Uri("https://localhost:44398/api/reservations/"); // MedusaAPI
+
+                            client.DefaultRequestHeaders.Clear();
+                            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                            //Token
+                            var userSession = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
+                            var token = userSession.Token;
+
+                            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                            var response = client.PostAsJsonAsync(parkId.ToString(), reservationModel);
+                            response.Wait();
+
+                            var result = response.Result;
+                            if (result.IsSuccessStatusCode)
+                            {
+                                var read = result.Content.ReadAsAsync<ReservationModel>();
+                                read.Wait();
+                                var reservation = read.Result;
+                            }
+                            else
+                            {
+                                //erro
+                                ModelState.AddModelError(string.Empty, "Server error occured");
+                            }
+                            return View();
                         }
-                        else
-                        {
-                            //erro
-                            ModelState.AddModelError(string.Empty, "Server error occured");
-                        }
-                        return View();
-                    }                    
+                    }
                 }
-            }
+           
             return BadRequest("No park was found. Contact support");
         }
 
@@ -211,7 +212,7 @@ namespace SuperMammoth.Controllers
                         var token = userSession.Token;
 
                         client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-                        var response = client.PutAsJsonAsync("rent?id="+ reservation.Id +"&rentValue =" + reservation.RentValue, "");
+                        var response = client.PutAsJsonAsync("rent?id="+ reservation.Id +"&rentValue=" + reservation.RentValue, "");
                         response.Wait();
 
                         var result = response.Result;
@@ -220,7 +221,7 @@ namespace SuperMammoth.Controllers
                             var read = result.Content.ReadAsAsync<ReservationModel>();
                             read.Wait();
                             var newreservation = read.Result;
-                             return View("ReservationList");
+                             return RedirectToAction("ReservationList");
                          }
                         else
                         {
