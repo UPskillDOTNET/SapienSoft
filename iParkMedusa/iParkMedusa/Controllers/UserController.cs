@@ -52,7 +52,7 @@ namespace iParkMedusa.Controllers
 
         // Added to allow for Password Changes
         [Authorize(Roles = "Administrator, Moderator, User")]
-        [HttpPatch("password")]
+        [HttpPut("password")]
         public async Task<IActionResult> ChangePasswordAsync(ChangePasswordModel model)
         {
             var userName = _userManager.GetUserId(HttpContext.User);
@@ -81,8 +81,18 @@ namespace iParkMedusa.Controllers
         public IActionResult GetUserById(string id)
         {
             var user = _userManager.Users.FirstOrDefault(u => u.Id == id);
-            string userName= user.UserName;
+            string userName = user.UserName;
             return Ok(userName);
+        }
+        [Authorize(Roles = "Administrator, Moderator, User")]
+        [HttpPut("edit")]
+        public async Task<IActionResult> ChangeUserInfoAsync(RegisterModel model)
+        {
+            var userName = _userManager.GetUserId(HttpContext.User);
+            var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
+
+            var result = await _userService.EditUser(model, user);
+            return Ok(result);
         }
     }
 }

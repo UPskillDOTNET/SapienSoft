@@ -26,7 +26,7 @@ namespace SuperMammoth.Controllers
                 {
                     var read = result.Content.ReadAsAsync<IList<Park>>();
                     read.Wait();
-                    park = read.Result;
+                    park  = read.Result;
                 }
                 else
                 {

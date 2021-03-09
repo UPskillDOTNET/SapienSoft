@@ -165,7 +165,7 @@ namespace iParkMedusa.Controllers
 
                     if (await _service.UserHasBalance(user, newReservation.Value))
                     {
-                        newReservation = _service.GenerateQrCode(newReservation);
+                        
                         var transaction = new Transaction()
                         {
                             Value = newReservation.Value,
@@ -174,10 +174,12 @@ namespace iParkMedusa.Controllers
                         await _transactionService.CreateTransaction(transaction, userId);
                         await _service.AddReservation(newReservation);
 
-                        //_service.GenerateQrCode(newReservation);
+                    //_service.GenerateQrCode(newReservation);
 
-                        // send email with ticket 
-                        _service.SendEmail(newReservation, user, park.Name);
+                    // send email with ticket 
+                    newReservation = _service.GenerateQrCode(newReservation);
+                   await _service.UpdateReservation(newReservation);
+                    _service.SendEmail(newReservation, user, park.Name);
 
                         return Ok(newReservation);
                     }
@@ -307,7 +309,7 @@ namespace iParkMedusa.Controllers
         }
 
         [HttpGet]
-        [Route("~/api/reservations/user/byid")]
+        [Route("~/api/reservations/user")]
         public async Task<ActionResult<List<Reservation>>> GetReservationsByUser()
         {
             var userName = _userManager.GetUserId(HttpContext.User);

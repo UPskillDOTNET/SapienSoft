@@ -128,5 +128,105 @@ namespace SuperMammoth.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
+
+        public IActionResult Edit()
+        {
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    client.BaseAddress = new Uri("https://localhost:44398/api/");
+                    client.DefaultRequestHeaders.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                    var userSession = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
+                    var token = userSession.Token;
+                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                    // token
+
+                    var postTask = client.GetAsync("user/info");
+                    postTask.Wait();
+                    var result = postTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var content = result.Content.ReadFromJsonAsync<RegisterModel>();
+                        content.Wait();
+                        var userModel = content.Result;
+                        return View(userModel);
+                    }
+                    else
+                    {
+                        TempData["message"] = "Error!";
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+                catch
+                {
+                    TempData["message"] = "Server connection failed";
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+        }
+
+
+
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+
+            public async Task<ActionResult> Edit(RegisterModel register)
+            {
+                using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri("https://localhost:44398/api/user/");
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                var userSession = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
+                var token = userSession.Token;
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                var response = await client.PutAsJsonAsync("edit", register);
+                        if (response.IsSuccessStatusCode)
+                        {
+                        
+                            return RedirectToAction("Profile", "User");
+                        }
+                        else
+                        {
+                    TempData["message"] = "Error!";
+                    return RedirectToAction("Index", "Home");
+                }
+                    }
+               
+            }
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<ActionResult> ChangePassword (ChangePasswordModel model)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44398/api/user/");
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                var userSession = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
+                var token = userSession.Token;
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                var response = await client.PutAsJsonAsync("password", model);
+                if (response.IsSuccessStatusCode)
+                {
+
+                    return RedirectToAction("Profile", "User");
+                }
+                else
+                {
+                    TempData["message"] = "Error!";
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+        }
+        
     }
 }

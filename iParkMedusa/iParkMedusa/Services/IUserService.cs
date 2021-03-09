@@ -12,5 +12,6 @@ namespace iParkMedusa.Services
         Task<AuthenticationModel> GetTokenAsync(TokenRequestModel model);
         Task<string> AddRoleAsync(AddRoleModel model);
         Task<AuthenticationModel> ChangePasswordAsync(ChangePasswordModel model);
+        Task<AuthenticationModel> EditUser(RegisterModel newInfo, ApplicationUser oldInfo);
     }
 }

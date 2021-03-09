@@ -139,7 +139,7 @@ namespace SuperMammoth.Controllers
             using (var client = new HttpClient())
             {
                 IEnumerable<ReservationModel> userReservations = new List<ReservationModel>();
-                client.BaseAddress = new Uri("https://localhost:44398/api/reservations/user/"); // MedusaAPI
+                client.BaseAddress = new Uri("https://localhost:44398/api/reservations/"); // MedusaAPI
 
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
@@ -148,7 +148,7 @@ namespace SuperMammoth.Controllers
                 var token = userSession.Token;
 
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-                var response = client.GetAsync("byid");
+                var response = client.GetAsync("user");
                 response.Wait();
 
                 var result = response.Result;
@@ -200,7 +200,7 @@ namespace SuperMammoth.Controllers
         {
             
                 using (var client = new HttpClient())
-                    {
+                 {
 
                         client.BaseAddress = new Uri("https://localhost:44398/api/reservations/"); // MedusaAPI
 
@@ -221,7 +221,7 @@ namespace SuperMammoth.Controllers
                             read.Wait();
                             var newreservation = read.Result;
                              return View("ReservationList");
-                }
+                         }
                         else
                         {
                             //erro
@@ -229,10 +229,68 @@ namespace SuperMammoth.Controllers
                             return View();
                         }
                         
-                    }
+                }
             
            
         
-    }
+        }
+        public IActionResult ReservationDetails (int id)
+        {
+            ReservationModel reservation = new ReservationModel();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44398/api/reservations/");
+                var response = client.GetAsync(id.ToString());
+                response.Wait();
+
+                var result = response.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var read = result.Content.ReadAsAsync<ReservationModel>();
+                    read.Wait();
+                    reservation = read.Result;
+                }
+                else
+                {
+                    //erro
+                    reservation = null;
+                    ModelState.AddModelError(string.Empty, "Server error occured");
+                }
+                return View(reservation);
+            }
+
+        }
+        public IActionResult ReSend (int id)
+        {
+            using (var client = new HttpClient())
+            {
+
+                client.BaseAddress = new Uri("https://localhost:44398/api/reservations/"); // MedusaAPI
+
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                //Token
+                var userSession = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
+                var token = userSession.Token;
+
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                var response = client.GetAsync("resend/"+id);
+                response.Wait();
+
+                var result = response.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    return View("Profile", "User");
+                }
+                else
+                {
+                    //erro
+                    ModelState.AddModelError(string.Empty, "Server error occured");
+                    return View();
+                }
+
+            }
+        }
     }
 }

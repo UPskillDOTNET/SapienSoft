@@ -117,7 +117,7 @@ namespace iParkMedusa.Services
             {
                 return $"No Accounts Registered with {model.Email}.";
             }
-            
+
             var roleExists = Enum.GetNames(typeof(Authorization.Roles)).Any(x => x.ToLower() == model.Role.ToLower());
             if (roleExists)
             {
@@ -156,6 +156,59 @@ namespace iParkMedusa.Services
             }
             authenticationModel.IsAuthenticated = false;
             authenticationModel.Message = $"Incorrect credentials for user {user.Email}.";
+            return authenticationModel;
+        }
+        public async Task<AuthenticationModel> EditUser(RegisterModel newInfo, ApplicationUser oldInfo)
+        {
+            var authenticationModel = new AuthenticationModel();
+            var user = await _userManager.FindByIdAsync(oldInfo.Id);
+
+            if (user == null)
+            {
+                authenticationModel.IsAuthenticated = false;
+                authenticationModel.Message = $"No Accounts Registered with {oldInfo.Email}.";
+                return authenticationModel;
+            }
+            if ((newInfo.FirstName != oldInfo.FirstName) || (newInfo.LastName != oldInfo.LastName) || (newInfo.PaymentMethodId != oldInfo.PaymentMethodId) || (newInfo.Username != oldInfo.UserName) || (newInfo.Email != oldInfo.Email))
+            {
+                user.FirstName = newInfo.FirstName;
+                user.LastName = newInfo.LastName;
+                user.PaymentMethodId = newInfo.PaymentMethodId;
+                if (await _userManager.FindByEmailAsync(newInfo.Email)== null)
+                {
+                    user.Email = newInfo.Email;
+                }
+                else
+                {
+                    authenticationModel.Message = "New E-mail is already in use.";
+                }
+                if(await _userManager.FindByNameAsync(newInfo.Username)==null)
+                {
+                    user.UserName = newInfo.Username;
+                }
+                else
+                {
+                    authenticationModel.Message = "New Username already in use.";
+                }
+                
+
+                IdentityResult result = await _userManager.UpdateAsync(user);
+
+                if (!result.Succeeded)
+                {
+                    authenticationModel.IsAuthenticated = false;
+                    authenticationModel.Message = $"Something went wrong.";
+                    return authenticationModel;
+                }
+            }
+            authenticationModel.IsAuthenticated = true;
+            JwtSecurityToken jwtSecurityToken = await CreateJwtToken(user);
+            authenticationModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+            authenticationModel.Email = user.Email;
+            authenticationModel.UserName = user.UserName;
+            var rolesList = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
+            authenticationModel.Roles = rolesList.ToList();
+            authenticationModel.Message = $"Information edited with success for account {user.Email}.";
             return authenticationModel;
         }
     }
