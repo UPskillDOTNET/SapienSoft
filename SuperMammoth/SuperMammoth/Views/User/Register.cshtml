@@ -37,7 +37,10 @@
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
+                <div class="input-group">
+                    <input id="btnShow" asp-for="Password" class="form-control" />
+                    <span style="margin-left: 10px" class="input-group-append"><img style="cursor:pointer" width="25" onclick="toggle()" src="~/img/eye-outline.svg" /></span>
+                </div>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -60,5 +63,17 @@
 </div>
 
 @section Scripts {
+    <script>
+        var state = false;
+        function toggle() {
+            if (state) {
+                document.getElementById("btnShow").setAttribute("type", "password");
+                state = false;
+            } else {
+                document.getElementById("btnShow").setAttribute("type", "text");
+                state = true;
+            }
+        }
+    </script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
