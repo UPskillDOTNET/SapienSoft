@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Http
+﻿@using Microsoft.AspNetCore.Http;
 @using SuperMammoth.Globals;
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
@@ -43,6 +43,8 @@
                                         <div class="dropdown-menu">
                                             <a class="dropdown-item" asp-controller="Parks" asp-action="Index">Manage Parks</a>
                                             <a class="dropdown-item" asp-controller="Transactions" asp-action="AdminIndex">Manage Transactions</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" asp-controller="User" asp-action="Logout">Logout</a>
                                         </div>
                                     </div>
                                 }
