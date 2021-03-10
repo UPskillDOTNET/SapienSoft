@@ -1,0 +1,15 @@
+﻿@model SuperMammoth.Models.ReservationDTOModel
+@{
+    ViewData["Title"] = "AddFunds";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Add funds before completing the booking.</h4>
+<p>
+    <a asp-controller="Transactions" asp-action="Create">Add Funds</a>
+</p>
+
+
+<div>
+    @Html.ActionLink("My Reservations", "GetReservationByUser", "Reservations", Model)
+</div>
