@@ -19,6 +19,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
+                <img width="30" id="btnShow" src="~/img/eye-outline.svg" />
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
@@ -32,8 +33,7 @@
     </div>
 </div>
 
-
-
 @section Scripts {
+    <script src="~/js/sitejs.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
