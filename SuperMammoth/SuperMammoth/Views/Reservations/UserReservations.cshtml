@@ -112,32 +112,35 @@
             }
             else
             {
-                <tr class="table-info">
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Start)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.End)
-                    </td>
-                    <td>
-                        @Html.Raw(item.DateCreated.ToString("dd/MM/yyyy"))
-                    </td>
-                    <td>
-                        @Html.Raw(item.Value.ToString("C"))
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Locator)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Park.Name)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Details", "ReservationDetails", new { id = item.Id })
-                    </td>
-                    <td>
-                        Reserva terminada
-                    </td>
-                </tr>
+    <tr class="table-info">
+        <td>
+            <img src="@Url.Content(item.QrCode)" alt="Qr Code" />
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Start)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.End)
+        </td>
+        <td>
+            @Html.Raw(item.DateCreated.ToString("dd/MM/yyyy"))
+        </td>
+        <td>
+            @Html.Raw(item.Value.ToString("C"))
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Locator)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Park.Name)
+        </td>
+        <td>
+            @Html.ActionLink("Details", "ReservationDetails", new { id = item.Id })
+        </td>
+        <td>
+            Reserva terminada
+        </td>
+    </tr>
             }
 
         }
