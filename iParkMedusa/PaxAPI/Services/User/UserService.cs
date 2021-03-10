@@ -37,14 +37,23 @@ namespace PaxAPI.Services.User
                 LastName = model.LastName
             };
             var userWithSameEmail = await _userManager.FindByEmailAsync(model.Email);
+            var userWithSameUsername = await _userManager.FindByNameAsync(model.Username);
+
             if (userWithSameEmail == null)
             {
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                if (userWithSameUsername == null)
                 {
-                    await _userManager.AddToRoleAsync(user, Authorization.default_role.ToString());
+                    var result = await _userManager.CreateAsync(user, model.Password);
+                    if (result.Succeeded)
+                    {
+                        await _userManager.AddToRoleAsync(user, Authorization.default_role.ToString());
+                    }
+                    return $"User Registered with username {user.UserName}";
                 }
-                return $"User Registered with username {user.UserName}";
+                else
+                {
+                    return $"Username {user.UserName} is already in use.";
+                }
             }
             else
             {
