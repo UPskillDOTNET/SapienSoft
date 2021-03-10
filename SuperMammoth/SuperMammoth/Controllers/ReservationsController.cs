@@ -295,7 +295,7 @@ namespace SuperMammoth.Controllers
                             var read = result.Content.ReadAsAsync<ReservationModel>();
                             read.Wait();
                             var newreservation = read.Result;
-                             return RedirectToAction("ReservationList");
+                            return RedirectToAction("GetReservationByUser", "Reservations");
                          }
                         else
                         {
