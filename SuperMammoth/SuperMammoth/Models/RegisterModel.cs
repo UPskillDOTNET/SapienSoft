@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,5 +22,7 @@ namespace SuperMammoth.Models
         public string Password { get; set; }
         [Required]
         public int PaymentMethodId { get; set; }
+        [ForeignKey("PaymentMethodId")]
+        public PaymentMethod PaymentMethod{ get; set; }
     }
 }

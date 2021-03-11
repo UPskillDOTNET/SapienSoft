@@ -8,7 +8,7 @@
 <h1>Create</h1>
 
 <h4>Search for available sub-rental reservations</h4>
-
+@Html.ActionLink("Back to Available Reservations Search", "Create", "Reservations")
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -43,7 +43,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    @Html.ActionLink("Back", "Index", "Home")
 </div>
 
 @section Scripts {
