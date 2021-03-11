@@ -6,33 +6,15 @@
 
 <h1>SubRentList</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ExternalId)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Start)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.End)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateCreated)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Value)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SlotId)
-            </th>
+            </th>o
             <th>
                 @Html.DisplayNameFor(model => model.Locator)
             </th>
@@ -43,19 +25,10 @@
                 @Html.DisplayNameFor(model => model.Longitude)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.QrCode)
+                Rent Value
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AvailableToRent)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RentValue)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ParkId)
+               Park Name
             </th>
             <th></th>
         </tr>
@@ -64,25 +37,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Id)
+                @Html.Raw(item.Start.ToString("dddd, dd MMMM yyyy. HH:mm"))
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ExternalId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Start)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.End)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateCreated)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Value)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SlotId)
+                @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy. HH:mm"))
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Locator)
@@ -94,19 +52,10 @@
                 @Html.DisplayFor(modelItem => item.Longitude)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.QrCode)
+                Rent Value
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AvailableToRent)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RentValue)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ParkId)
+                @Html.DisplayFor(modelItem => item.Park.Name)
             </td>
             <td>
             <td>

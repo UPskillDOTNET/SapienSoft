@@ -12,9 +12,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.QrCode)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Start)
             </th>
             <th>
@@ -46,16 +43,13 @@
             {
         <tr>
             <td>
-                <img src="@Url.Content(item.QrCode)" alt="Qr Code" />
+                @Html.Raw(item.Start.ToString("dddd, dd MMMM yyyy. HH:mm"))
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Start)
+                @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy. HH:mm"))
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.End)
-            </td>
-            <td>
-                @Html.Raw(item.DateCreated.ToString("dd/MM/yyyy"))
+                @Html.Raw(item.DateCreated.ToString("dddd, dd MMMM yyyy. HH:mm"))
             </td>
             <td>
                 @Html.Raw(item.Value.ToString("C"))
@@ -81,17 +75,15 @@
             else if (DateTime.Now > item.Start && DateTime.Now < item.End)
             {
     <tr class="table-success">
+        
         <td>
-            <img src="@Url.Content(item.QrCode)" alt="Qr Code" />
+            @Html.Raw(item.Start.ToString("dddd, dd MMMM yyyy. HH:mm"))
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Start)
+            @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy. HH:mm"))
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.End)
-        </td>
-        <td>
-            @Html.Raw(item.DateCreated.ToString("dd/MM/yyyy"))
+            @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy. HH:mm"))
         </td>
         <td>
             @Html.Raw(item.Value.ToString("C"))
@@ -113,17 +105,15 @@
             else
             {
     <tr class="table-info">
+        
         <td>
-            <img src="@Url.Content(item.QrCode)" alt="Qr Code" />
+            @Html.Raw(item.Start.ToString("dddd, dd MMMM yyyy. HH:mm"))
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Start)
+            @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy. HH:mm"))
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.End)
-        </td>
-        <td>
-            @Html.Raw(item.DateCreated.ToString("dd/MM/yyyy"))
+            @Html.Raw(item.DateCreated.ToString("dddd, dd MMMM yyyy. HH:mm"))
         </td>
         <td>
             @Html.Raw(item.Value.ToString("C"))

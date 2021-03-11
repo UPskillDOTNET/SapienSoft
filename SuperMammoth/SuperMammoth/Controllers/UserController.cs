@@ -157,7 +157,7 @@ namespace SuperMammoth.Controllers
                     else
                     {
                         TempData["message"] = "Error!";
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Profile", "User");
                     }
                 }
                 catch
@@ -187,13 +187,17 @@ namespace SuperMammoth.Controllers
                 var response = await client.PutAsJsonAsync("edit", register);
                         if (response.IsSuccessStatusCode)
                         {
-                        
-                            return RedirectToAction("Profile", "User");
+                            var content = response.Content.ReadFromJsonAsync<AuthenticationModel>();
+                            content.Wait();
+                            var userModel = content.Result;
+                            
+                            HttpContext.Session.SetObjectAsJson("UserSession", userModel);
+                             return RedirectToAction("Profile", "User");
                         }
                         else
                         {
-                    TempData["message"] = "Error!";
-                    return RedirectToAction("Index", "Home");
+                        TempData["message"] = "Error!";
+                        return RedirectToAction("Index", "Home");
                          }
                    }
                

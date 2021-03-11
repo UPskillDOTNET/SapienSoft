@@ -37,10 +37,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Start)
+                @Html.Raw( item.Start.ToString("dddd, dd MMMM yyyy. HH:mm"))
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.End)
+                @Html.Raw( item.End.ToString("dddd, dd MMMM yyyy.HH:mm"))
             </td>
 
             <td>

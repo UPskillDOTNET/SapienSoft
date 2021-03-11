@@ -33,7 +33,7 @@ namespace iParkMedusa.Repositories
         }
         public async Task<List<Reservation>> GetRentReservationsAsync(DateTime start, DateTime end)
         {
-            return await _context.Reservations.Where(r => r.AvailableToRent == true).Where(r => r.Start <= start).Where(r=> r.End >= end).ToListAsync();
+            return await _context.Reservations.Where(r => r.AvailableToRent == true).Where(r => r.Start <= start).Where(r=> r.End >= end).Include(p => p.Park).ToListAsync();
             
         }
 
