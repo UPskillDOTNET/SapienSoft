@@ -10,7 +10,8 @@ const SideMenu = ({navigation, authDispatch}) => {
         navigation.toggleDrawer();
         Alert.alert('Logout', 'Are you sure?', [
             {
-                text:'Cancel', onPress: () => {},
+                text:'Cancel',
+                onPress: () => {},
             },
             {
                 text: 'Yes',
@@ -23,23 +24,44 @@ const SideMenu = ({navigation, authDispatch}) => {
 
     const menuItems = [
         {
-            icon: <MaterialIcon name='library-books' size={25} style={{padding:20}}></MaterialIcon>,
+            icon: <MaterialIcon name='library-books' size={25} style={{padding:20}} color={'grey'}></MaterialIcon>,
             name: 'My Reservations',
             onPress: () => {
-                navigation.navigate('MyReservations');
+                navigation.navigate('My Reservations');
             }
         },
         {
-            icon: <MaterialIcon name='perm-identity' size={25} style={{padding:20}}></MaterialIcon>,
+            icon: <MaterialIcon name='money' size={25} style={{padding:20}} color={'grey'}></MaterialIcon>,
+            name: 'My Transactions',
+            onPress: () => {
+                navigation.navigate('My Transactions');
+            }
+        },
+        {
+            icon: <MaterialIcon name='add-circle' size={25} style={{padding:20}} color={'grey'}></MaterialIcon>,
+            name: 'Booking',
+            onPress: () => {
+                navigation.navigate('Booking');
+            }
+        },
+        {
+            icon: <MaterialIcon name='person' size={25} style={{padding:20}} color={'grey'}></MaterialIcon>,
             name: 'Profile',
             onPress: () => {
                 navigation.navigate('Profile');
             }
         },
         {
-            icon: <MaterialIcon name='logout' size={25} style={{padding:20}}></MaterialIcon>,
+            icon: <MaterialIcon name='privacy-tip' size={25} style={{padding:20}} color={'grey'}></MaterialIcon>,
+            name: 'Terms & Policy',
+            onPress: () => {
+                navigation.navigate('Privacy');
+            }
+        },
+        {
+            icon: <MaterialIcon name='logout' size={25} style={{padding:20}} color={'grey'}></MaterialIcon>,
             name: 'Logout',
-            onPress: handleLogout
+            onPress: handleLogout,
         },
     ]
 
@@ -47,7 +69,7 @@ const SideMenu = ({navigation, authDispatch}) => {
     return (
         <View style={GlobalStyles.container}>
             <View style={GlobalStyles.logo}>
-                <Image source={require('../assets/logo2.png')}/>
+                <Image source={require('../assets/mammoth-logo2.png')}/>
             </View>
 
             <View>

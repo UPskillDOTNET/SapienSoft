@@ -1,10 +1,17 @@
 import { StyleSheet } from "react-native"
-import { color } from "react-native-reanimated"
 
 export default StyleSheet.create({
     container: {
-        paddingTop: 50,
+        paddingTop: 60,
         paddingHorizontal: 20,
+        backgroundColor: 'white',
+        flex: 1,
+    },
+    stackContainer: {
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        backgroundColor: 'white',
+        flex: 1,
     },
     input: {
         paddingVertical: 5
@@ -15,7 +22,7 @@ export default StyleSheet.create({
         borderWidth: 1,
         paddingHorizontal: 10,
         borderRadius: 5,
-        flex:1
+        flex:1,
     },
     rowContent:{
         flexDirection: 'row',
@@ -24,7 +31,6 @@ export default StyleSheet.create({
     logo: {
         paddingVertical: 40,
         alignSelf: 'center'
-
     },
     buttonWrapper: {
         marginVertical: 20
@@ -60,5 +66,24 @@ export default StyleSheet.create({
         paddingHorizontal: 10,
         width: '65%',
         color: 'dimgray'
+    },
+    iconInput: {
+        padding:8,
+        color: 'grey',
+        position: 'absolute',
+        right: 10
+    },
+    loading: {
+        padding: 100,
+    },
+    title: {
+        paddingVertical: 20,
+        fontSize: 20,
+        fontWeight: 'bold'
+    },
+    stackScreen: {
+        paddingHorizontal: 20,
+        backgroundColor: 'white',
+        flex: 1,
     }
 })

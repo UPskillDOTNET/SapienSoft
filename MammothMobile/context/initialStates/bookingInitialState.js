@@ -1,15 +1,15 @@
 export default {
-    getReservations: {
+    getBooking: {
         data: [],
         error: null,
         loading: false,
     },
-    createReservations: {
+    createBooking: {
         data: {},
         error: null,
         loading: false,
     },
-    deleteReservations: {
+    deleteBooking: {
         data: {},
         error: null,
         loading: false,

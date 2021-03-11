@@ -7,7 +7,7 @@ export const clearAuthState = () => (dispatch) => {
     })
 }
 
-export default ({FirstName, LastName, UserName, Email, Password}) => dispatch => {
+export default ({FirstName, LastName, UserName, Email, Password}) => (dispatch) => (onSuccess) => {
     dispatch({
         type: REGISTER_LOADING,
     });
@@ -31,6 +31,7 @@ export default ({FirstName, LastName, UserName, Email, Password}) => dispatch =>
                     type: REGISTER_SUCCESS,
                     payload: resp.data,
                 });
+                onSuccess(resp.data);
             }
             else {
                 dispatch({
@@ -42,5 +43,4 @@ export default ({FirstName, LastName, UserName, Email, Password}) => dispatch =>
         .catch((err) => {
             console.log('err: ', err)
         })
-    console.log()
 }

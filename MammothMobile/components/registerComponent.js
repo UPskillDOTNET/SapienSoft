@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Text, View, ActivityIndicator } from "react-native";
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import GlobalStyles from '../styles/GlobalStyles';
 import { useNavigation } from '@react-navigation/core';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 const RegisterComponent = ({ errors, onChange, onSubmit, error, loading }) => {
     const {navigate} = useNavigation();
+    const [isSecureEntry, setIsSecureEntry] = useState(true);
     return (
         
             <View style={GlobalStyles.container}>
@@ -55,13 +57,21 @@ const RegisterComponent = ({ errors, onChange, onSubmit, error, loading }) => {
                     </View>
                     
                     <View style={GlobalStyles.input}>
-                        <Text style={GlobalStyles.label}>Password</Text>
-                        <TextInput
-                            style={GlobalStyles.textInput}
-                            placeholder='Enter Password'
-                            secureTextEntry={true}
-                            onChangeText={(value) => {onChange({name:'Password', value})}}
-                        />
+                        <Text style={GlobalStyles.label}>Password </Text>
+                        <View style={GlobalStyles.rowContent}> 
+                            <TextInput
+                                style={GlobalStyles.textInput}
+                                placeholder='Enter Password'
+                                secureTextEntry={isSecureEntry}
+                                onChangeText={(value) => {onChange({name:'Password', value})}}
+                            />
+                            <TouchableOpacity style={{padding: 8}}onPress={(prev) => {setIsSecureEntry((prev) => !prev)}}>
+                                {isSecureEntry?
+                                <MaterialIcon name='visibility' size={24} style={{color: 'grey'}}></MaterialIcon>:
+                                <MaterialIcon name='visibility-off' size={24} style={{color: 'grey'}}></MaterialIcon>}
+                            </TouchableOpacity>
+                        </View>
+
                         <Text style={GlobalStyles.textError}>{errors.Password}</Text>
                     </View>
 

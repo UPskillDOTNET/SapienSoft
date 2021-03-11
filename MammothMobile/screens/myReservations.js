@@ -1,12 +1,22 @@
-import React from 'react';
-import { Text, View } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import MyReservationsComponent from '../components/reservationsComponent';
+import getReservations from '../context/actions/getReservations';
+import { GlobalContext } from '../context/provider';
 
-const myReservations = () => {
+const Reservations = () => {
+
+    const {reservationsDispatch, reservationsState: {getReservations: {data, loading} } } = useContext(GlobalContext)
+
+    useEffect(() => {
+        getReservations()(reservationsDispatch)
+    }, [])
+
     return (
-        <View>
-            <Text>Hello myReservations</Text>
-        </View>
+        <MyReservationsComponent
+            data={data}
+            loading={loading}
+        />
     )
 }
 
-export default myReservations;
+export default Reservations;

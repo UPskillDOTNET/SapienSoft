@@ -1,10 +1,19 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import LoginComponent from '../components/loginComponent';
 import { GlobalContext } from '../context/provider';
-import { useNavigation } from '@react-navigation/core';
+import { useNavigation, useRoute } from '@react-navigation/core';
 import login from '../context/actions/login';
 
 const Login = () => {
+    const { params } = useRoute();
+    const [justSignedUp, setJustSignedUp] = useState(false);
+
+    useEffect(() => {
+        if (params?.data){
+            setJustSignedUp(true);
+            setForm({...form, Email: params.data})
+        }
+    }, [params]);
 
     const [form, setForm] = useState({});
     const [errors, setErrors] = useState({});
@@ -12,6 +21,7 @@ const Login = () => {
     const { navigate } = useNavigation();
 
     const onChange = ({name, value}) => {
+        setJustSignedUp(false);
         setForm({...form, [name]: value});
 
         if(value !== '') {
@@ -79,7 +89,6 @@ const Login = () => {
             Object.values(form).every((item) => item.trim().length > 0) &&
             Object.values(errors).every((item) => !item)
         ) {
-            console.log('form: ', form)
             login(form)(authDispatch);
         }
 
@@ -93,6 +102,7 @@ const Login = () => {
             onSubmit={onSubmit}
             error={error}
             loading={loading}
+            justSignedUp={justSignedUp}
         />
     )
 }

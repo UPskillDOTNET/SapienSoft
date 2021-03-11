@@ -33,5 +33,4 @@ export default ({Email, Password}) => dispatch => {
         .catch((err) => {
             console.log('err: ', err)
         })
-    console.log()
 }
