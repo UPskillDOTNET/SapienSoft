@@ -212,7 +212,47 @@ namespace SuperMammoth.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            using (var client = new HttpClient())
+            {
+
+                client.BaseAddress = new Uri("https://localhost:44398/api/");
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                var userSession = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
+                var token = userSession.Token;
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                // token
+
+                var postTask = client.GetAsync("user/info");
+                postTask.Wait();
+                var result = postTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var content = result.Content.ReadFromJsonAsync<RegisterModel>();
+                    content.Wait();
+                    var userModel = content.Result;
+                    if (userModel.PaymentMethodId == 1)
+                    {
+                        return View("Create");
+                    }
+                    else if(userModel.PaymentMethodId == 2)
+                    {
+                        return View("CreateDirect");
+                    }
+                    else
+                    {
+                        TempData["message"] = "Error!";
+                        return RedirectToAction("Index", "Home");
+                    }
+                    
+                }
+                else
+                {
+                    TempData["message"] = "Error!";
+                    return RedirectToAction("Index", "Home");
+                }
+            }
         }
 
         [HttpPost]
@@ -261,13 +301,13 @@ namespace SuperMammoth.Controllers
 
 
                 var PM = currentUser.PaymentMethodId.ToString();
-               if (ViewBag.Role == "Administrator")
+               if (PM == "2")
                 {
                     response = client.PostAsJsonAsync("transactions/user/addfunds", transaction);
                     if (response.Result.IsSuccessStatusCode)
                     {
                         response.Wait();
-                        return RedirectToAction("AdminIndex", "Transactions");
+                        return RedirectToAction("Index", "Transactions");
                     }
                     else return BadRequest("Problems comunicating with Medusa1");
                 }

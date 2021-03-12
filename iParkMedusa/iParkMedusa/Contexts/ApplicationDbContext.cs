@@ -35,9 +35,7 @@ namespace iParkMedusa.Contexts
                 new Park { Id = 2, Name = "Pax", Uri = "https://localhost:44355/" });
             builder.Entity<PaymentMethod>().HasData(
                 new PaymentMethod { Id = 1, Name = "Paypal" },
-                new PaymentMethod { Id = 2, Name = "Bank Transfer" },
-                new PaymentMethod { Id = 3, Name = "Mastercard" },
-                new PaymentMethod { Id = 4, Name = "Visa" });
+                new PaymentMethod { Id = 2, Name = "Direct" });
         }
 
     }
