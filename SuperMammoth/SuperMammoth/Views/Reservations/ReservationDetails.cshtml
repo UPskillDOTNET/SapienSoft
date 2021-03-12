@@ -7,6 +7,16 @@
 
 <h1>ReservationDetails</h1>
 
+@if (TempData["message"] != null)
+{
+    <div class="alert alert-primary alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4>@TempData["message"]</h4>
+    </div>
+}
+
 <div>
     <h4>ReservationModel</h4>
     <hr />
@@ -88,12 +98,3 @@
     <a asp-action="GetReservationByUser">Back to List</a>
 </div>
 
-@if (TempData["message"] != null)
-{
-    <div class="alert alert-primary alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        <h4>@TempData["message"]</h4>
-    </div>
-}

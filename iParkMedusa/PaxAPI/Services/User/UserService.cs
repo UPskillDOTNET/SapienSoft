@@ -52,7 +52,7 @@ namespace PaxAPI.Services.User
                 }
                 else
                 {
-                    return $"Username {user.UserName} is already in use.";
+                    return $"Username {user.UserName} is already in use. Please pick another.";
                 }
             }
             else
