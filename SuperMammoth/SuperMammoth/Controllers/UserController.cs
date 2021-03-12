@@ -62,6 +62,7 @@ namespace SuperMammoth.Controllers
                     var result = postTask.Result;
                     if (result.IsSuccessStatusCode)
                     {
+                        
                         var content = result.Content.ReadFromJsonAsync<AuthenticationModel>();
                         content.Wait();
                         var authenticationModel = content.Result;
