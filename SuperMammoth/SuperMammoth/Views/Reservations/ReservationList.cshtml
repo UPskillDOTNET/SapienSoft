@@ -1,8 +1,9 @@
 ﻿@model IEnumerable<SuperMammoth.Models.ReservationDTOModel>
-
+@using System.Globalization;
 @{
     ViewData["Title"] = "ReservationList";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    CultureInfo en = new CultureInfo("en-Us");
 }
 
 <h1>Available Reservations</h1>
@@ -44,10 +45,10 @@
         {
             <tr>
                 <td>
-                    @Html.Raw(item.Start.ToString("dddd, dd MMMM yyyy. HH:mm"))
+                    @Html.Raw(item.Start.ToString("dddd, dd MMMM yyyy. HH:mm", en))
                 </td>
                 <td>
-                    @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy.HH:mm"))
+                    @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy.HH:mm", en))
                 </td>
 
                 <td>

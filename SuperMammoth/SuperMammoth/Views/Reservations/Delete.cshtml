@@ -1,8 +1,9 @@
 ﻿@model SuperMammoth.Models.ReservationModel
-
+@using System.Globalization; 
 @{
     ViewData["Title"] = "Delete";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    CultureInfo en = new CultureInfo("en-Us");
 }
 
 <h1>Delete</h1>
@@ -16,13 +17,13 @@
             @Html.DisplayNameFor(model => model.Start)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Start)
+            @Html.Raw(Model.Start.ToString("dddd, dd MMMM yyyy. HH:mm", en))
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.End)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.End)
+            @Html.Raw(Model.End.ToString("dddd, dd MMMM yyyy. HH:mm", en))
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DateCreated)

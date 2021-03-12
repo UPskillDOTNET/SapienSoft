@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<SuperMammoth.Models.ReservationModel>
+@using System.Globalization;
 
 @{ ViewData["Title"] = "SubRentList"; }
 
@@ -38,11 +39,14 @@
         @foreach (var item in Model)
         {
 <tr>
+        @{ 
+            CultureInfo en = new CultureInfo("en-US");
+        }
     <td>
-        @Html.Raw(item.Start.ToString("dddd, dd MMMM yyyy. HH:mm"))
+        @Html.Raw(item.Start.ToString("dddd, dd MMMM yyyy. HH:mm", en))
     </td>
     <td>
-        @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy. HH:mm"))
+        @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy. HH:mm", en))
     </td>
     <td>
         @Html.Raw(item.RentValue.ToString("C"))
