@@ -14,29 +14,29 @@ namespace SuperMammoth.Controllers
         // GET: Charts
         public ActionResult Charts()
         {
-            IQueryable<Transaction> transList = null;
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("https://localhost:44398/api/");
-                var response = client.GetAsync("transactions");
-                response.Wait();
-
-                var result = response.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var read = result.Content.ReadAsAsync<IQueryable<Transaction>>();
-                    read.Wait();
-                    transList = read.Result;
-                    
-                }
-                else
-                {
-                    //erro
-                    ModelState.AddModelError(string.Empty, "Server error occured");
-                }
-                return View(transList);
-            }
+                return View();
         }
+        public ActionResult Column()
+        {
+            return View();
+        }
+        public ActionResult Bar()
+        {
+            return View();
+        }
+        public ActionResult Line()
+        {
+            return View();
+        }
+        public ActionResult Area()
+        {
+            return View();
+        }
+        public ActionResult Pie()
+        {
+            return View();
+        }
+
         // GET: Charts/Details/5
         public ActionResult Details(int id)
         {

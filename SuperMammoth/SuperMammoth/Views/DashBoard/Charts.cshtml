@@ -4,24 +4,10 @@
 }
 
 <h1>Charts</h1>
-
-<div id="chartContainer"></div>
-
-@{
-    var transList = Html.Raw(ViewBag.transList);
-    var i = transList.Count();
-    string[] x = new string[i];
-    double[] y = new double[i];
-    int c = 0;
-    foreach (Transaction item in transList)
-    {
-        foreach (Transaction item2 in transList)
-        {
-            var ValueAsString = transList.Where(item.UserId == item2.UserId).Select(item2.Value).ToString();
-            var converter = Double.Parse(ValueAsString);
-            x[c] = item.UserId;
-            y[c] += converter;
-        }
-        c++;
-    }
-}
+<div class="col-10">
+<a class="btn btn-info" asp-controller="DashBoard" asp-action="Column">Column</a>
+<a class="btn btn-info" asp-controller="DashBoard" asp-action="Bar">Bar</a>
+<a class="btn btn-info" asp-controller="DashBoard" asp-action="Line">Line</a>
+<a class="btn btn-info" asp-controller="DashBoard" asp-action="Area">Area</a>
+<a class="btn btn-info" asp-controller="DashBoard" asp-action="Pie">Pie</a>
+</div>
