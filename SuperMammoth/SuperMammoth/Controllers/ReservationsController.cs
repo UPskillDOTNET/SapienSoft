@@ -51,6 +51,10 @@ namespace SuperMammoth.Controllers
                     reservation = Enumerable.Empty<ReservationDTOModel>();
                     ModelState.AddModelError(string.Empty, "Server error occured");
                 }
+                if(reservation.Count() == 0)
+                {
+                    TempData["message"] = " No available reservations were found matching the search criteria.";
+                }
                 return View("ReservationList", reservation);
             }
         }
@@ -99,35 +103,76 @@ namespace SuperMammoth.Controllers
                     reservationList = Enumerable.Empty<ReservationModel>();
                     ModelState.AddModelError(string.Empty, "Server error occured");
                 }
+                if (reservationList.Count() == 0)
+                {
+                    TempData["message"] = " No available reservations were found matching the search criteria.";
+                }
                 return View("SubRentList", reservationList);
             }
         }
 
         public ActionResult SubRent(ReservationModel reservation)
         {
+            var userSession = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
+            var token = userSession.Token;
             using (var client = new HttpClient())
             {
 
-                client.BaseAddress = new Uri("https://localhost:44398/api/reservations/"); // MedusaAPI
+                client.BaseAddress = new Uri("https://localhost:44398/api/user/"); // MedusaAPI
 
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                 //Token
-                var userSession = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
-                var token = userSession.Token;
 
+
+                //Getting the current user Id
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-                var response = client.PostAsJsonAsync("rented/" + reservation.Id, "");
+                var response = client.GetAsync("getId/" + userSession.UserName);
                 response.Wait();
 
                 var result = response.Result;
                 if (result.IsSuccessStatusCode)
                 {
-                    var read = result.Content.ReadAsAsync<ReservationModel>();
+                    var read = result.Content.ReadAsAsync<string>();
                     read.Wait();
-                    var NewReservation = read.Result;
-                    TempData["message"] = " Reservation has been made.";
-                    return RedirectToAction("ReservationDetails", NewReservation);
+                    var Id = read.Result;
+                    //Compare current user to reservation user
+                    if (Id == reservation.UserId)
+                    {
+                        TempData["message"] = " You cannot sub-rent a reservation you already own.";
+                        return RedirectToAction("SubRentalList");
+                    }
+                    
+                        
+                        client.BaseAddress = new Uri("https://localhost:44398/api/reservations/"); // MedusaAPI
+
+                        client.DefaultRequestHeaders.Clear();
+                        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                        //Token
+
+
+
+                        client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                        var response2 = client.PostAsJsonAsync("rented/" + reservation.Id, "");
+                        response2.Wait();
+
+                        var result2 = response2.Result;
+                        if (result2.IsSuccessStatusCode)
+                        {
+                            var read2 = result2.Content.ReadAsAsync<ReservationModel>();
+                            read2.Wait();
+                            var NewReservation = read2.Result;
+                            TempData["message"] = " Reservation has been made.";
+                            return RedirectToAction("ReservationDetails", NewReservation);
+                        }
+                    else
+                    {
+                        //erro
+                        ModelState.AddModelError(string.Empty, "Server error occured");
+                        return View();
+                    }
+
+
                 }
                 else
                 {
@@ -135,7 +180,7 @@ namespace SuperMammoth.Controllers
                     ModelState.AddModelError(string.Empty, "Server error occured");
                     return View();
                 }
-
+                
             }
         }
             public ActionResult MakeReservation(ReservationDTOModel reservationModel)

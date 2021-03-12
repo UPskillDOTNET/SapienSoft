@@ -4,7 +4,16 @@
     ViewData["Title"] = "Search Sub-Rental";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<!-- Messages -->
+@if (TempData["message"] != null)
+{
+    <div class="alert alert-primary alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4>@TempData["message"]</h4>
+    </div>
+}
 <h1>Create</h1>
 
 <h4>Search for available sub-rental reservations</h4>

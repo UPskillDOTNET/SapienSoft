@@ -1,11 +1,18 @@
 ﻿@model IEnumerable<SuperMammoth.Models.ReservationModel>
 
-@{
-    ViewData["Title"] = "SubRentList";
-}
+@{ ViewData["Title"] = "SubRentList"; }
 
 <h1>SubRentList</h1>
-
+@if (TempData["message"] != null)
+{
+    <div class="alert alert-primary alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4>@TempData["message"]</h4>
+    </div>
+}
+<h4> Please chose the desired reservation</h4>
 <table class="table">
     <thead>
         <tr>
@@ -14,55 +21,43 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.End)
-            </th>o
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Value)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Locator)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Latitude)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Longitude)
-            </th>
-            <th>
-                Rent Value
-            </th>
-            <th>
-               Park Name
+                Park Name
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.Raw(item.Start.ToString("dddd, dd MMMM yyyy. HH:mm"))
-            </td>
-            <td>
-                @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy. HH:mm"))
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Locator)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Latitude)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Longitude)
-            </td>
-            <td>
-                Rent Value
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Park.Name)
-            </td>
-            <td>
-            <td>
-                @Html.ActionLink("SubRent", "SubRent", "Reservations", item)
-            </td>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+<tr>
+    <td>
+        @Html.Raw(item.Start.ToString("dddd, dd MMMM yyyy. HH:mm"))
+    </td>
+    <td>
+        @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy. HH:mm"))
+    </td>
+    <td>
+        @Html.Raw(item.RentValue.ToString("C"))
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Locator)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Park.Name)
+    </td>
+
+    <td>
+        @Html.ActionLink("SubRent", "SubRent", "Reservations", item)
+    </td>
+
+</tr>}
     </tbody>
 </table>
