@@ -39,9 +39,32 @@
                         <dt class="col-sm-4">
                             Payment Method:
                         </dt>
-                        <dd class="col-sm-6">
-                            @Html.DisplayFor(model => model.PaymentMethod.Name)
-                        </dd>
+
+                        @if (Model.PaymentMethodId == 1)
+                        {
+                            <dd class="col-sm-6">
+                                Paypal
+                            </dd>
+                        }
+                        else if (Model.PaymentMethodId == 2)
+                        {
+                            <dd class="col-sm-6">
+                                Bank Transfer
+                            </dd>
+                        }
+                        else if (Model.PaymentMethodId == 3)
+                        {
+                            <dd class="col-sm-6">
+                                Mastercard
+                            </dd>
+                        }
+                        else if (Model.PaymentMethodId == 4)
+                        {
+                            <dd class="col-sm-6">
+                                Visa
+                            </dd>
+                        }
+
                     </dl>
                 </p>
             </div>
