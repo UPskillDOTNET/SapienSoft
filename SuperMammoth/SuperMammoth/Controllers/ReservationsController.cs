@@ -51,6 +51,10 @@ namespace SuperMammoth.Controllers
                     reservation = Enumerable.Empty<ReservationDTOModel>();
                     ModelState.AddModelError(string.Empty, "Server error occured");
                 }
+                if(reservation.Count() == 0)
+                {
+                    TempData["message"] = " No available reservations were found matching the search criteria.";
+                }
                 return View("ReservationList", reservation);
             }
         }
@@ -98,6 +102,10 @@ namespace SuperMammoth.Controllers
                     //erro
                     reservationList = Enumerable.Empty<ReservationModel>();
                     ModelState.AddModelError(string.Empty, "Server error occured");
+                }
+                if (reservationList.Count() == 0)
+                {
+                    TempData["message"] = " No available reservations were found matching the search criteria.";
                 }
                 return View("SubRentList", reservationList);
             }
