@@ -1,8 +1,9 @@
 ﻿@model IEnumerable<SuperMammoth.Models.ReservationModel>
-
+@using System.Globalization; 
 @{
     ViewData["Title"] = "UserReservations";
     Layout = "~/Views/Shared/_Layout.cshtml";
+   CultureInfo en = new CultureInfo("en-US"); 
 }
 
 <h1>My Reservations</h1>
@@ -50,62 +51,63 @@
         {
             @if (DateTime.Now < item.Start)
             {
-        <tr>
-            <td>
-                @Html.Raw(item.Start.ToString("dddd, dd MMMM yyyy HH'h'"))
-            </td>
-            <td>
-                @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy HH'h'"))
-            </td>
-            <td>
-                @Html.Raw(item.DateCreated.ToString("dddd, dd MMMM yyyy HH'h'"))
-            </td>
-            @if (item.AvailableToRent == false)
-            {
-                <td>
-                    @Html.Raw(item.Value.ToString("C"))
-                </td>
-            }
-            else
-            {
-                <td>
-                    @Html.Raw(item.RentValue.ToString("C"))
-                </td>
-            }
+                <tr>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Locator)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Park.Name)
-            </td>
-            <td>
-                @if (item.AvailableToRent == false)
-                {
-                    <h4>✖</h4>
-                }
-                else
-                {
-                    <h4>✔</h4>
-                }
-            </td>
-            <td>
-                @Html.ActionLink("Details", "ReservationDetails", new { id = item.Id })
-            </td>
-        </tr>
+                    <td>
+                        @Html.Raw(item.Start.ToString("dddd, dd MMMM yyyy HH'h'", en))
+                    </td>
+                    <td>
+                        @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy HH'h'", en))
+                    </td>
+                    <td>
+                        @Html.Raw(item.DateCreated.ToString("dddd, dd MMMM yyyy HH'h'", en))
+                    </td>
+                    @if (item.AvailableToRent == false)
+                    {
+                        <td>
+                            @Html.Raw(item.Value.ToString("C"))
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @Html.Raw(item.RentValue.ToString("C"))
+                        </td>
+                    }
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Locator)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Park.Name)
+                    </td>
+                    <td>
+                        @if (item.AvailableToRent == false)
+                        {
+                            <h4>✖</h4>
+                        }
+                        else
+                        {
+                            <h4>✔</h4>
+                        }
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "ReservationDetails", new { id = item.Id })
+                    </td>
+                </tr>
             }
             else if (DateTime.Now > item.Start && DateTime.Now < item.End)
             {
                 <tr class="table-success">
 
                     <td>
-                        @Html.Raw(item.Start.ToString("dddd, dd MMMM yyyy HH'h'"))
+                        @Html.Raw(item.Start.ToString("dddd, dd MMMM yyyy HH'h'", en))
                     </td>
                     <td>
-                        @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy HH'h'"))
+                        @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy HH'h'", en))
                     </td>
                     <td>
-                        @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy HH'h'"))
+                        @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy HH'h'", en))
                     </td>
                     <td>
                         @Html.Raw(item.Value.ToString("C"))
@@ -129,13 +131,13 @@
                 <tr class="table-info">
 
                     <td>
-                        @Html.Raw(item.Start.ToString("dddd, dd MMMM yyyy HH'h'"))
+                        @Html.Raw(item.Start.ToString("dddd, dd MMMM yyyy HH'h'", en))
                     </td>
                     <td>
-                        @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy HH'h'"))
+                        @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy HH'h'", en))
                     </td>
                     <td>
-                        @Html.Raw(item.DateCreated.ToString("dddd, dd MMMM yyyy HH'h'"))
+                        @Html.Raw(item.DateCreated.ToString("dddd, dd MMMM yyyy HH'h'", en))
                     </td>
                     <td>
                         @Html.Raw(item.Value.ToString("C"))

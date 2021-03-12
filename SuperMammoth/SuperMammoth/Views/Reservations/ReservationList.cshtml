@@ -1,12 +1,21 @@
 ﻿@model IEnumerable<SuperMammoth.Models.ReservationDTOModel>
-
+@using System.Globalization;
 @{
     ViewData["Title"] = "ReservationList";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    CultureInfo en = new CultureInfo("en-Us");
 }
 
 <h1>Available Reservations</h1>
-
+@if (TempData["message"] != null)
+{
+    <div class="alert alert-primary alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4>@TempData["message"]</h4>
+    </div>
+}
 <p>
     <a asp-action="Create">New Search</a>
 </p>
@@ -25,8 +34,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Locator)
             </th>
-
-
             <th>
                 @Html.DisplayNameFor(model => model.ParkName)
             </th>
@@ -34,36 +41,31 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.Raw( item.Start.ToString("dddd, dd MMMM yyyy. HH:mm"))
-            </td>
-            <td>
-                @Html.Raw( item.End.ToString("dddd, dd MMMM yyyy.HH:mm"))
-            </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.Raw(item.Start.ToString("dddd, dd MMMM yyyy. HH:mm", en))
+                </td>
+                <td>
+                    @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy.HH:mm", en))
+                </td>
 
-            <td>
-                @Html.Raw(item.Value.ToString("C"))
-            </td>
+                <td>
+                    @Html.Raw(item.Value.ToString("C"))
+                </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Locator)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ParkName)
-            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Locator)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ParkName)
+                </td>
 
-            <td>
-                @Html.ActionLink("Reserve", "Details", "Reservations", item)
-            </td>
-        </tr>
-}
+                <td>
+                    @Html.ActionLink("Reserve", "Details", "Reservations", item)
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
-<div class="alert alert-primary alert-dismissible" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    <h4>@TempData["message"]</h4>
-</div>

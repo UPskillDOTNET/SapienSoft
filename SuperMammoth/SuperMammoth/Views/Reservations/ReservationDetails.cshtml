@@ -1,11 +1,12 @@
 ﻿@model SuperMammoth.Models.ReservationModel
-
+@using System.Globalization;
 
 @{
     ViewData["Title"] = "ReservationDetails";
+    CultureInfo en = new CultureInfo("en-Us");
 }
 
-<h1>ReservationDetails</h1>
+<h1>Reservation Details</h1>
 
 @if (TempData["message"] != null)
 {
@@ -18,87 +19,86 @@
 }
 
 <div>
-    <h4>ReservationModel</h4>
+    
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Start)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Start)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.End)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.End)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DateCreated)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DateCreated)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Value)
-        </dt>
-        @if (Model.AvailableToRent == true)
-        {
-            <dd class="col-sm-10">
-                @Html.Raw(Model.RentValue.ToString("C"))
-            </dd>
-            <dt class="col-sm-2">
-                Original Value
-            </dt>
-            <dd class="col-sm-10">
-                @Html.Raw(Model.Value.ToString("C"))
-            </dd>
-        }
-        else
-        {
-            <dd class="col-sm-10">
-                @Html.Raw(Model.Value.ToString("C"))
-            </dd>
-        }
+    <div class="row">
+        <div class="col-md">
+            <dl class="row">
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Start)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.Raw(Model.Start.ToString("dddd, dd MMMM yyyy. HH:mm", en))
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.End)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.Raw(Model.End.ToString("dddd, dd MMMM yyyy. HH:mm", en))
+                </dd>
+                <dt class="col-sm-4">
+                    Date Created
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.DateCreated)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Value)
+                </dt>
+                @if (Model.AvailableToRent == true)
+                {
+                    <dd class="col-sm-8">
+                        @Html.Raw(Model.RentValue.ToString("C"))
+                    </dd>
+                    <dt class="col-sm-4">
+                        Original Value
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.Raw(Model.Value.ToString("C"))
+                    </dd>
+                }
+                else
+                {
+                    <dd class="col-sm-8">
+                        @Html.Raw(Model.Value.ToString("C"))
+                    </dd>
+                }
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Locator)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Locator)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.QrCode)
-        </dt>
-        <dd class="col-sm-10">
-            <img src="@Url.Content(Model.QrCode)" alt="Qr Code" />
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Park.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Park.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Longitude)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Longitude)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Latitude)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Latitude)
-        </dd>
-    </dl>
-</div>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Locator)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Locator)
+                </dd>
+                <dt class="col-sm-4">
+                   Park Name
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Park.Name)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.QrCode)
+                </dt>
+                <dd class="col-sm-8">
+                    <img src="@Url.Content(Model.QrCode)" alt="Qr Code" />
+                </dd>
 
-<div class="mapouter">
-    <div class="gmap_canvas">
-        <iframe width="600" height="500" id="gmap_canvas" src="@ViewBag.url" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+
+            </dl>
+        </div>
+        <div class="col-md">
+            <div class="mapouter">
+                <div class="gmap_canvas">
+                    <iframe width="500" height="400" id="gmap_canvas" src="@ViewBag.url" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                </div>
+            </div>
+        </div>
+
+
+
     </div>
 </div>
+
 
 
 

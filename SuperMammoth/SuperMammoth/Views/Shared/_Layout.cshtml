@@ -51,12 +51,10 @@
                                 if (userSession.Roles.Contains("User"))
                                 {
                                     <div class="btn-group">
-                                        <button type="button" class="btn  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Make a Reservation
-                                        </button>
+                                        <button type="button" class="btn  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Book now!</button>
                                         <div class="dropdown-menu">
-                                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="Create">Search available parking.</a>
-                                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="SubRentalList">Search reservations available to sub-rent.</a>
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="Create">New search</a>
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="SubRentalList">Look for sub-rents</a>
                                         </div>
                                     </div>
                                    
