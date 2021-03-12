@@ -14,13 +14,13 @@
         <form asp-action="MakeAvailableToRent">
             <div class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" placeholder="0" readonly />
+                <label asp-for="Id" class="control-label" hidden></label>
+                <input asp-for="Id" class="form-control" placeholder="0" hidden/>
                 
             </div>
             <div class="form-group">
-                <label asp-for="ExternalId" class="control-label"></label>
-                <input asp-for="ExternalId" class="form-control" placeholder="0" readonly />
+                <label asp-for="ExternalId" class="control-label" hidden></label>
+                <input asp-for="ExternalId" class="form-control" placeholder="0" hidden />
                 
             </div>
             <div class="form-group">
@@ -44,33 +44,33 @@
                 
             </div>
             <div class="form-group">
-                <label asp-for="SlotId" class="control-label"></label>
-                <input asp-for="SlotId" class="form-control" placeholder="0" readonly />
+                <label asp-for="SlotId" class="control-label" hidden></label>
+                <input asp-for="SlotId" class="form-control" placeholder="0"  hidden />
                 
             </div>
             <div class="form-group">
-                <label asp-for="Locator" class="control-label"></label>
-                <input asp-for="Locator" class="form-control" placeholder="0" readonly />
+                <label asp-for="Locator" class="control-label" hidden></label>
+                <input asp-for="Locator" class="form-control" placeholder="0" hidden />
                 
             </div>
             <div class="form-group">
-                <label asp-for="QrCode" class="control-label"></label>
-                <input asp-for="QrCode" class="form-control" placeholder="0" readonly />
+                <label asp-for="QrCode" class="control-label" hidden></label>
+                <input asp-for="QrCode" class="form-control" placeholder="0" hidden />
                
             </div>
             <div class="form-group">
-                <label asp-for="AvailableToRent" class="control-label"></label>
-                <input asp-for="AvailableToRent" class="form-control" placeholder="0"  />
+                <label asp-for="AvailableToRent" class="control-label" hidden></label>
+                <input asp-for="AvailableToRent" class="form-control" placeholder="0"  hidden/>
                 
             </div>
             <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <input asp-for="UserId" class="form-control" placeholder="0" readonly />
+                <label asp-for="UserId" class="control-label" hidden></label>
+                <input asp-for="UserId" class="form-control" placeholder="0" hidden />
                 
             </div>
             <div class="form-group">
-                <label asp-for="ParkId" class="control-label"></label>
-                <input asp-for="ParkId" class="form-control" placeholder="0" readonly />
+                <label asp-for="ParkId" class="control-label" hidden></label>
+                <input asp-for="ParkId" class="form-control" placeholder="0"  hidden />
                
             </div>
             <div class="form-group">
@@ -91,7 +91,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    @Html.ActionLink("Back to Details", "ReservationDetails", @Model)
 </div>
 
 @section Scripts {

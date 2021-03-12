@@ -50,9 +50,16 @@
                                 }
                                 if (userSession.Roles.Contains("User"))
                                 {
-                                    <li>
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="Create">Make a Reservation</a>
-                                    </li>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Make a Reservation
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="Create">Search available parking.</a>
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="SubRentalList">Search reservations available to sub-rent.</a>
+                                        </div>
+                                    </div>
+                                   
 
                                 }
                                 if (userSession.Roles.Contains("User") || userSession.Roles.Contains("Administrator"))

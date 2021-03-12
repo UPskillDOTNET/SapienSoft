@@ -21,5 +21,6 @@ namespace iParkMedusa.Models
 
         [Required]
         public int PaymentMethodId { get; set; }
+        
     }
 }

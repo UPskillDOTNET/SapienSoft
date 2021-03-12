@@ -4,6 +4,7 @@ using SuperMammoth.Globals;
 using SuperMammoth.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -125,6 +126,7 @@ namespace SuperMammoth.Controllers
                     var read = result.Content.ReadAsAsync<ReservationModel>();
                     read.Wait();
                     var NewReservation = read.Result;
+                    TempData["message"] = " Reservation has been made.";
                     return RedirectToAction("ReservationDetails", NewReservation);
                 }
                 else
@@ -167,14 +169,21 @@ namespace SuperMammoth.Controllers
                                 var read = result.Content.ReadAsAsync<ReservationModel>();
                                 read.Wait();
                                 var reservation = read.Result;
-                                return View();
+                            TempData["message"] = " Reservation has been made.";
+                            return RedirectToAction("GetReservationByUser");
                             }
-                            else
+                            else if (result.StatusCode.Equals(402))
+                        {
+                            TempData["message"] = " Insufficient funds.";
+                            return RedirectToAction("AddFunds", "Transaction");
+                        }
+                        else
                             {
                                 //erro
                                 ModelState.AddModelError(string.Empty, "Server error occured");
-                                return View("AddFunds");
-                            }
+                            TempData["message"] = " Sorry. Something went wrong.";
+                            return RedirectToAction("Index", "Home");
+                        }
                             
                         }
                     }
@@ -295,6 +304,7 @@ namespace SuperMammoth.Controllers
                             var read = result.Content.ReadAsAsync<ReservationModel>();
                             read.Wait();
                             var newreservation = read.Result;
+                            TempData["message"] = " Reservation is now available to sub-rent.";
                             return RedirectToAction("GetReservationByUser", "Reservations");
                          }
                         else
@@ -311,7 +321,7 @@ namespace SuperMammoth.Controllers
         }
         public IActionResult ReservationDetails (int id)
         {
-            ReservationModel reservation = new ReservationModel();
+            ReservationModel reservation = null;
 
             using (var client = new HttpClient())
             {
@@ -325,6 +335,11 @@ namespace SuperMammoth.Controllers
                     var read = result.Content.ReadAsAsync<ReservationModel>();
                     read.Wait();
                     reservation = read.Result;
+
+                    
+                    
+                    ViewBag.url = "https://maps.google.com/maps?q=" + reservation.Latitude.ToString().Replace(',', '.') + "," + reservation.Longitude.ToString().Replace(',', '.') + "&t=&z=15&ie=UTF8&iwloc=&output=embed";
+
                 }
                 else
                 {
@@ -356,7 +371,8 @@ namespace SuperMammoth.Controllers
                 var result = response.Result;
                 if (result.IsSuccessStatusCode)
                 {
-                    return View("Profile", "User");
+                    TempData["message"] = " Reservation e-mail has been resent.";
+                    return RedirectToAction("GetReservationByUser");
                 }
                 else
                 {
@@ -396,7 +412,8 @@ namespace SuperMammoth.Controllers
                 var result = response.Result;
                 if (result.IsSuccessStatusCode)
                 {
-                    return RedirectToAction("Index", "Home");
+                    TempData["message"] = " Reservation has been cancelled.";
+                    return RedirectToAction("GetReservationByUser");
                 }
                 else
                 {

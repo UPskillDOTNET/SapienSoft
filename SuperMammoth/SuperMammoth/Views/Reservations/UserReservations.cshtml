@@ -30,7 +30,7 @@
                 @Html.DisplayNameFor(model => model.Park.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AvailableToRent)
+                Available To Rent
             </th>
 
             <th></th>
@@ -41,98 +41,111 @@
         {
             @if (DateTime.Now < item.Start)
             {
-        <tr>
-            <td>
-                @Html.Raw(item.Start.ToString("dddd, dd MMMM yyyy. HH:mm"))
-            </td>
-            <td>
-                @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy. HH:mm"))
-            </td>
-            <td>
-                @Html.Raw(item.DateCreated.ToString("dddd, dd MMMM yyyy. HH:mm"))
-            </td>
-            <td>
-                @Html.Raw(item.Value.ToString("C"))
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Locator)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Park.Name)
-            </td>
-            <td>
-                @Html.Raw(item.AvailableToRent.ToString())
-                @if (item.AvailableToRent == false)
-                {
-                    @Html.ActionLink("Make Available To Rent", "makeAvailableToRent", new { Id = item.Id })
-                }
-            </td>
-            <td>
-                @Html.ActionLink("Details", "ReservationDetails", new { id = item.Id })
-            </td>
-        </tr>
+                <tr>
+                    <td>
+                        @Html.Raw(item.Start.ToString("dddd, dd MMMM yyyy HH'h'"))
+                    </td>
+                    <td>
+                        @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy HH'h'"))
+                    </td>
+                    <td>
+                        @Html.Raw(item.DateCreated.ToString("dddd, dd MMMM yyyy HH'h'"))
+                    </td>
+                    <td>
+                        @Html.Raw(item.Value.ToString("C"))
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Locator)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Park.Name)
+                    </td>
+                    <td>
+                        @if (item.AvailableToRent == false)
+                        {
+                            <h4>✖</h4>
+                        }
+                        else
+                        {
+                            <h4>✔</h4>
+                        }
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "ReservationDetails", new { id = item.Id })
+                    </td>
+                </tr>
             }
             else if (DateTime.Now > item.Start && DateTime.Now < item.End)
             {
-    <tr class="table-success">
-        
-        <td>
-            @Html.Raw(item.Start.ToString("dddd, dd MMMM yyyy. HH:mm"))
-        </td>
-        <td>
-            @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy. HH:mm"))
-        </td>
-        <td>
-            @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy. HH:mm"))
-        </td>
-        <td>
-            @Html.Raw(item.Value.ToString("C"))
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Locator)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Park.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Details", "ReservationDetails", new { id = item.Id })
-        </td>
-        <td>
-            Reserva em processo
-        </td>
-    </tr>
+                <tr class="table-success">
+
+                    <td>
+                        @Html.Raw(item.Start.ToString("dddd, dd MMMM yyyy HH'h'"))
+                    </td>
+                    <td>
+                        @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy HH'h'"))
+                    </td>
+                    <td>
+                        @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy HH'h'"))
+                    </td>
+                    <td>
+                        @Html.Raw(item.Value.ToString("C"))
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Locator)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Park.Name)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "ReservationDetails", new { id = item.Id })
+                    </td>
+                    <td>
+                        Reserva em processo
+                    </td>
+                </tr>
             }
             else
             {
-    <tr class="table-info">
-        
-        <td>
-            @Html.Raw(item.Start.ToString("dddd, dd MMMM yyyy. HH:mm"))
-        </td>
-        <td>
-            @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy. HH:mm"))
-        </td>
-        <td>
-            @Html.Raw(item.DateCreated.ToString("dddd, dd MMMM yyyy. HH:mm"))
-        </td>
-        <td>
-            @Html.Raw(item.Value.ToString("C"))
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Locator)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Park.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Details", "ReservationDetails", new { id = item.Id })
-        </td>
-        <td>
-            Reserva terminada
-        </td>
-    </tr>
+                <tr class="table-info">
+
+                    <td>
+                        @Html.Raw(item.Start.ToString("dddd, dd MMMM yyyy HH'h'"))
+                    </td>
+                    <td>
+                        @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy HH'h'"))
+                    </td>
+                    <td>
+                        @Html.Raw(item.DateCreated.ToString("dddd, dd MMMM yyyy HH'h'"))
+                    </td>
+                    <td>
+                        @Html.Raw(item.Value.ToString("C"))
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Locator)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Park.Name)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "ReservationDetails", new { id = item.Id })
+                    </td>
+                    <td>
+                        Reserva terminada
+                    </td>
+                </tr>
             }
 
         }
     </tbody>
 </table>
+
+@if (TempData["message"] != null)
+{
+    <div class="alert alert-primary alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4>@TempData["message"]</h4>
+    </div>
+}

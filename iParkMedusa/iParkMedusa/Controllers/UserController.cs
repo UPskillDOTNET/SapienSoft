@@ -7,8 +7,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 namespace iParkMedusa.Controllers
 {
@@ -94,5 +99,7 @@ namespace iParkMedusa.Controllers
             var result = await _userService.EditUser(model, user);
             return Ok(result);
         }
+
+       
     }
 }

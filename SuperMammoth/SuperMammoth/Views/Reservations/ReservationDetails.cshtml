@@ -1,136 +1,99 @@
 ﻿@model SuperMammoth.Models.ReservationModel
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css" type="text/css">
-    <style>
-        .map {
-            height: 400px;
-            width: 100%;
-        }
-    </style>
-    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js"></script>
-    @{
-       ViewData["Title"] = "ReservationDetails";
-    }
 
-    <h1>ReservationDetails</h1>
 
-    <div>
-        <h4>ReservationModel</h4>
-        <hr />
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Start)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Start)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.End)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.End)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.DateCreated)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.DateCreated)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Value)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.Raw(Model.Value.ToString("C"))
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Locator)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Locator)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.QrCode)
-            </dt>
-            <dd class="col-sm-10">
-                <img src="@Url.Content(Model.QrCode)" alt="Qr Code" />
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Park.Name)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Park.Name)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Longitude)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Longitude)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Latitude)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Latitude)
-            </dd>
-        </dl>
+@{
+    ViewData["Title"] = "ReservationDetails";
+}
+
+<h1>ReservationDetails</h1>
+
+<div>
+    <h4>ReservationModel</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Start)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Start)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.End)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.End)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateCreated)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Value)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.Raw(Model.Value.ToString("C"))
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Locator)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Locator)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.QrCode)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Url.Content(Model.QrCode)" alt="Qr Code" />
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Park.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Park.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Longitude)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Longitude)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Latitude)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Latitude)
+        </dd>
+    </dl>
+</div>
+
+<div class="mapouter">
+    <div class="gmap_canvas">
+        <iframe width="600" height="500" id="gmap_canvas" src="@ViewBag.url" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
     </div>
-    
-    <div class="mapouter"><div class="gmap_canvas"><iframe width="600" height="500" id="gmap_canvas" src="https://maps.google.com/maps?q=41.1786,-8.608977&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a href="https://www.embedgooglemap.org">embed google maps</a></div>
-    <style>
-        .mapouter {
-            position: relative;
-            text-align: right;
-            height: 500px;
-            width: 600px;
-        }
-
-        .gmap_canvas {
-            overflow: hidden;
-            background: none !important;
-            height: 500px;
-            width: 600px;
-        }
-    </style></div>
-    <style>
-        .mapouter {
-            position: relative;
-            text-align: right;
-            height: 500px;
-            width: 600px;
-        }
-
-        .gmap_canvas {
-            overflow: hidden;
-            background: none !important;
-            height: 500px;
-            width: 600px;
-        }
-    </style></div>
-
-    <div id="map" class="map"></div>
-    <script type="text/javascript">
-            const longLat = [@Model.Longitude,@Model.Latitude]
-        
-        var map = new ol.Map({
-            target: 'map',
-            layers: [
-                new ol.layer.Tile({
-                    source: new ol.source.OSM()
-                })
-            ],
-            view: new ol.View({
-                center: ol.proj.fromLonLat(longLat),
-                zoom: 5
-            })
-        });
-    </script>
+</div>
 
 
 
-    <div>
-        @Html.ActionLink("Sub-Rent Reservation", "MakeAvailableToRent", new { /* id = Model.PrimaryKey */ }) |
-        @if (Model.Start > DateTime.Now)
-        {@Html.ActionLink("Cancel Reservation", "Delete", Model) }
-        |
-        @Html.ActionLink("Re-send E-mail", "ReSend", new { id = Model.Id }) |
-        <a asp-action="GetReservationByUser">Back to List</a>
+<div>
+    @if (Model.AvailableToRent == false)
+    {
+        @Html.ActionLink("Sub-Rent Reservation", "MakeAvailableToRent", @Model)
+    }|
+    @if (Model.Start > DateTime.Now)
+    {@Html.ActionLink("Cancel Reservation", "Delete", Model)}
+    |
+    @Html.ActionLink("Re-send E-mail", "ReSend", new { id = Model.Id }) |
+    <a asp-action="GetReservationByUser">Back to List</a>
+</div>
+
+@if (TempData["message"] != null)
+{
+    <div class="alert alert-primary alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4>@TempData["message"]</h4>
     </div>
+}
