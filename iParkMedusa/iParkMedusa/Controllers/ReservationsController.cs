@@ -202,12 +202,12 @@ namespace iParkMedusa.Controllers
                         await _transactionService.CreateTransaction(transaction, userId);
                         await _service.AddReservation(newReservation);
 
-                    //_service.GenerateQrCode(newReservation);
+                        //_service.GenerateQrCode(newReservation);
 
-                    // send email with ticket 
-                    newReservation = _service.GenerateQrCode(newReservation);
-                   await _service.UpdateReservation(newReservation);
-                    _service.SendEmail(newReservation, user, park.Name);
+                        // send email with ticket 
+                        newReservation = _service.GenerateQrCode(newReservation);
+                        await _service.UpdateReservation(newReservation);
+                        _service.SendEmail(newReservation, user, park.Name);
 
                         return Ok(newReservation);
                     }

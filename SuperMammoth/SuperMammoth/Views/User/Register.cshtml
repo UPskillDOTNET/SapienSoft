@@ -7,6 +7,17 @@
 
 <h1>Register</h1>
 
+<!-- Messages -->
+@if (TempData["message"] != null)
+{
+    <div class="alert alert-primary alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4>@TempData["message"]</h4>
+    </div>
+}
+
 <div>
     <a asp-action="Index" asp-controller="Home">Back</a>
 </div>
@@ -77,3 +88,4 @@
     </script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+

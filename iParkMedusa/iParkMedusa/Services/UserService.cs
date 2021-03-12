@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,20 +48,14 @@ namespace iParkMedusa.Services
                     var result = await _userManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
-                        await _userManager.AddToRoleAsync(user, Authorization.default_role.ToString());
+                        await _userManager.AddToRoleAsync(user, Constants.Authorization.default_role.ToString());
+                        SendEmailRegistration(user);
                     }
                     return $"User Registered with username {user.UserName}";
                 }
-                else
-                {
-                    return $"Username {user.UserName} is already in use.";
-                }
-
+                else return $"Username {user.UserName} is already in use.";
             }
-            else
-            {
-                return $"Email {user.Email } is already registered.";
-            }
+            else return $"Email {user.Email} is already registered.";
         }
 
         public async Task<AuthenticationModel> GetTokenAsync(TokenRequestModel model)
@@ -87,7 +83,39 @@ namespace iParkMedusa.Services
             authenticationModel.Message = $"Incorrect Credentials for user {user.Email}.";
             return authenticationModel;
         }
+        public void SendEmailRegistration(ApplicationUser user)
+        {
 
+            using (MailMessage mail = new MailMessage())
+            using (SmtpClient sender = new SmtpClient("smtp.gmail.com", 587))
+            {
+                sender.EnableSsl = true;
+                sender.Credentials = new NetworkCredential("sapiensoft.upskill@gmail.com", "Sapien123!");
+                sender.DeliveryMethod = SmtpDeliveryMethod.Network;
+
+                String body = @"
+                                        <html>
+                                            <body>
+                                                <p>Welcome to Mammoth!</p>
+                                                <p>We are glad you joined our service and we'll be happier if you enjoy it as much as we did on developing it.</p>
+                                                <p>Redeem your voucher to enjoy the first hour for free in our parks!</p>
+
+                                                <p> ~ The SapienSoft Team </p>
+                                            </body>
+                                        </html>
+                                        ";
+
+                AlternateView view = AlternateView.CreateAlternateViewFromString(body, null, "text/html");
+
+                mail.IsBodyHtml = true;
+                mail.AlternateViews.Add(view);
+                mail.From = new MailAddress("sapiensoft.upskill@gmail.com");
+                mail.To.Add(user.Email);
+                mail.Subject = "Registration is completed :)";
+
+                sender.Send(mail);
+            }
+        }
         private async Task<JwtSecurityToken> CreateJwtToken(ApplicationUser user)
         {
             var userClaims = await _userManager.GetClaimsAsync(user);
@@ -125,10 +153,10 @@ namespace iParkMedusa.Services
                 return $"No Accounts Registered with {model.Email}.";
             }
 
-            var roleExists = Enum.GetNames(typeof(Authorization.Roles)).Any(x => x.ToLower() == model.Role.ToLower());
+            var roleExists = Enum.GetNames(typeof(Constants.Authorization.Roles)).Any(x => x.ToLower() == model.Role.ToLower());
             if (roleExists)
             {
-                var validRole = Enum.GetValues(typeof(Authorization.Roles)).Cast<Authorization.Roles>().Where(x => x.ToString().ToLower() == model.Role.ToLower()).FirstOrDefault();
+                var validRole = Enum.GetValues(typeof(Constants.Authorization.Roles)).Cast<Constants.Authorization.Roles>().Where(x => x.ToString().ToLower() == model.Role.ToLower()).FirstOrDefault();
                 await _userManager.AddToRoleAsync(user, validRole.ToString());
                 return $"Added {model.Role} to user {model.Email}.";
             }
