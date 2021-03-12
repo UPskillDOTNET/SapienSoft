@@ -7,6 +7,15 @@
 
 <h1>My Reservations</h1>
 
+@if (TempData["message"] != null)
+{
+    <div class="alert alert-primary alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4>@TempData["message"]</h4>
+    </div>
+}
 
 <table class="table">
     <thead>
@@ -140,12 +149,4 @@
     </tbody>
 </table>
 
-@if (TempData["message"] != null)
-{
-    <div class="alert alert-primary alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        <h4>@TempData["message"]</h4>
-    </div>
-}
+
