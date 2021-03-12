@@ -34,9 +34,25 @@ namespace SuperMammoth.Controllers
                 {
                     var content = result.Content.ReadAsStringAsync();
                     content.Wait();
-                    TempData["message"] = "Registation successful!";
-                    return RedirectToAction("Index", "Home");
+                    if (content.Result == $"\"User Registered with username {registerModel.Username}\"")
+                    {
+                        TempData["message"] = "Your registration has been successful!";
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else if (content.Result == $"\"Username {registerModel.Username} is already in use.\"")
+                    {
+                        TempData["message"] = "Username already taken! Please pick another username.";
+                        return RedirectToAction("Register");
+                    }
+                    else if (content.Result == $"\"Email {registerModel.Email} is already registered.\"")
+                    {
+                        TempData["message"] = "Email already taken! Please use other address.";
+                        return RedirectToAction("Register");
+                    }
+
                 }
+                else return Ok("Something else went wrong.");
+
             }
             return View();
         }
