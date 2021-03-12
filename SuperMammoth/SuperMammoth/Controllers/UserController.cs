@@ -37,7 +37,33 @@ namespace SuperMammoth.Controllers
                     if (content.Result == $"\"User Registered with username {registerModel.Username}\"")
                     {
                         TempData["message"] = "Your registration has been successful!";
-                        return RedirectToAction("Index", "Home");
+                        using (var client2 = new HttpClient())
+                        {
+                            //logging user
+                            client2.BaseAddress = new Uri("https://localhost:44398/api/");
+                            client2.DefaultRequestHeaders.Clear();
+                            client2.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                            LoginModel loginModel = new LoginModel
+                            {
+                                Email = registerModel.Email,
+                                Password = registerModel.Password
+                            };
+                            var postTask2 = client2.PostAsJsonAsync("user/token", loginModel);
+                            postTask2.Wait();
+                            var result2 = postTask2.Result;
+                            if (result2.IsSuccessStatusCode)
+                            {
+
+                                var content2 = result2.Content.ReadFromJsonAsync<AuthenticationModel>();
+                                content2.Wait();
+                                var authenticationModel = content2.Result;
+                                HttpContext.Session.SetObjectAsJson("UserSession", authenticationModel);
+
+
+                                return RedirectToAction("Index", "Home");
+                            }
+                            return RedirectToAction("Index", "Home");
+                        }
                     }
                     else if (content.Result == $"\"Username {registerModel.Username} is already in use.\"")
                     {
