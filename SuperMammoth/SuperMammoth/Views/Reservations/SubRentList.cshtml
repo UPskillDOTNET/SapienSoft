@@ -6,6 +6,7 @@
 
 <h1>SubRentList</h1>
 
+<h4> Please chose the desired reservation</h4>
 <table class="table">
     <thead>
         <tr>
@@ -14,21 +15,15 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.End)
-            </th>o
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Value)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Locator)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Latitude)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Longitude)
-            </th>
-            <th>
-                Rent Value
-            </th>
-            <th>
-               Park Name
+                Park Name
             </th>
             <th></th>
         </tr>
@@ -43,25 +38,19 @@
                 @Html.Raw(item.End.ToString("dddd, dd MMMM yyyy. HH:mm"))
             </td>
             <td>
+                @Html.Raw(item.RentValue.ToString("C"))
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Locator)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Latitude)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Longitude)
-            </td>
-            <td>
-                Rent Value
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Park.Name)
             </td>
-            <td>
+            
             <td>
                 @Html.ActionLink("SubRent", "SubRent", "Reservations", item)
             </td>
-            </td>
+            
         </tr>
 }
     </tbody>

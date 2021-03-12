@@ -99,7 +99,17 @@ namespace iParkMedusa.Controllers
             var result = await _userService.EditUser(model, user);
             return Ok(result);
         }
+        [Authorize(Roles = "Administrator, Moderator, User")]
+        [HttpGet("getId/{userName}")]
+        public string GetUserIdByUserName(string userName)
+        {
+            
+           
+            var user = _userManager.Users.FirstOrDefault(u => u.UserName == userName);
+            var id = user.Id.ToString();
+            
+            return id;
+        }
 
-       
     }
 }
