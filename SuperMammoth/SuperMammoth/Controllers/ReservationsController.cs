@@ -263,7 +263,7 @@ namespace SuperMammoth.Controllers
             }
         }
 
-        public ActionResult<IEnumerable<ReservationModel>> GetReservationByUser()
+        public ActionResult<IEnumerable<ReservationModel>> GetReservationByUser(string sortOrder)
         {
             using (var client = new HttpClient())
             {
@@ -293,13 +293,50 @@ namespace SuperMammoth.Controllers
                     userReservations = Enumerable.Empty<ReservationModel>();
                     ModelState.AddModelError(string.Empty, "Server error occured");
                 }
-                return View("UserReservations", userReservations);
+
+                ViewData["StarSortParm"] = sortOrder == "start" ? "start_desc" : "start";
+                ViewData["DateSortParm"] = String.IsNullOrEmpty(sortOrder) ? "date_asc" : "";
+                ViewData["EndSortParm"] = sortOrder == "end" ? "end_desc" : "end";
+
+
+                var myReservations = userReservations.AsQueryable();
+
+                switch (sortOrder)
+                {
+                    case "start_desc":
+                        myReservations = myReservations.OrderByDescending(r => r.Start);
+                        break;
+
+                    case "date_asc":
+                        myReservations = myReservations.OrderBy(r => r.DateCreated);
+                        break;
+
+                    case "end_desc":
+                        myReservations = myReservations.OrderByDescending(r => r.End);
+                        break;
+
+                    case "start":
+                        myReservations = myReservations.OrderBy(r => r.Start);
+                        break;
+
+                    case "end":
+                        myReservations = myReservations.OrderBy(r => r.End);
+                        break;
+
+                    default:
+                        myReservations = myReservations.OrderByDescending(r => r.DateCreated);
+                        break;
+                }
+
+                return View("UserReservations", myReservations);
             }
         }
 
-        public ActionResult UserReservations(List<ReservationModel> reservation)
-        {
+        public ActionResult UserReservations(IList<ReservationModel> reservation)
+        { 
+
             return View(reservation);
+
         }
         public async Task<ActionResult> MakeAvailableToRent(string id)
         {
