@@ -36,7 +36,7 @@
 
         </div>
         <div class="carousel-item">
-            <img class="d-block w-100" src="~/img/parking-photo.jpeg" alt="Second slide">
+            <img class="d-block w-100" src="~/img/parking-photoRent.jpeg" alt="Second slide">
             @{
                 if (userSession != null && userSession.Roles != null)
                 {
@@ -48,7 +48,7 @@
                 else
                 {
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Make money by renting your parking spaces</h5>
+                        <h5 style="color:black">Make money by renting your parking spaces</h5>
                         <a class="btn btn-success" asp-controller="User" asp-action="Register" role="button">Register Now</a>
                     </div>
                 }
