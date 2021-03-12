@@ -169,20 +169,20 @@ namespace SuperMammoth.Controllers
                                 var read = result.Content.ReadAsAsync<ReservationModel>();
                                 read.Wait();
                                 var reservation = read.Result;
-                            TempData["message"] = " Reservation has been made.";
-                            return RedirectToAction("GetReservationByUser");
+                                TempData["message"] = " Reservation has been made.";
+                                return RedirectToAction("GetReservationByUser");
                             }
-                            else if (result.StatusCode.Equals(402))
-                        {
-                            TempData["message"] = " Insufficient funds.";
-                            return RedirectToAction("AddFunds", "Transaction");
-                        }
+                            else if (result.ReasonPhrase.Contains("Payment Required"))
+                            {
+                                TempData["message"] = " Insufficient funds.";
+                                return RedirectToAction("Create", "Transactions");                                
+                            }
                         else
                             {
                                 //erro
                                 ModelState.AddModelError(string.Empty, "Server error occured");
-                            TempData["message"] = " Sorry. Something went wrong.";
-                            return RedirectToAction("Index", "Home");
+                                TempData["message"] = " Sorry. Something went wrong.";
+                                return RedirectToAction("Index", "Home");
                         }
                             
                         }
