@@ -1,6 +1,7 @@
 ﻿using SuperMammoth.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace SuperMammoth.Models
         public double Longitude { get; set; }
         public string QrCode { get; set; }
         public bool AvailableToRent { get; set; }
+        [Range(1, 10000)]
         public double RentValue { get; set; }
 
         public string UserId { get; set; }
