@@ -69,7 +69,7 @@ namespace SuperMammoth.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult SubRentalList(ReservationModel reservation)
+        public ActionResult SubRentalList   (ReservationModel reservation)
         {
             using (var client = new HttpClient())
             {
