@@ -47,27 +47,6 @@ namespace SuperMammoth.Controllers
 
                     ViewBag.DataPoints = Newtonsoft.Json.JsonConvert.SerializeObject(dataPoints);
 
-
-
-
-                    /*List<double> ValueList = new List<double>
-                    {
-                        addValue,
-                        cancelValue,
-                        spentValue
-                    };
-                    List<string> labelList = new List<string>
-                    {
-                        "Added Funds Value",
-                        "Cancelled Reservations Value",
-                        "Spent Funds Value"
-                    };
-                    ViewBag.value = Newtonsoft.Json.JsonConvert.SerializeObject(ValueList);
-                    ViewBag.label = Newtonsoft.Json.JsonConvert.SerializeObject(labelList);*/
-                    
-
-
-
                 }
             }
                 return View();
@@ -84,8 +63,54 @@ namespace SuperMammoth.Controllers
         {
             return View();
         }
+
+
         public ActionResult Pie()
         {
+            using (var client = new HttpClient())
+            {
+                var temp = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
+
+                client.BaseAddress = new Uri("https://localhost:44398/api/");
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + temp.Token);
+                var response = client.GetAsync("reservations");
+                response.Wait();
+
+                var result = response.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var read = result.Content.ReadFromJsonAsync<IList<ReservationModel>>();
+                    read.Wait();
+                    var reservationlist = read.Result;
+                    var reservations = reservationlist.AsQueryable();
+
+
+                    var response2 = client.GetAsync("parks");
+                    response2.Wait();
+
+                    var result2 = response2.Result;
+                    if (result2.IsSuccessStatusCode)
+                    {
+                        var read2 = result2.Content.ReadFromJsonAsync<IList<Park>>();
+                        read2.Wait();
+                        var parkslist = read2.Result;
+                        var parks = parkslist.AsQueryable();
+
+                        List<DataPoints> dataPoints = new List<DataPoints>();
+                        
+                        foreach (var item in parks)
+                        {
+                            var parkName = item.Name;
+                            var totalReservations = reservations.Where(r => r.ParkId.Equals(item.Id)).Count();
+                            var data = new DataPoints(parkName, totalReservations);
+                            dataPoints.Add(data);
+                        }
+                        ViewBag.DataPoints = Newtonsoft.Json.JsonConvert.SerializeObject(dataPoints);
+                    }
+                }    
+
+            }
+ 
             return View();
         }
 
