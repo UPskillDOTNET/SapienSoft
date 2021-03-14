@@ -108,8 +108,10 @@ namespace SuperMammoth.Controllers
                         var content = result.Content.ReadFromJsonAsync<AuthenticationModel>();
                         content.Wait();
                         var authenticationModel = content.Result;
-                        HttpContext.Session.SetObjectAsJson("UserSession", authenticationModel);
-                        
+                        if (content.Result.Token != null)
+                        {
+                            HttpContext.Session.SetObjectAsJson("UserSession", authenticationModel);
+                        }
                         TempData["message"] = authenticationModel.Message;
                         return RedirectToAction("Index", "Home");
                     }
