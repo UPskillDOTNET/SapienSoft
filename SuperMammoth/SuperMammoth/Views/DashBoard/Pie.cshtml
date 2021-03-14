@@ -5,14 +5,31 @@
 <h1>Charts</h1>
 
 
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <div id="pie"></div>
+        <script type="text/javascript">
 
-        <div>
+            
+            window.onload = function () {
+                var chart = new CanvasJS.Chart("pie", {
+                    theme: "light2",
+                    animationEnabled: true,
+                    title: {
+                        text: "Simple pie Chart in ASP.NET MVC"
+                    },
+                    subtitles: [
+                        { text: "pie" }
+                    ],
+                    data: [
+                        {
+                            type: "pie", //change type to bar, line, area, pie, etc
+                            dataPoints: @Html.Raw(ViewBag.DataPoints)                  }
+                    ]
+                });
+                chart.render();
+            };
+        </script>
+    
 
-            <partial name="_ReservationPerParkChart" />
 
-        </div>
-
-        <div >
-            Teste 
-        </div>
 
