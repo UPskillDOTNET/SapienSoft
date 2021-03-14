@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SuperMammoth.Controllers
 {
-    public class ReservationsController : Controller
+    public class ReservationsController : BaseController
     {
 
         public ActionResult Create()

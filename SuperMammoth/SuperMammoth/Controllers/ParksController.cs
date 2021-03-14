@@ -9,7 +9,7 @@ using SuperMammoth.Models;
 
 namespace SuperMammoth.Controllers
 {
-    public class ParksController : Controller
+    public class ParksController : BaseController
     {
         // GET: ParksController
         public ActionResult Index()
