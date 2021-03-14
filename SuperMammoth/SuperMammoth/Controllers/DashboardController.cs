@@ -17,18 +17,15 @@ namespace SuperMammoth.Controllers
         // GET: Charts
         public ActionResult Charts()
         {
-            if (HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession") != null)
-            {
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Login", "User");
-            }
-
+            if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+                return RedirectToAction("Index", "Home");
+            return View();
         }
+
         public ActionResult Column()
         {
+            if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+                return RedirectToAction("Index", "Home");
             using (var client = new HttpClient())
             {
                 var temp = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
@@ -60,22 +57,34 @@ namespace SuperMammoth.Controllers
             }
                 return View();
         }
+
         public ActionResult Bar()
         {
+            if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+                return RedirectToAction("Index", "Home");
             return View();
         }
+
         public ActionResult Line()
         {
+            if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+                return RedirectToAction("Index", "Home");
             return View();
         }
+
         public ActionResult Area()
         {
+            if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+                return RedirectToAction("Index", "Home");
             return View();
         }
 
 
         public ActionResult Pie()
         {
+            if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+                return RedirectToAction("Index", "Home");
+
             using (var client = new HttpClient())
             {
                 var temp = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
@@ -126,12 +135,16 @@ namespace SuperMammoth.Controllers
         // GET: Charts/Details/5
         public ActionResult Details(int id)
         {
+            if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+                return RedirectToAction("Index", "Home");
             return View();
         }
 
         // GET: Charts/Create
         public ActionResult Create()
         {
+            if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+                return RedirectToAction("Index", "Home");
             return View();
         }
 
@@ -140,6 +153,8 @@ namespace SuperMammoth.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
         {
+            if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+                return RedirectToAction("Index", "Home");
             try
             {
                 return RedirectToAction(nameof(Index));
@@ -153,6 +168,8 @@ namespace SuperMammoth.Controllers
         // GET: Charts/Edit/5
         public ActionResult Edit(int id)
         {
+            if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+                return RedirectToAction("Index", "Home");
             return View();
         }
 
@@ -161,6 +178,8 @@ namespace SuperMammoth.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
+            if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+                return RedirectToAction("Index", "Home");
             try
             {
                 return RedirectToAction(nameof(Index));
@@ -174,6 +193,8 @@ namespace SuperMammoth.Controllers
         // GET: Charts/Delete/5
         public ActionResult Delete(int id)
         {
+            if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+                return RedirectToAction("Index", "Home");
             return View();
         }
 
@@ -182,6 +203,8 @@ namespace SuperMammoth.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
+            if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+                return RedirectToAction("Index", "Home");
             try
             {
                 return RedirectToAction(nameof(Index));
