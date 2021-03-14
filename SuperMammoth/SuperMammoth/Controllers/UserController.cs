@@ -86,6 +86,11 @@ namespace SuperMammoth.Controllers
         public IActionResult Login()
         {
 
+            if (HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession") != null)
+            {
+                TempData["message"] = "No need to login twice.";
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
