@@ -13,7 +13,7 @@ using SuperMammoth.Globals;
 
 namespace SuperMammoth.Controllers
 {
-    public class TransactionsController : Controller
+    public class TransactionsController : BaseController
     {
        
         public PayPalPaymentCreatedResponse created { get; set; }

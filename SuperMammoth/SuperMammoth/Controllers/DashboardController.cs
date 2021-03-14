@@ -8,15 +8,24 @@ using SuperMammoth.Models;
 using System.Net.Http;
 using SuperMammoth.Globals;
 using System.Net.Http.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SuperMammoth.Controllers
 {
-    public class DashboardController : Controller
+    public class DashboardController : BaseController
     {
         // GET: Charts
         public ActionResult Charts()
         {
+            if (HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession") != null)
+            {
                 return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "User");
+            }
+
         }
         public ActionResult Column()
         {
