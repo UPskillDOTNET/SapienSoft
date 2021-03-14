@@ -39,7 +39,7 @@ namespace iParkMedusa.Controllers
         // GET: api/Transactions
         [Authorize(Roles="Administrator, Moderator")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactions()
+        public async Task<ActionResult<IQueryable<Transaction>>> GetTransactions()
         {
             try
             {
