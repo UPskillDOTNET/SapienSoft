@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Net.Http;
 using SuperMammoth.Models;
+using SuperMammoth.Globals;
 
 namespace SuperMammoth.Controllers
 {
@@ -14,6 +15,9 @@ namespace SuperMammoth.Controllers
         // GET: ParksController
         public ActionResult Index()
         {
+            if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+                return RedirectToAction("Index", "Home");
+
             IEnumerable<Park> park = null;
             using (var client = new HttpClient())
             {
@@ -26,7 +30,7 @@ namespace SuperMammoth.Controllers
                 {
                     var read = result.Content.ReadAsAsync<IList<Park>>();
                     read.Wait();
-                    park  = read.Result;
+                    park = read.Result;
                 }
                 else
                 {
@@ -41,7 +45,10 @@ namespace SuperMammoth.Controllers
         // GET: ParksController/Details/5
         public ActionResult Details(int id)
         {
-            Park park = new Park();
+            if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+                return RedirectToAction("Index", "Home");
+
+                Park park = new Park();
 
             using (var client = new HttpClient())
             {
@@ -68,6 +75,8 @@ namespace SuperMammoth.Controllers
 
         public ActionResult Create()
         {
+            if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+                return RedirectToAction("Index", "Home");
             return View();
         }
 
@@ -76,6 +85,8 @@ namespace SuperMammoth.Controllers
         [HttpPost]
         public ActionResult Create(Park park)
         {
+            if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+                return RedirectToAction("Index", "Home");
 
             using (var client = new HttpClient())
             {
@@ -103,6 +114,8 @@ namespace SuperMammoth.Controllers
 
         public async Task<ActionResult> Edit(string id)
         {
+            if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+                return RedirectToAction("Index", "Home");
 
             if (id == null)
             {
@@ -133,6 +146,8 @@ namespace SuperMammoth.Controllers
 
         public async Task<ActionResult> Edit([Bind("Id", "Name", "Uri")] Park park)
         {
+            if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+                return RedirectToAction("Index", "Home");
             if (ModelState.IsValid)
             {
                 using (var client = new HttpClient())
@@ -155,6 +170,8 @@ namespace SuperMammoth.Controllers
 
         public async Task<ActionResult> Delete(string id)
         {
+            if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+                return RedirectToAction("Index", "Home");
 
             if (id == null)
             {
@@ -183,6 +200,8 @@ namespace SuperMammoth.Controllers
 
         public async Task<ActionResult> DeleteConfirmed(string id)
         {
+            if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+                return RedirectToAction("Index", "Home");
 
             using (var client = new HttpClient())
             {
