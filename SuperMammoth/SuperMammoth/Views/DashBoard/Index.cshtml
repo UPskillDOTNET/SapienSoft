@@ -1,0 +1,229 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Dashboard</h1>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+@if (TempData["message"] != null)
+{
+    <div class="alert alert-primary alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4>@TempData["message"]</h4>
+    </div>
+}
+
+
+
+<div class="row">
+
+
+    <div class="container col-lg">
+        <div class="container">
+
+            <div class="row">
+
+                <div class="card col-sm" style="padding:10px; border-radius:50px; margin:5px">
+                    <img class="img-fluid" src="~/img/png/004-p.png" alt="Parks">
+                    <div class="card-body">
+                        <h5 class="card-title">Parks</h5>
+                        <p class="card-text">Created, Edit and Delete Parks.</p>
+                        @Html.ActionLink("Manage Park", "Index", "Parks")
+                    </div>
+                </div>
+
+
+
+
+                <div class="card col-sm" style="padding:10px; border-radius:50px; margin:5px">
+                    <img class="img-fluid" src="~/img/png/003-user.png" alt="User">
+                    <div class="card-body">
+                        <h5 class="card-title">Parks</h5>
+                        <p class="card-text">Created, Edit and Delete Users.</p>
+                        @Html.ActionLink("Manage Users", "Index", "User")
+                    </div>
+                </div>
+
+
+
+
+                <div class="card col-sm" style="padding:10px; border-radius:50px; margin:5px">
+                    <img class="img-fluid" src="~/img/png/002-dollar-symbol.png" alt="Transactions">
+                    <div class="card-body">
+                        <h5 class="card-title">Parks</h5>
+                        <p class="card-text">Created, Edit and Delete Transactions.</p>
+                        @Html.ActionLink("Manage Transactions", "AdminIndex", "Transactions")
+                    </div>
+                </div>
+
+
+
+
+                <div class="card col-sm" style="padding:10px; border-radius:50px; margin:5px">
+                    <img class="img-fluid" src="~/img/png/001-maps-and-flags.png" alt="Reservations">
+                    <div class="card-body">
+                        <h5 class="card-title">Parks</h5>
+                        <p class="card-text">Created, Edit and Delete Reservations.</p>
+                        @Html.ActionLink("Manage Reservations", "Index", "Reservations")
+                    </div>
+                </div>
+
+
+
+
+                <div class="col-sm">
+                        Site Stats
+                    <dl>
+                        <dt class="col">Total Parks:</dt>
+                        <dd class="col">
+                            @Html.Raw(ViewBag.totalParks)
+
+                        </dd>
+                        <dt class="col">Total Reservations:</dt>
+                        <dd class="col">
+                            @Html.Raw(ViewBag.totalReservations)
+
+                        </dd>
+                        <dt class="col">Total Active Reservations:</dt>
+                        <dd class="col">
+                            @Html.Raw(ViewBag.activeReservations)
+
+                        </dd>
+                        <dt class="col">Total Funds added:</dt>
+                        <dd class="col">
+                            @Html.Raw(ViewBag.totalAdd.ToString("C"))
+
+                        </dd>
+                        <dt class="col">Total Funds Spent:</dt>
+                        <dd class="col">
+                            @Html.Raw(ViewBag.totalSpent.ToString("C"))
+
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row"><div id="columnChart" class="col" style="display:inline-block; width:80%; height:500px"></div></div>
+
+<div class="row"><div id="pieChart" class="col" style="display:inline-block; height:500px;width:80%"></div></div>
+            
+<div class="row"><div id="areaChart"class="col" style="display:inline-block; height:500px;width:80%"></div></div>
+
+            
+
+   
+
+    
+    
+
+
+<script type="text/javascript">
+
+    window.onload = function () {
+        var chartColumn = new CanvasJS.Chart("columnChart", {
+            theme: "light2",
+            animationEnabled: true,
+            title: {
+                text: "Transactions"
+            },
+            subtitles: [
+                { text: "Added || Spent || Reembursed" }
+            ],
+            data: [
+                {
+                    type: "column", //change type
+                    dataPoints: @Html.Raw(ViewBag.columnDataPoints)
+                }
+            ]
+
+        });
+        chartColumn.render();
+    
+        var chartPie = new CanvasJS.Chart("pieChart", {
+            theme: "light2",
+            animationEnabled: true,
+            title: {
+                text: "Reservations"
+            },
+            subtitles: [
+                { text: "per Park" }
+            ],
+            data: [
+                {
+                    type: "pie", //change type to bar, line, area, pie, etc
+                    dataPoints: @Html.Raw(ViewBag.pieDataPoints)                  }
+            ]
+        });
+        chartPie.render();
+    
+            
+
+            var chartArea = new CanvasJS.Chart("areaChart", {
+                theme: "light2",
+                animationEnabled: true,
+                subtitles: {
+                    text: "Reservations Created, Started and ended per month"
+				},
+                axisX: {
+                    title: "Month"
+                },
+                axisY: {
+                    title: "Number of Reservations"
+                },
+
+                legend: {
+                    verticalAlign: "top",
+                    horizontalAlign: "right",
+                    dockInsidePlotArea: true
+                },
+                data:[{
+						name: "Reservations created per month",
+						showInLegend: true,
+						legendMarkerType: "square",
+                    type: "area",
+
+						color: "rgba(12, 171, 202, 1)",
+						markerSize: 0,
+                        dataPoints: @Html.Raw(ViewBag.createAtmonth)
+                },
+                {
+						name: "Reservations started per month",
+						showInLegend: true,
+						legendMarkerType: "square",
+                    type: "area",
+
+                        color: "rgba(12, 202, 59, 1)",
+						markerSize: 0,
+						dataPoints: @Html.Raw(ViewBag.startAtmonth)
+				},
+				{
+						name: "Reservations ended per month",
+						showInLegend: true,
+						legendMarkerType: "square",
+                    type: "area",
+
+						color: "rgba(202, 12, 82, 1)",
+						markerSize: 0,
+						dataPoints: @Html.Raw(ViewBag.endAtmonth)
+	            }]
+            });
+            chartArea.render();
+        };
+
+</script>
+
+
+
+
+
+
+
+
