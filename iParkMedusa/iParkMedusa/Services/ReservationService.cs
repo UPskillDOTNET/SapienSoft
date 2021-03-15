@@ -94,6 +94,7 @@ namespace iParkMedusa.Services
 
             reservation.UserId = userId;
             reservation.AvailableToRent = false;
+            reservation.Value = reservation.RentValue;
             reservation.RentValue = 0;
             await _reservationRepo.UpdateEntityAsync(reservation);
             return reservation;

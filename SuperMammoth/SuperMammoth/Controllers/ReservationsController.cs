@@ -118,7 +118,7 @@ namespace SuperMammoth.Controllers
             using (var client = new HttpClient())
             {
 
-                client.BaseAddress = new Uri("https://localhost:44398/api/user/"); // MedusaAPI
+                client.BaseAddress = new Uri("https://localhost:44398/api/"); // MedusaAPI
 
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
@@ -127,7 +127,7 @@ namespace SuperMammoth.Controllers
 
                 //Getting the current user Id
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-                var response = client.GetAsync("getId/" + userSession.UserName);
+                var response = client.GetAsync("user/getId/" + userSession.UserName);
                 response.Wait();
 
                 var result = response.Result;
@@ -144,16 +144,12 @@ namespace SuperMammoth.Controllers
                     }
                     
                         
-                        client.BaseAddress = new Uri("https://localhost:44398/api/reservations/"); // MedusaAPI
-
-                        client.DefaultRequestHeaders.Clear();
-                        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                        //Token
+                        
 
 
 
-                        client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-                        var response2 = client.PostAsJsonAsync("rented/" + reservation.Id, "");
+                        
+                        var response2 = client.PostAsJsonAsync("reservations/rented/" + reservation.Id, "");
                         response2.Wait();
 
                         var result2 = response2.Result;
