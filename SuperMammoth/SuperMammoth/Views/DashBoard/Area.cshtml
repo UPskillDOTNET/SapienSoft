@@ -8,31 +8,59 @@
     <script type="text/javascript">
 
         window.onload = function () {
+            var year = new Date().getFullYear();
+
             var chart = new CanvasJS.Chart("area", {
                 theme: "light2",
                 animationEnabled: true,
                 title: {
                     text: "Simple area Chart in ASP.NET MVC"
+				},
+                axisX: {
+                    title: "Month"
                 },
-                subtitles: [
+                axisY: {
+                    title: "Number of Reservations"
+                },
+
+                 subtitles: [
                     { text: "area" }
                 ],
-                data: [
-                    {
-                        type: "area", //change type to bar, line, area, pie, etc
-                        dataPoints: [
-                            { x: 10, y: 71 },
-                            { x: 20, y: 55 },
-                            { x: 30, y: 50 },
-                            { x: 40, y: 65 },
-                            { x: 50, y: 95 },
-                            { x: 60, y: 68 },
-                            { x: 70, y: 28 },
-                            { x: 80, y: 34 },
-                            { x: 90, y: 14 }
-                        ]
-                    }
-                ]
+                legend: {
+                    verticalAlign: "top",
+                    horizontalAlign: "right",
+                    dockInsidePlotArea: true
+                },
+                data:[{
+						name: "Reservations created per month",
+						showInLegend: true,
+						legendMarkerType: "square",
+                    type: "area",
+
+						color: "rgba(12, 171, 202, 1)",
+						markerSize: 0,
+                        dataPoints: @Html.Raw(ViewBag.createAtmonth)
+                },
+                {
+						name: "Reservations started per month",
+						showInLegend: true,
+						legendMarkerType: "square",
+                    type: "area",
+
+                        color: "rgba(12, 202, 59, 1)",
+						markerSize: 0,
+						dataPoints: @Html.Raw(ViewBag.startAtmonth) 
+				},
+				{
+						name: "Reservations ended per month",
+						showInLegend: true,
+						legendMarkerType: "square",
+                    type: "area",
+
+						color: "rgba(202, 12, 82, 1)",
+						markerSize: 0,
+						dataPoints: @Html.Raw(ViewBag.endAtmonth)
+	            }]
             });
             chart.render();
         };
