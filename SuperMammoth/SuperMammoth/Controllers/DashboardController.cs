@@ -18,14 +18,21 @@ namespace SuperMammoth.Controllers
         public ActionResult Charts()
         {
             if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+            {
+                TempData["message"] = "Are you familiar with 401 errors? :)";
                 return RedirectToAction("Index", "Home");
+            }
+                
             return View();
         }
 
         public ActionResult Column()
         {
             if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+            {
+                TempData["message"] = "No, no, no... that's a 401! :)";
                 return RedirectToAction("Index", "Home");
+            }
             using (var client = new HttpClient())
             {
                 var temp = HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession");
@@ -61,21 +68,30 @@ namespace SuperMammoth.Controllers
         public ActionResult Bar()
         {
             if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+            {
+                TempData["message"] = "Oh, my! What are you trying to do? :)";
                 return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
         public ActionResult Line()
         {
             if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+            {
+                TempData["message"] = "Really sorry, no lines for you today... :)";
                 return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
         public ActionResult Area()
         {
             if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+            {
+                TempData["message"] = "...and that's some area you can't get to! :)";
                 return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
@@ -83,7 +99,10 @@ namespace SuperMammoth.Controllers
         public ActionResult Pie()
         {
             if (!HttpContext.Session.GetObjectFromJson<AuthenticationModel>("UserSession").Roles.Contains("Administrator"))
+            {
+                TempData["message"] = "No more pie for you! :)";
                 return RedirectToAction("Index", "Home");
+            }
 
             using (var client = new HttpClient())
             {
